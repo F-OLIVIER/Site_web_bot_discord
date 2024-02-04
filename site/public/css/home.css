@@ -1,0 +1,128 @@
+@import url('https://fonts.googleapis.com/css2?family=Agbalumo&display=swap');
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("/images/background.jpg") no-repeat;
+    background-size: 100%;
+    opacity: 0.5;
+    z-index: -1;
+}
+
+body {
+    margin: 0px;
+}
+
+/* --------------------------------------- */
+/* --------------- en-tête --------------- */
+/* --------------------------------------- */
+
+.bandeau {
+    width: 100%;
+    height: 150px;
+    background-color: rgba(85, 85, 85, 0.8);
+    display: flex;
+    font-size: 50px;
+    justify-content: center;
+
+    position: fixed;
+    z-index: 1;
+}
+
+.bandeauHaut {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    font-size: 50px;
+    text-align: center;
+
+    position: fixed;
+    z-index: 1;
+}
+
+.banner {
+    width: 12%;
+    background-image: url('/images/banner_LNB.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 100vh;
+    z-index: 1;
+}
+
+.bandeauhautCentre {
+    align-items: center;
+    text-align: center;
+    justify-items: center;
+    z-index: 2;
+
+    text-align: center;
+    color: rgb(255, 255, 255);
+    font-family: Agbalumo, sans-serif;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0), 0 0 1em rgb(0, 0, 0), 0 0 0.2em rgb(0, 0, 0);
+}
+
+.bandeauBas {
+    padding-top: 80px;
+    width: 70%;
+    display: flex;
+    justify-content: space-between;
+    z-index: 2;
+}
+
+.buttonconnexion {
+    background-color: rgba(254, 245, 195, 0.8);
+    font-weight: bolder;
+    font-size: medium;
+    border-radius: 40%;
+    border-style: double;
+    box-shadow: 0px 5px #666;
+    border-color: rgb(255, 255, 255);
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+    font-family: Agbalumo, sans-serif;
+    text-shadow: 1px 1px 5px black, 0 0 1em rgb(0, 0, 0), 0 0 0.2em rgb(0, 0, 0);
+}
+
+.buttonconnexion:hover {
+    background-color: rgb(237, 225, 180, 1);
+    cursor: pointer;
+}
+
+.sousBandeau {
+    padding-top: 250px;
+}
+
+/* --------------------------------------- */
+/* --------------- contenu --------------- */
+/* --------------------------------------- */
+
+.body {
+    margin: auto;
+    margin-top: 20px;
+    padding-bottom: 20px;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.error {
+    margin-top: 40px;
+    height: auto;
+    padding: 20px;
+    margin-left: 19%;
+    margin-right: 19%;
+    width: 60%;
+    background-color: #fff;
+    justify-content: center;
+    text-align: center;
+    font-size: 30px;
+    color: black;
+    border-style: solid;
+    border-color: black;
+    border-radius: 50px;
+}
