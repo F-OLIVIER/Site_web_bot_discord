@@ -1,5 +1,5 @@
 -- Initialisation de la db :
--- 1: sqlite3 databaseGvG.db
+-- 1: sqlite3 ./database/databaseGvG.db
 -- 2: .databases
 -- 3: .quit
 -- run query
@@ -8,9 +8,9 @@
 CREATE TABLE GestionBot( 
     ID INTEGER PRIMARY KEY,
     Allumage INTEGER, -- 0 on, 1 off
-    IDMessageGvG INTEGER
+    IDMessageGvG VARCHAR(50)
 );
-INSERT INTO GestionBot(Allumage,IDMessageGvG) VALUES(0,0);
+INSERT INTO GestionBot(Allumage,IDMessageGvG) VALUES(0,1206146217592225792);
 
 
 -- Fiche personnage IG
@@ -19,8 +19,9 @@ CREATE TABLE Users(
     uuid INTEGER , 
     ConnectedSite INTEGER,
 
-    DiscordID INTEGER NOT NULL,
+    DiscordID VARCHAR(50) NOT NULL,
     DiscordName VARCHAR(50) NOT NULL,
+    DiscordBaseName VARCHAR(50) NOT NULL,
     DiscordRole VARCHAR(50),
     DiscordPhoto TEXT,
 
@@ -31,12 +32,13 @@ CREATE TABLE Users(
     EtatInscription INTEGER,
     NbEmojiInscription INTEGER,
     TrustIndicator INTEGER,
-    NbGvGParticiped INTEGER,
+    MNDR INTEGER,
+    NbGvGParticiped INTEGER, -- anciennement Assiduity
+    NbTotalGvG INTEGER,
     DateLastGvGParticiped TEXT,
     
     FOREIGN KEY(GameCharacter_ID) REFERENCES ListGameCharacter(ID)
 );
--- INSERT INTO Users(DiscordID,DiscordName) VALUES(179655652153491456,'fabien76');
 
 -- Liste des GVG (pour les Stats)
 CREATE TABLE GvG( 
