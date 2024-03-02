@@ -6,39 +6,40 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"time"
+	"os"
+
+	"github.com/joho/godotenv"
 )
 
-const port = "53134"
-
-var addr = flag.String("addr", ":"+port, "http service address")
-
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+	port := os.Getenv("PORT")
+
 	// Initialisation de la database
 	// data.Createdb()
 
 	flag.Parse()
+	// home non connecté
 	http.HandleFunc("/", handlers.ServeHome)
+	// page de transition de connexion
 	http.HandleFunc("/discord", handlers.DiscordHandler)
 	http.HandleFunc("/api/discord", handlers.DiscordApiHandler)
-	http.HandleFunc("/home", handlers.HomeHandler)
-
-	// En fonction de l'URL, chargement de l'api correspondante
-	// http.HandleFunc("/api/Compte", handlers.CompteHandler)
-	// http.HandleFunc("/api/ForgetPassword", handlers.ForgetPasswordHandler)
+	// page utilisateur connecté
+	http.HandleFunc("/api/home", handlers.HomeHandler)
+	http.HandleFunc("/api/charactercard", handlers.CharacterCardHandler)
+	http.HandleFunc("/api/caserne", handlers.CaserneHandler)
+	http.HandleFunc("/api/majcaserne", handlers.MAJCaserneHandler)
+	http.HandleFunc("/api/creategroup", handlers.CreateGroupHandler)
 
 	// Appel des fichiers annexes
 	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("./public/css/"))))
 	http.Handle("/js/", http.StripPrefix("/js/", http.FileServer(http.Dir("./public/js/"))))
-	http.Handle("/public/imgages/", http.StripPrefix("/public/imgages/", http.FileServer(http.Dir("./public/imgages/"))))
-	server := &http.Server{
-		Addr:              *addr,
-		ReadHeaderTimeout: 3 * time.Second,
-	}
-	fmt.Println("Server started on port " + port + " : http://localhost:" + port)
+	http.Handle("/img/", http.StripPrefix("/img/", http.FileServer(http.Dir("./public/images/"))))
 
-	err := server.ListenAndServe()
-	if err != nil {
-		log.Fatal("ListenAndServe: ", err)
-	}
+	// mise en écoute du serveur
+	fmt.Println("Server started on port " + port + "\nhttp://localhost:" + port)
+	http.ListenAndServe(":"+port, nil)
 }

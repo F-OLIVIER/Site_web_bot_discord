@@ -12,16 +12,11 @@ fetch('https://discord.com/api/users/@me', {
     .then(result => result.json())
     .then(response => {
         const { username, id } = response;
-        document.getElementById('discordConnected').innerText += `Vous ete bien connecté ${username}`;
-        // console.log("response : ", response);
-        // console.log('test : ', username, discriminator, avatar, id, global_name);
-
         // envoie des informations au serveur
         checkid(id, username);
 
     })
     .catch(console.error);
-
 
 function checkid(id, username) {
     // récupération des information saisie deans le formulaire

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/index.css" type="text/css"/>
+    <link rel="stylesheet" href="/css/index.css" type="text/css" />
     <title>LNB</title>
 </head>
 
@@ -16,9 +16,12 @@
     <div class="bandeau">
         <div class="bandeauHaut">
             <div class="banner"></div>
-            <a href="/" class="bandeauhautCentre">
+            <div id="user"></div>
+            <div></div>
+            <a href="/" class="Title">
                 Maison La Nuit Blanche
             </a>
+            <div id="disconnect"></div>
             <div class="banner"></div>
         </div>
     </div>
@@ -27,13 +30,7 @@
     <!--------------------------------------------------------------------->
     <!------------------------- CONTENU DE LA PAGE ------------------------>
     <!--------------------------------------------------------------------->
-    <div class="body">
-        <a href="https://discord.com/api/oauth2/authorize?client_id=1203301786254057534&response_type=token&redirect_uri=http%3A%2F%2Flocalhost%3A53134%2Fdiscord&scope=identify">
-            <button id="buttonaccount" class="buttonconnexion" type="submit">
-               Se connecter avec discord
-            </button>
-        </a>
-    </div>
+    <div id="error"></div>
+    <div id="Container" class="body"></div>
 </body>
-
-</html>
+<script type="module" src="/js/main.js"></script></html>

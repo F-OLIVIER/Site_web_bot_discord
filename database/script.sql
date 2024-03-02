@@ -17,7 +17,7 @@ INSERT INTO GestionBot(Allumage,IDMessageGvG) VALUES(0,1206146217592225792);
 CREATE TABLE Users( 
     ID INTEGER PRIMARY KEY,
     uuid INTEGER , 
-    ConnectedSite INTEGER,
+    ConnectedSite INTEGER DEFAULT 0,
 
     DiscordID VARCHAR(50) NOT NULL,
     DiscordName VARCHAR(50) NOT NULL,
@@ -25,9 +25,9 @@ CREATE TABLE Users(
     DiscordRole VARCHAR(50),
     DiscordPhoto TEXT,
 
-    GameCharacter_ID INTEGER,
+    GameCharacter_ID INTEGER DEFAULT 0,
     Lvl INTEGER,
-    Influence INTEGER,
+    Influence INTEGER DEFAULT 700,
 
     EtatInscription INTEGER,
     NbEmojiInscription INTEGER,
@@ -65,23 +65,25 @@ CREATE TABLE Saison(
 -- liste des classes IG
 CREATE TABLE ListGameCharacter( 
     ID INTEGER PRIMARY KEY,
+    CodeFR VARCHAR(5),
+    CodeEN VARCHAR(5),
     ClasseFR VARCHAR(50),
     ClasseEN VARCHAR(50)
 );
 -- Insertion automatique de la liste des classes lors de la création de la databases
-INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES('Arc court','Short bow');
-INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES('Arc long','Long bow');
-INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES('Lames jumelles','Twin blades (dual blade)');
-INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES('Épée courte & bouclier','Short sword & shield');
-INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES('Épée longue & bouclier','Long sword & shield');
-INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES('Guandao','Guandao');
-INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES('Hache d''arme','Weapon ax (poleaxe)');
-INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES('Lance','Spear');
-INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES('Mousquet','Musket');
-INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES('Nodashi','Nodashi');
-INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES('Masse de guerre','Mass of war');
-INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES('Dague à chaine (cimeterre)','Chain dart (scimitar)');
-INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES('Pique','Pike');
+INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('arc','sar','Arc court','Short bow');
+INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('acl','lar','Arc long','Long bow');
+INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('lju','tbl','Lames jumelles','Twin blades (dual blade)');
+INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('ecb','sss','Épée courte & bouclier','Short sword & shield');
+INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('elb','lss','Épée longue & bouclier','Long sword & shield');
+INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('gua','gua','Guandao','Guandao');
+INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('hda','wax','Hache d''arme','Weapon ax (poleaxe)');
+INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('lan','spe','Lance','Spear');
+INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('mou','mus','Mousquet','Musket');
+INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('nod','nod','Nodashi','Nodashi');
+INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('mas','mas','Masse de guerre','Mass of war');
+INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('dac','chb','Dague à chaine (cimeterre)','Chain dart (scimitar)');
+INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('piq','pik','Pique','Pike');
 
 
 CREATE TABLE ListUnit(
@@ -90,7 +92,8 @@ CREATE TABLE ListUnit(
     InfuenceMax INTEGER,
     LvlMax INTEGER,
     TypeUnit VARCHAR(15), -- Infanterie, Distant, Cavalerie
-    ForceUnit VARCHAR(5) -- T3, T4, T5
+    ForceUnit VARCHAR(5), -- T3, T4, T5
+    Img TEXT DEFAULT ""
 );
 INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,TypeUnit,ForceUnit) VALUES('Hallebardiers',175,18,'Infanterie','T3');
 INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,TypeUnit,ForceUnit) VALUES('Piquiers préfectoraux',185,18,'Infanterie','T3');
@@ -163,76 +166,89 @@ INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,TypeUnit,ForceUnit) VALUES('Bannere
 INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,TypeUnit,ForceUnit) VALUES('Cavaliers de Yanyuedao',320,30,'Cavalerie','T5');
 
 -- exemple Unit1 (Hallebardiers) = "18" // -1: n'a pas l'unité sinon le lvl de l'unit
-CREATE TABLE CaserneInfanterie( 
+CREATE TABLE Caserne( 
+    ID INTEGER PRIMARY KEY,
+    User_ID INTEGER not NULL,
+    Unit1 INTEGER DEFAULT "",
+    Unit2 INTEGER DEFAULT "",
+    Unit3 INTEGER DEFAULT "",
+    Unit4 INTEGER DEFAULT "",
+    Unit5 INTEGER DEFAULT "",
+    Unit6 INTEGER DEFAULT "",
+    Unit7 INTEGER DEFAULT "",
+    Unit8 INTEGER DEFAULT "",
+    Unit9 INTEGER DEFAULT "",
+    Unit10 INTEGER DEFAULT "",
+    Unit11 INTEGER DEFAULT "",
+    Unit12 INTEGER DEFAULT "",
+    Unit13 INTEGER DEFAULT "",
+    Unit14 INTEGER DEFAULT "",
+    Unit15 INTEGER DEFAULT "",
+    Unit16 INTEGER DEFAULT "",
+    Unit17 INTEGER DEFAULT "",
+    Unit18 INTEGER DEFAULT "",
+    Unit19 INTEGER DEFAULT "",
+    Unit20 INTEGER DEFAULT "",
+    Unit21 INTEGER DEFAULT "",
+    Unit22 INTEGER DEFAULT "",
+    Unit23 INTEGER DEFAULT "",
+    Unit24 INTEGER DEFAULT "",
+    Unit25 INTEGER DEFAULT "",
+    Unit26 INTEGER DEFAULT "",
+    Unit27 INTEGER DEFAULT "",
+    Unit28 INTEGER DEFAULT "",
+    Unit29 INTEGER DEFAULT "",
+    Unit30 INTEGER DEFAULT "",
+    Unit31 INTEGER DEFAULT "",
+    Unit32 INTEGER DEFAULT "",
+    Unit33 INTEGER DEFAULT "",
+    Unit34 INTEGER DEFAULT "",
+    Unit35 INTEGER DEFAULT "",
+    Unit36 INTEGER DEFAULT "",
+    Unit37 INTEGER DEFAULT "",
+    Unit38 INTEGER DEFAULT "",
+    Unit39 INTEGER DEFAULT "",
+    Unit40 INTEGER DEFAULT "",
+    Unit41 INTEGER DEFAULT "",
+    Unit42 INTEGER DEFAULT "",
+    Unit43 INTEGER DEFAULT "",
+    Unit44 INTEGER DEFAULT "",
+    Unit45 INTEGER DEFAULT "",
+    Unit46 INTEGER DEFAULT "",
+    Unit47 INTEGER DEFAULT "",
+    Unit48 INTEGER DEFAULT "",
+    Unit49 INTEGER DEFAULT "",
+    Unit50 INTEGER DEFAULT "",
+    Unit51 INTEGER DEFAULT "",
+    Unit52 INTEGER DEFAULT "",
+    Unit53 INTEGER DEFAULT "",
+    Unit54 INTEGER DEFAULT "",
+    Unit55 INTEGER DEFAULT "",
+    Unit56 INTEGER DEFAULT "",
+    Unit57 INTEGER DEFAULT "",
+    Unit58 INTEGER DEFAULT "",
+    Unit59 INTEGER DEFAULT "",
+    Unit60 INTEGER DEFAULT "",
+    Unit61 INTEGER DEFAULT "",
+    Unit62 INTEGER DEFAULT "",
+    Unit63 INTEGER DEFAULT "",
+    Unit64 INTEGER DEFAULT "",
+    Unit65 INTEGER DEFAULT "",
+    Unit66 INTEGER DEFAULT "",
+    Unit67 INTEGER DEFAULT "",
+
+    FOREIGN KEY(User_ID) REFERENCES Users(ID)
+);
+
+CREATE TABLE GroupGvG( 
     ID INTEGER PRIMARY KEY,
     User_ID INTEGER,
+
     Unit1 INTEGER,
     Unit2 INTEGER,
     Unit3 INTEGER,
     Unit4 INTEGER,
-    Unit5 INTEGER,
-    Unit6 INTEGER,
-    Unit7 INTEGER,
-    Unit8 INTEGER,
-    Unit9 INTEGER,
-    Unit10 INTEGER,
-    Unit11 INTEGER,
-    Unit12 INTEGER,
-    Unit13 INTEGER,
-    Unit14 INTEGER,
-    Unit15 INTEGER,
-    Unit16 INTEGER,
-    Unit17 INTEGER,
-    Unit18 INTEGER,
-    Unit19 INTEGER,
-    Unit20 INTEGER,
-    Unit21 INTEGER,
-    Unit22 INTEGER,
-    Unit23 INTEGER,
-    Unit24 INTEGER,
-    Unit25 INTEGER,
-    Unit26 INTEGER,
-    Unit27 INTEGER,
-    Unit28 INTEGER,
-    Unit29 INTEGER,
-    Unit30 INTEGER,
-    Unit31 INTEGER,
-    Unit32 INTEGER,
-    Unit33 INTEGER,
-    Unit34 INTEGER,
-    Unit35 INTEGER,
-    Unit36 INTEGER,
-    Unit37 INTEGER,
-    Unit38 INTEGER,
-    Unit39 INTEGER,
-    Unit40 INTEGER,
-    Unit41 INTEGER,
-    Unit42 INTEGER,
-    Unit43 INTEGER,
-    Unit44 INTEGER,
-    Unit45 INTEGER,
-    Unit46 INTEGER,
-    Unit47 INTEGER,
-    Unit48 INTEGER,
-    Unit49 INTEGER,
-    Unit50 INTEGER,
-    Unit51 INTEGER,
-    Unit52 INTEGER,
-    Unit53 INTEGER,
-    Unit54 INTEGER,
-    Unit55 INTEGER,
-    Unit56 INTEGER,
-    Unit57 INTEGER,
-    Unit58 INTEGER,
-    Unit59 INTEGER,
-    Unit60 INTEGER,
-    Unit61 INTEGER,
-    Unit62 INTEGER,
-    Unit63 INTEGER,
-    Unit64 INTEGER,
-    Unit65 INTEGER,
-    Unit66 INTEGER,
-    Unit67 INTEGER,
 
     FOREIGN KEY(User_ID) REFERENCES Users(ID)
 );
+
