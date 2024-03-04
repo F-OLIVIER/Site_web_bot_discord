@@ -23,23 +23,25 @@ func UserInfo(uuid string, database *sql.DB) (user_id, DiscordName, DiscordPhoto
 	return user_id, DiscordName, DiscordPhoto, false
 }
 
-func Charactercard(uuid string, database *sql.DB) (user_id, DiscordName, DiscordPhoto string, officier bool) {
-	if uuid != "" {
-		usedcookie, errdb := database.Prepare("SELECT ID, DiscordName, DiscordRole, DiscordPhoto, GameCharacter_ID, Lvl, Influence,  FROM Users WHERE uuid = ?")
-		CheckErr("Requete DB UserInfo", errdb)
-		var DiscordRole string
-		usedcookie.QueryRow(uuid).Scan(&user_id, &DiscordName, &DiscordRole, &DiscordPhoto)
-		if DiscordRole == "Officier" {
-			return user_id, DiscordName, DiscordPhoto, true
-		}
-	}
-	return user_id, DiscordName, DiscordPhoto, false
-}
+func Charactercard(uuid string, database *sql.DB) (userInfo data.UserInfo, officier bool) {
+	stmt1, errdb := database.Prepare("SELECT ID, DiscordName, DiscordRole, DiscordPhoto, GameCharacter_ID, Lvl, Influence, NbGvGParticiped, NbTotalGvG, DateLastGvGParticiped FROM Users WHERE uuid = ?")
+	CheckErr("1- Requete DB UserInfo", errdb)
+	var DiscordRole string
+	stmt1.QueryRow(uuid).Scan(&userInfo.ID, &userInfo.DiscordUsername, &DiscordRole, &userInfo.DiscordPhoto, &userInfo.GameCharacter_ID, &userInfo.Lvl, &userInfo.Influence, &userInfo.NbGvGParticiped, &userInfo.NbTotalGvG, &userInfo.DateLastGvGParticiped)
 
-// func CreateGroup(database *sql.DB) {
-// 	ListUnit := ListAllUnit(database)
-// 	ListInscriptedusers := ListInscriptedUsers(database)
-// }
+	if userInfo.GameCharacter_ID != 0 {
+		stmt2, errdb := database.Prepare("SELECT ClasseFR FROM ListGameCharacter WHERE ID = ?")
+		CheckErr("2- Requete DB UserInfo", errdb)
+		stmt2.QueryRow(userInfo.GameCharacter_ID).Scan(&userInfo.GameCharacter)
+	} else {
+		userInfo.GameCharacter = "Non sélectionné"
+	}
+
+	if DiscordRole == "Officier" {
+		return userInfo, true
+	}
+	return userInfo, false
+}
 
 func ListInscriptedUsers(database *sql.DB) (UsersIncripted []data.UserInfo) {
 	listUnit, err := database.Prepare(`SELECT ID, GameCharacter_ID, DiscordName, Lvl, Influence, NbGvGParticiped, DateLastGvGParticiped
@@ -76,14 +78,19 @@ func ListInscriptedUsers(database *sql.DB) (UsersIncripted []data.UserInfo) {
 }
 
 func GroupGvG(database *sql.DB) (listUserAlreadyRegistered []data.UserGvG) {
-	listUnit, err := database.Prepare(`SELECT User_ID, Unit1, Unit2, Unit3, Unit4 FROM GroupGvG`)
+	listUnit, err := database.Prepare(`SELECT User_ID, GroupNumber, Unit1, Unit2, Unit3, Unit4 FROM GroupGvG`)
 	CheckErr("1- Requete DB fonction GroupGvG", err)
 	rows, err := listUnit.Query()
 	CheckErr("2- Requete DB fonction GroupGvG", err)
 	for rows.Next() {
 		var user data.UserGvG
-		err = rows.Scan(&user.User_ID, &user.Unit1, &user.Unit2, &user.Unit3, &user.Unit4)
+		err = rows.Scan(&user.User_ID, &user.GroupNumber, &user.Unit1, &user.Unit2, &user.Unit3, &user.Unit4)
 		CheckErr("3- Requete DB fonction GroupGvG", err)
+
+		stmt, errdb := database.Prepare("SELECT DiscordName FROM Users WHERE ID = ?")
+		CheckErr("4- Requete DB fonction GroupGvG", errdb)
+		stmt.QueryRow(user.User_ID).Scan(&user.Username)
+
 		listUserAlreadyRegistered = append(listUserAlreadyRegistered, user)
 	}
 	// fmt.Println("\nlistUserAlreadyRegistered : \n", listUserAlreadyRegistered)

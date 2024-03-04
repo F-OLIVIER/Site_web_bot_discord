@@ -244,10 +244,11 @@ CREATE TABLE GroupGvG(
     ID INTEGER PRIMARY KEY,
     User_ID INTEGER,
 
-    Unit1 INTEGER,
-    Unit2 INTEGER,
-    Unit3 INTEGER,
-    Unit4 INTEGER,
+    GroupNumber INTEGER,
+    Unit1 TEXT,
+    Unit2 TEXT,
+    Unit3 TEXT,
+    Unit4 TEXT,
 
     FOREIGN KEY(User_ID) REFERENCES Users(ID)
 );

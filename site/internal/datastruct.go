@@ -16,6 +16,7 @@ type UserInfo struct {
 	GameCharacter         string `json:"GameCharacter"`
 	Lvl                   string `json:"Lvl"`
 	Influence             string `json:"Influence"`
+	NbTotalGvG            string `json:"NbTotalGvG"`
 	NbGvGParticiped       string `json:"NbGvGParticiped"`
 	DateLastGvGParticiped string `json:"DateLastGvGParticiped"`
 	UserCaserne           []Unit
@@ -44,12 +45,13 @@ type ChangeUnitCaserne struct {
 }
 
 type UserGvG struct {
-	User_ID  int
-	Username string `json:"Username"`
-	Unit1    string `json:"Unit1"`
-	Unit2    string `json:"Unit2"`
-	Unit3    string `json:"Unit3"`
-	Unit4    string `json:"Unit4"`
+	User_ID     int
+	Username    string `json:"Username"`
+	GroupNumber int    `json:"GroupNumber"`
+	Unit1       string `json:"Unit1"`
+	Unit2       string `json:"Unit2"`
+	Unit3       string `json:"Unit3"`
+	Unit4       string `json:"Unit4"`
 }
 
 type SendHTML struct {
@@ -58,4 +60,13 @@ type SendHTML struct {
 	Gestion        Gestion
 	ListInscripted []UserInfo
 	GroupGvG       []UserGvG
+}
+
+type SaveGroup struct {
+	ListGroup []UserGroup `json:"dataToSend"`
+}
+
+type UserGroup struct {
+	NameGroup  string   `json:"inputValue"`
+	UserToSave []string `json:"selectValues"`
 }

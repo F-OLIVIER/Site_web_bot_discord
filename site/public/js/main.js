@@ -1,6 +1,7 @@
 import { home } from "./home.js";
 import { caserne } from "./caserne.js";
 import { creategroup } from "./creategroup.js";
+import { characterCard } from "./characterCard.js";
 
 let path = window.location.pathname;
 console.log("path : ", path);
@@ -36,9 +37,9 @@ switch (path) {
         administration();
         break;
 
-    // case '/characterCard':
-    //     characterCard();
-    //     break;
+    case '/characterCard':
+        characterCard();
+        break;
 
     default:
         window.location.href = '/';

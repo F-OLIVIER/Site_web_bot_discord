@@ -30,8 +30,41 @@ export function characterCard() {
 
 function containerCharacterCard(data) {
     if (data.Gestion.Logged) {
-        communBlock(data)
+        communBlock(data);
 
+        let container = document.getElementById('Container');
+        let subcontainer = document.createElement('subcontainer');
+        subcontainer.className = 'subcontainerProfile';
+
+        let personnage = document.createElement('div');
+        personnage.className = 'personnage';
+        let titlepersonnage = document.createElement('p');
+        titlepersonnage.textContent = 'Informations du héros';
+        personnage.appendChild(titlepersonnage);
+        let classeplay = document.createElement('div');
+        classeplay.textContent = 'Classe : ' + data.UserInfo.GameCharacter;
+        personnage.appendChild(classeplay);
+        let lvl = document.createElement('div');
+        lvl.textContent = 'Niveau : ' + data.UserInfo.Lvl;
+        personnage.appendChild(lvl);
+        let influence = document.createElement('div');
+        influence.innerHTML = 'Influence : ' + data.UserInfo.Influence;
+        personnage.appendChild(influence);
+        subcontainer.appendChild(personnage);
+
+        let infoGvG = document.createElement('div');
+        infoGvG.className = 'infoGvG';
+        let titleinfoGvG = document.createElement('p');
+        titleinfoGvG.textContent = 'Informations GvG';
+        infoGvG.appendChild(titleinfoGvG);
+        let nbGvG = document.createElement('div');
+        nbGvG.textContent = 'Nombre de gvg participé : ' + data.UserInfo.NbGvGParticiped;
+        infoGvG.appendChild(nbGvG);
+        let lastGvG = document.createElement('div');
+        lastGvG.textContent = 'Derniére gvg participé : ' + data.UserInfo.DateLastGvGParticiped;
+        infoGvG.appendChild(lastGvG);
+        subcontainer.appendChild(infoGvG);
+        container.appendChild(subcontainer);
 
     } else {
         document.cookie = cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";

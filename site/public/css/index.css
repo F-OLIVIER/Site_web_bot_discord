@@ -124,6 +124,12 @@ body {
     border-radius: 50px;
 }
 
+.no-style-link {
+    text-decoration: none;
+    color: inherit;
+    width: 100%;
+}
+
 /* --------------------------------------- */
 /* --------------- contenu --------------- */
 /* --------------------------------------- */
@@ -151,6 +157,41 @@ body {
 }
 
 /* --------------------------------------------- */
+/* ----------------- page /home ---------------- */
+/* --------------------------------------------- */
+
+.subContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+}
+
+.buttoncharacterCard,
+.buttonCaserne,
+.buttonCreateGroup {
+    width: 100%;
+    padding-bottom: 5px;
+    font-size: 50px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 15px;
+    margin-bottom: 25px;
+}
+
+.buttoncharacterCard {
+    background-color: blue;
+}
+
+.buttonCaserne {
+    background-color: blue;
+}
+
+.buttonCreateGroup {
+    background-color: blue;
+}
+
+/* --------------------------------------------- */
 /* --------------- page /caserne --------------- */
 /* --------------------------------------------- */
 
@@ -173,7 +214,6 @@ body {
     font-size: 50px;
     text-align: center;
     cursor: pointer;
-
 }
 
 .listUnit {
@@ -221,11 +261,24 @@ body {
 /* ------------- page /creategroup ------------- */
 /* --------------------------------------------- */
 
-.creategroup {
+.containerGroupe {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 80%;
+}
+
+.creategroup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.divgroup {
+    border-radius: 15px;
+    width: 100%;
+    margin-bottom: 10px;
 }
 
 .divuser {
@@ -234,9 +287,12 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
-    border: 1px;
-    border-style: groove;
-    border-color: black;
+}
+
+.divuser select {
+    text-align: center;
+    border: 2px solid white;
+    border-radius: 15px;
 }
 
 .influenceplayer,
@@ -250,7 +306,10 @@ body {
 
 .titledivuser {
     background-color: gray;
+    margin-bottom: 10px;
+    border-radius: 15px;
 }
+
 .group1 {
     background-color: cyan;
 }
@@ -261,4 +320,77 @@ body {
 
 .group3 {
     background-color: yellow;
+}
+
+.group4 {
+    background-color: blue;
+}
+
+.group5 {
+    background-color: beige;
+}
+
+.group6 {
+    background-color: blueviolet;
+}
+
+.group7 {
+    background-color: gray;
+}
+
+.group8 {
+    background-color: cyan;
+}
+
+.group9 {
+    background-color: magenta;
+}
+
+.group10 {
+    background-color: yellow;
+}
+
+.buttonAddGroup,
+.buttonSaveGroup {
+    margin-top: 20px;
+    width: 100%;
+    padding-bottom: 5px;
+    font-size: 50px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 15px;
+}
+
+.buttonAddGroup {
+    background-color: blue;
+}
+
+.buttonSaveGroup {
+    background-color: green;
+}
+
+/* --------------------------------------------- */
+/* ------------ page /characterCard ------------ */
+/* --------------------------------------------- */
+
+.subcontainerProfile {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 80%;
+    margin: 10px;
+}
+
+.personnage,
+.infoGvG {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 45%;
+    border-radius: 15px;
+    background-color: bisque;
+    font-size: 20px;
+    text-shadow: none;
+    color: black;
+    padding-bottom: 25px;
 }

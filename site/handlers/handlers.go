@@ -39,7 +39,7 @@ func DiscordApiHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" && r.URL.Path == "/api/discord" {
 		// ouverture database
 		database, err := sql.Open("sqlite3", "../database/databaseGvG.db")
-		utils.CheckErr("open database : ", err)
+		utils.CheckErr("open db in homehandler", err)
 		defer database.Close()
 
 		if utils.CheckUser(w, r, database) { // l'utilisateur se connecte
@@ -81,7 +81,6 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	// lecture du cookie
 	cookie, err1 := r.Cookie("user_token")
 	if r.URL.Path == "/api/home" && err1 != http.ErrNoCookie {
-		// ouverture de la database
 		database, err := sql.Open("sqlite3", "../database/databaseGvG.db")
 		utils.CheckErr("open db in homehandler", err)
 		defer database.Close()
@@ -136,13 +135,12 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 
 // page "/caserne" (utilisateur connecté)
 func CaserneHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("ENTER CaserneHandler")
+	// fmt.Println("ENTER CaserneHandler")
 
 	var sendHTML *data.SendHTML
 	// lecture du cookie
 	cookie, err1 := r.Cookie("user_token")
 	if r.URL.Path == "/api/caserne" && err1 != http.ErrNoCookie {
-		// ouverture de la database
 		database, err := sql.Open("sqlite3", "../database/databaseGvG.db")
 		utils.CheckErr("open db in homehandler", err)
 		defer database.Close()
@@ -199,13 +197,12 @@ func CaserneHandler(w http.ResponseWriter, r *http.Request) {
 
 // page "/creategroup" (utilisateur connecté)
 func CreateGroupHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("ENTER CreateGroupHandler")
+	// fmt.Println("ENTER CreateGroupHandler")
 
 	var sendHTML *data.SendHTML
 	// lecture du cookie
 	cookie, err1 := r.Cookie("user_token")
 	if r.URL.Path == "/api/creategroup" && err1 != http.ErrNoCookie {
-		// ouverture de la database
 		database, err := sql.Open("sqlite3", "../database/databaseGvG.db")
 		utils.CheckErr("open db in homehandler", err)
 		defer database.Close()
@@ -225,7 +222,6 @@ func CreateGroupHandler(w http.ResponseWriter, r *http.Request) {
 			}
 		} else { // si cookies valide
 			// TODO: Page création des groupes a faire ici
-			// utils.CreateGroup(database)
 			userInfo := &data.UserInfo{
 				DiscordUsername: DiscordName,
 				DiscordPhoto:    DiscordPhoto,
@@ -261,6 +257,25 @@ func CreateGroupHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write(jsonData)
 }
 
+func SaveGroupInDB(w http.ResponseWriter, r *http.Request) {
+	// fmt.Println("ENTER SaveGroupInDB")
+
+	// lecture du cookie
+	cookie, err1 := r.Cookie("user_token")
+	if r.URL.Path == "/api/saveGroupInDB" && err1 != http.ErrNoCookie {
+		database, err := sql.Open("sqlite3", "../database/databaseGvG.db")
+		utils.CheckErr("open db in homehandler", err)
+		defer database.Close()
+
+		// Vérification de la validité du cookie
+		if !utils.CheckToken(utils.Sessions, cookie) { // si cookie non valide
+			utils.Logout(w, r, database)
+		} else { // si cookies valide
+			utils.SaveCreateGroup(r, database)
+		}
+	}
+}
+
 func MAJCaserneHandler(w http.ResponseWriter, r *http.Request) {
 	// fmt.Println("ENTER MAJCaserneHandler")
 
@@ -268,7 +283,6 @@ func MAJCaserneHandler(w http.ResponseWriter, r *http.Request) {
 	// lecture du cookie
 	cookie, err1 := r.Cookie("user_token")
 	if r.Method == "POST" && r.URL.Path == "/api/majcaserne" && err1 != http.ErrNoCookie {
-		// ouverture de la database
 		database, err := sql.Open("sqlite3", "../database/databaseGvG.db")
 		utils.CheckErr("open db in homehandler", err)
 		defer database.Close()
@@ -323,21 +337,16 @@ func MAJCaserneHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func CharacterCardHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("ENTER CharacterCardHandler")
+	// fmt.Println("ENTER CharacterCardHandler")
 
 	var sendHTML *data.SendHTML
 	// lecture du cookie
 	cookie, err1 := r.Cookie("user_token")
 	if r.URL.Path == "/api/charactercard" && err1 != http.ErrNoCookie {
-		// ouverture de la database
 		database, err := sql.Open("sqlite3", "../database/databaseGvG.db")
 		utils.CheckErr("open db in homehandler", err)
 		defer database.Close()
 
-		// récupération des informations utilisateur
-		_, DiscordName, DiscordPhoto, officier := utils.Charactercard(cookie.Value, database)
-
-		// Vérification de la validité du cookie
 		if !utils.CheckToken(utils.Sessions, cookie) { // si cookie non valide
 			utils.Logout(w, r, database)
 			gestion := &data.Gestion{
@@ -348,19 +357,14 @@ func CharacterCardHandler(w http.ResponseWriter, r *http.Request) {
 				Gestion: *gestion,
 			}
 		} else { // si cookies valide
-			// TODO: Page création des groupes à faire ici
-
-			userInfo := &data.UserInfo{
-				DiscordUsername: DiscordName,
-				DiscordPhoto:    DiscordPhoto,
-			}
+			userInfo, officier := utils.Charactercard(cookie.Value, database)
 			gestion := &data.Gestion{
 				Logged:   true,
 				Officier: officier,
 			}
 			sendHTML = &data.SendHTML{
 				Gestion:  *gestion,
-				UserInfo: *userInfo,
+				UserInfo: userInfo,
 			}
 		}
 	} else { // absence de cookie
