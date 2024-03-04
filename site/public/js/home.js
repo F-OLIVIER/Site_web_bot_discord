@@ -33,32 +33,32 @@ function containerhome(data) {
   if (data.Gestion.Logged) {
     communBlock(data)
 
-    if (data.Gestion.Officier) { // si officier, affichage bouton caserne et bouton création des groupes
-      let Container = document.getElementById('Container');
-      Container.innerHTML = '';
+    let Container = document.getElementById('Container');
+    Container.innerHTML = '';
 
-      let subContainer = document.createElement('div');
-      subContainer.className = 'subContainer';
-      let linkCharacterCard = document.createElement('a');
-      linkCharacterCard.href = '/characterCard';
-      linkCharacterCard.classList.add('no-style-link');
-      let buttoncharacterCard = document.createElement('div');
-      buttoncharacterCard.className = 'buttoncharacterCard';
-      buttoncharacterCard.id = 'buttonCharacterCard';
-      buttoncharacterCard.textContent = 'Accéder à ma fiche personnage';
-      linkCharacterCard.appendChild(buttoncharacterCard);
-      subContainer.appendChild(linkCharacterCard);
+    let subContainer = document.createElement('div');
+    subContainer.className = 'subContainer';
+    let linkCharacterCard = document.createElement('a');
+    linkCharacterCard.href = '/characterCard';
+    linkCharacterCard.classList.add('no-style-link');
+    let buttoncharacterCard = document.createElement('div');
+    buttoncharacterCard.className = 'buttoncharacterCard';
+    buttoncharacterCard.id = 'buttonCharacterCard';
+    buttoncharacterCard.textContent = 'Ma fiche personnage';
+    linkCharacterCard.appendChild(buttoncharacterCard);
+    subContainer.appendChild(linkCharacterCard);
 
-      let linkCaserne = document.createElement('a');
-      linkCaserne.href = '/caserne';
-      linkCaserne.classList.add('no-style-link');
-      let buttonCaserne = document.createElement('div');
-      buttonCaserne.id = 'buttonCaserne';
-      buttonCaserne.className = 'buttonCaserne';
-      buttonCaserne.textContent = 'Accéder à ma caserne';
-      linkCaserne.appendChild(buttonCaserne);
-      subContainer.appendChild(linkCaserne);
+    let linkCaserne = document.createElement('a');
+    linkCaserne.href = '/caserne';
+    linkCaserne.classList.add('no-style-link');
+    let buttonCaserne = document.createElement('div');
+    buttonCaserne.id = 'buttonCaserne';
+    buttonCaserne.className = 'buttonCaserne';
+    buttonCaserne.textContent = 'Modifier ma caserne';
+    linkCaserne.appendChild(buttonCaserne);
+    subContainer.appendChild(linkCaserne);
 
+    if (data.Gestion.Officier) { // si officier, affichage bouton création des groupes et bouton administration
       let linkCreateGroup = document.createElement('a');
       linkCreateGroup.href = '/creategroup';
       linkCreateGroup.classList.add('no-style-link');
@@ -66,13 +66,22 @@ function containerhome(data) {
       buttonCreateGroup.id = 'buttonCreateGroup';
       buttonCreateGroup.className = 'buttonCreateGroup';
       buttonCreateGroup.href = '/creategroup';
-      buttonCreateGroup.textContent = 'Accéder à la création des groupes GvG';
+      buttonCreateGroup.textContent = 'Créer les groupes GvG';
       linkCreateGroup.appendChild(buttonCreateGroup);
       subContainer.appendChild(linkCreateGroup);
 
+      let linkAppAdmin = document.createElement('a');
+      linkAppAdmin.href = '/AppAdmin';
+      linkAppAdmin.classList.add('no-style-link');
+      let buttonAppAdmin = document.createElement('div');
+      buttonAppAdmin.id = 'buttonAppAdmin';
+      buttonAppAdmin.className = 'buttonAppAdmin';
+      buttonAppAdmin.href = '/AppAdmin';
+      buttonAppAdmin.textContent = "Page d'administration";
+      linkAppAdmin.appendChild(buttonAppAdmin);
+      subContainer.appendChild(linkAppAdmin);
+
       Container.appendChild(subContainer);
-    } else { // affichage caserne direct
-      window.location.href = '/caserne';
     }
 
   } else {

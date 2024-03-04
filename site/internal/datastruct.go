@@ -23,10 +23,11 @@ type UserInfo struct {
 }
 
 type Gestion struct {
-	Logged   bool   `json:"Logged"`
-	MsgErr   string `json:"MsgErr"`
-	Redirect string `json:"Redirect"`
-	Officier bool   `json:"Officier"`
+	Logged      bool   `json:"Logged"`
+	MsgErr      string `json:"MsgErr"`
+	Redirect    string `json:"Redirect"`
+	Officier    bool   `json:"Officier"`
+	BotActivate bool   `json:"BotActivate"`
 }
 
 type Unit struct {

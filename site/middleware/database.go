@@ -97,3 +97,16 @@ func GroupGvG(database *sql.DB) (listUserAlreadyRegistered []data.UserGvG) {
 
 	return listUserAlreadyRegistered
 }
+
+func BotActivation(database *sql.DB) bool {
+	usedcookie, errdb := database.Prepare("SELECT Allumage FROM GestionBot WHERE ID = ?")
+	CheckErr("Requete DB UserInfo", errdb)
+	var Allumage int
+	usedcookie.QueryRow(1).Scan(&Allumage)
+
+	if Allumage == 0 {
+		return true
+	} else {
+		return false
+	}
+}

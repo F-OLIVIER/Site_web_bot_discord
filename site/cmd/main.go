@@ -34,6 +34,7 @@ func main() {
 	http.HandleFunc("/api/majcaserne", handlers.MAJCaserneHandler)
 	http.HandleFunc("/api/creategroup", handlers.CreateGroupHandler)
 	http.HandleFunc("/api/saveGroupInDB", handlers.SaveGroupInDB)
+	http.HandleFunc("/api/CheckAppAdmin", handlers.CheckAppAdmin)
 
 	// Appel des fichiers annexes
 	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("./public/css/"))))

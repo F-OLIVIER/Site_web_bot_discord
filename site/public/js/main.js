@@ -2,6 +2,7 @@ import { home } from "./home.js";
 import { caserne } from "./caserne.js";
 import { creategroup } from "./creategroup.js";
 import { characterCard } from "./characterCard.js";
+import { administration } from "./administration.js";
 
 let path = window.location.pathname;
 console.log("path : ", path);
@@ -33,7 +34,7 @@ switch (path) {
         creategroup();
         break;
 
-    case '/admin':
+    case '/AppAdmin':
         administration();
         break;
 

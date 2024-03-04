@@ -159,8 +159,6 @@ func CaserneHandler(w http.ResponseWriter, r *http.Request) {
 				Gestion: *gestion,
 			}
 		} else { // si cookies valide
-			caserne := utils.CaserneUser(userID, database)
-
 			userInfo := &data.UserInfo{
 				DiscordUsername: DiscordName,
 				DiscordPhoto:    DiscordPhoto,
@@ -172,7 +170,7 @@ func CaserneHandler(w http.ResponseWriter, r *http.Request) {
 			sendHTML = &data.SendHTML{
 				Gestion:  *gestion,
 				UserInfo: *userInfo,
-				ListUnit: caserne,
+				ListUnit: utils.CaserneUser(userID, database),
 			}
 		}
 	} else { // absence de cookie
@@ -387,17 +385,59 @@ func CharacterCardHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write(jsonData)
 }
 
-// // Récupération des informations du post
-// var discordUser data.DiscordUser
-// err := json.NewDecoder(r.Body).Decode(&discordUser)
-// utils.CheckErr("Erreur de décodage JSON CheckUser", err)
+func CheckAppAdmin(w http.ResponseWriter, r *http.Request) {
+	// fmt.Println("ENTER CheckAppAdmin")
 
-// // génére les données json pour repondre au fetch
-// jsonData, err := json.Marshal(sendHTML)
-// if err != nil {
-// 	fmt.Println(err)
-// 	return
-// }
-// // fmt.Println(string(jsonData))
-// w.Header().Set("Content-Type", "application/json")
-// w.Write(jsonData)
+	var sendHTML *data.SendHTML
+	// lecture du cookie
+	cookie, err1 := r.Cookie("user_token")
+	if r.URL.Path == "/api/CheckAppAdmin" && err1 != http.ErrNoCookie {
+		database, err := sql.Open("sqlite3", "../database/databaseGvG.db")
+		utils.CheckErr("open db in homehandler", err)
+		defer database.Close()
+
+		if !utils.CheckToken(utils.Sessions, cookie) { // si cookie non valide
+			utils.Logout(w, r, database)
+			gestion := &data.Gestion{
+				Logged:   false,
+				Redirect: "/",
+			}
+			sendHTML = &data.SendHTML{
+				Gestion: *gestion,
+			}
+		} else { // si cookies valide
+			userID, DiscordName, DiscordPhoto, officier := utils.UserInfo(cookie.Value, database)
+			userInfo := &data.UserInfo{
+				DiscordUsername: DiscordName,
+				DiscordPhoto:    DiscordPhoto,
+			}
+			gestion := &data.Gestion{
+				Logged:      true,
+				Officier:    officier,
+				BotActivate: utils.BotActivation(database),
+			}
+			sendHTML = &data.SendHTML{
+				Gestion:  *gestion,
+				UserInfo: *userInfo,
+				ListUnit: utils.CaserneUser(userID, database),
+			}
+		}
+	} else { // absence de cookie
+		gestion := &data.Gestion{
+			Logged:   false,
+			Redirect: "/",
+		}
+
+		sendHTML = &data.SendHTML{
+			Gestion: *gestion,
+		}
+	}
+	jsonData, err := json.Marshal(sendHTML)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	// fmt.Println(string(jsonData))
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(jsonData)
+}
