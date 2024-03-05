@@ -1,3 +1,4 @@
+import { adressAPI } from "./home.js";
 import { cookieName } from "./main.js";
 import { communBlock } from "./useful.js";
 
@@ -5,7 +6,7 @@ export function creategroup() {
     if (!document.cookie.split(";").some((item) => item.trim().startsWith(cookieName + "="))) {
         window.location.href = '/';
     }
-    fetch('http://localhost:53134/api/creategroup')
+    fetch(adressAPI + 'creategroup')
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Erreur de réseau: ${response.status}`);
@@ -570,32 +571,16 @@ function saveGroup() {
 function saveGroupInDB(dataToSend) {
     console.log("dataToSend : ", dataToSend);
 
-    fetch('http://localhost:53134/api/saveGroupInDB', {
+    fetch(adressAPI + 'saveGroupInDB', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(dataToSend),
     })
-    // .then(response => {
-    //     if (!response.ok) {
-    //         throw new Error(`Erreur de réseau: ${response.status}`);
-    //     }
-    //     return response.json();
-    // })
-    // .then(data => {
-    //     if (typeof data === 'object') {
-    //         console.log('Data received (Register):', data);
-    //         if (data.Redirect !== "") {
-    //             window.location.href = data.Redirect;
-    //         }
-    //     } else {
-    //         throw new Error('Réponse invalide du serveur (non-JSON)');
-    //     }
-    // })
-    // .catch(error => {
-    //     console.error('Erreur lors de la récupération des données:', error);
-    // });
+        .catch(error => {
+            console.error('Erreur lors de la récupération des données:', error);
+        });
 
     window.location.href = '/creategroup';
 }

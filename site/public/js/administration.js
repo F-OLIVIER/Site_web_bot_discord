@@ -1,3 +1,4 @@
+import { adressAPI } from "./home.js";
 import { cookieName } from "./main.js";
 import { communBlock } from "./useful.js";
 
@@ -6,7 +7,7 @@ export function administration() {
         window.location.href = '/';
     }
     // Si le cookie est present, fetch des données. Le back fera une vérification de la validité du cookie
-    fetch('http://localhost:53134/api/CheckAppAdmin')
+    fetch(adressAPI + 'CheckAppAdmin')
         .then(response => {
             // Vérifier si la requête a réussi (status code 200)
             if (!response.ok) {
@@ -290,7 +291,7 @@ async function adminitrateBot(option) {
     if (option === 'buttonBotEtat') {
         dataToSend.Allumage = document.getElementById('buttonBotEtat').value; // false = desactivation, true = activation
 
-        fetch('http://localhost:53134/api/activateOrNotBot', {
+        fetch(adressAPI + 'activateOrNotBot', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -385,8 +386,8 @@ async function adminitrateBot(option) {
 }
 
 function sendFormData(formData) {
-    console.log('formData : ', formData);
-    fetch('http://localhost:53134/api/adminitrateBot', {
+    // console.log('formData : ', formData);
+    fetch(adressAPI + 'adminitrateBot', {
         method: 'POST',
         body: formData
     })

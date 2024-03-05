@@ -96,9 +96,22 @@ func GroupGvG(database *sql.DB) (listUserAlreadyRegistered []data.UserGvG) {
 
 		listUserAlreadyRegistered = append(listUserAlreadyRegistered, user)
 	}
-	// fmt.Println("\nlistUserAlreadyRegistered : \n", listUserAlreadyRegistered)
 
 	return listUserAlreadyRegistered
+}
+
+func ListClass(database *sql.DB) (listClass []string) {
+	stmtlistclass, err := database.Prepare(`SELECT ClasseFR FROM ListGameCharacter;`)
+	CheckErr("1- Requete DB fonction ListClass", err)
+	rows, err := stmtlistclass.Query()
+	CheckErr("2- Requete DB fonction ListClass", err)
+	for rows.Next() {
+		var class string
+		err = rows.Scan(&class)
+		CheckErr("3- Requete DB fonction ListClass", err)
+		listClass = append(listClass, class)
+	}
+	return listClass
 }
 
 func BotActivation(database *sql.DB) bool {

@@ -357,8 +357,9 @@ func CharacterCardHandler(w http.ResponseWriter, r *http.Request) {
 		} else { // si cookies valide
 			userInfo, officier := utils.Charactercard(cookie.Value, database)
 			gestion := &data.Gestion{
-				Logged:   true,
-				Officier: officier,
+				Logged:    true,
+				Officier:  officier,
+				ListClass: utils.ListClass(database),
 			}
 			sendHTML = &data.SendHTML{
 				Gestion:  *gestion,
@@ -383,6 +384,26 @@ func CharacterCardHandler(w http.ResponseWriter, r *http.Request) {
 	// fmt.Println(string(jsonData))
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(jsonData)
+}
+
+func UpdateCharacterCard(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("ENTER UpdateCharacterCard")
+
+	// lecture du cookie
+	cookie, err1 := r.Cookie("user_token")
+	if r.URL.Path == "/api/updateCharacterCard" && err1 != http.ErrNoCookie && r.Method == "POST" {
+		database, err := sql.Open("sqlite3", "../database/databaseGvG.db")
+		utils.CheckErr("open db in homehandler", err)
+		defer database.Close()
+
+		// Vérification de la validité du cookie
+		if !utils.CheckToken(utils.Sessions, cookie) { // si cookie non valide
+			utils.Logout(w, r, database)
+		} else { // si cookies valide
+			// userID, _, _, _ := utils.UserInfo(cookie.Value, database)
+
+		}
+	}
 }
 
 func CheckAppAdmin(w http.ResponseWriter, r *http.Request) {

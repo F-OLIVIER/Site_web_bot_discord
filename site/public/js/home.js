@@ -1,13 +1,15 @@
 import { cookieName } from "./main.js";
 import { communBlock } from "./useful.js";
 
+export const adressAPI = 'http://localhost:53134/api/';
+
 export function home() {
   if (!document.cookie.split(";").some((item) => item.trim().startsWith(cookieName + "="))) {
     window.location.href = '/';
   }
   console.log('ENTER HOME JS')
   // Si le cookie est present, fetch des données. Le back fera une vérification de la validité du cookie
-  fetch('http://localhost:53134/api/home')
+  fetch(adressAPI + 'home')
     .then(response => {
       // Vérifier si la requête a réussi (status code 200)
       if (!response.ok) {

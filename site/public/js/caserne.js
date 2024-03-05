@@ -1,3 +1,4 @@
+import { adressAPI } from "./home.js";
 import { cookieName } from "./main.js";
 import { communBlock } from "./useful.js";
 
@@ -7,7 +8,7 @@ export function caserne() {
     }
     console.log('ENTER caserne JS')
     // Si le cookie est present, fetch des données. Le back fera une vérification de la validité du cookie
-    fetch('http://localhost:53134/api/caserne')
+    fetch(adressAPI + 'caserne')
         .then(response => {
             // Vérifier si la requête a réussi (status code 200)
             if (!response.ok) {
@@ -119,7 +120,7 @@ function containercaserne(data) {
         divInfanterie.appendChild(TitleDivInfanterie);
         divInfanterie.appendChild(listUnitInfanterie)
         caserne.appendChild(divInfanterie);
-        TitleDivInfanterie.addEventListener('click', function() {
+        TitleDivInfanterie.addEventListener('click', function () {
             if (listUnitInfanterie.style.display === 'none') {
                 listUnitInfanterie.style.display = 'flex';
             } else {
@@ -130,7 +131,7 @@ function containercaserne(data) {
         divDistant.appendChild(TitleDivDistant);
         divDistant.appendChild(listUnitDistant);
         caserne.appendChild(divDistant);
-        TitleDivDistant.addEventListener('click', function() {
+        TitleDivDistant.addEventListener('click', function () {
             if (listUnitDistant.style.display === 'none') {
                 listUnitDistant.style.display = 'flex';
             } else {
@@ -141,7 +142,7 @@ function containercaserne(data) {
         divCav.appendChild(TitleDivCav);
         divCav.appendChild(listUnitCav)
         caserne.appendChild(divCav);
-        TitleDivCav.addEventListener('click', function() {
+        TitleDivCav.addEventListener('click', function () {
             if (listUnitCav.style.display === 'none') {
                 listUnitCav.style.display = 'flex';
             } else {
@@ -190,7 +191,7 @@ function sendDataMAJCaserne(nbunit) {
     const dataToSend = { listNewLvlUnitCaserne };
     console.log("dataToSend : ", dataToSend);
 
-    fetch('http://localhost:53134/api/majcaserne', {
+    fetch(adressAPI + 'majcaserne', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

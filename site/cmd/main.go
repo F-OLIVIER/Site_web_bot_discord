@@ -37,6 +37,7 @@ func main() {
 	http.HandleFunc("/api/CheckAppAdmin", handlers.CheckAppAdmin)
 	http.HandleFunc("/api/activateOrNotBot", handlers.ActivateOrNotBot)
 	http.HandleFunc("/api/adminitrateBot", handlers.AdminitrateBot)
+	http.HandleFunc("/api/updateCharacterCard", handlers.UpdateCharacterCard)
 
 	// Appel des fichiers annexes
 	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("./public/css/"))))
