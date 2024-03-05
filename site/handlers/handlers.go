@@ -441,3 +441,48 @@ func CheckAppAdmin(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(jsonData)
 }
+
+func ActivateOrNotBot(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("ENTER ActivateOrNotBot")
+
+	// lecture du cookie
+	cookie, err1 := r.Cookie("user_token")
+	if r.URL.Path == "/api/activateOrNotBot" && err1 != http.ErrNoCookie && r.Method == "POST" {
+		database, err := sql.Open("sqlite3", "../database/databaseGvG.db")
+		utils.CheckErr("open db in homehandler", err)
+		defer database.Close()
+
+		// Vérification de la validité du cookie
+		if !utils.CheckToken(utils.Sessions, cookie) { // si cookie non valide
+			utils.Logout(w, r, database)
+		} else { // si cookies valide
+			_, _, _, officier := utils.UserInfo(cookie.Value, database)
+			if officier { // si l'utilisateur a le droit de modifier
+				utils.ActivateOrNotBotInDB(r, database)
+			}
+		}
+	}
+}
+
+func AdminitrateBot(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("ENTER AdminitrateBot")
+
+	// lecture du cookie
+	cookie, err1 := r.Cookie("user_token")
+	if r.URL.Path == "/api/adminitrateBot" && err1 != http.ErrNoCookie && r.Method == "POST" {
+		database, err := sql.Open("sqlite3", "../database/databaseGvG.db")
+		utils.CheckErr("open db in homehandler", err)
+		defer database.Close()
+
+		// Vérification de la validité du cookie
+		if !utils.CheckToken(utils.Sessions, cookie) { // si cookie non valide
+			utils.Logout(w, r, database)
+		} else { // si cookies valide
+			_, _, _, officier := utils.UserInfo(cookie.Value, database)
+			if officier { // si l'utilisateur a le droit de modifier
+				fmt.Println("bien arrivé ici")
+				utils.UploadInformationsBot(r, database)
+			}
+		}
+	}
+}

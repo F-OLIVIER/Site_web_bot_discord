@@ -3,6 +3,9 @@ package utils
 import (
 	data "botgvg/internal"
 	"database/sql"
+	"encoding/json"
+	"fmt"
+	"net/http"
 	"strconv"
 
 	_ "github.com/mattn/go-sqlite3"
@@ -108,5 +111,94 @@ func BotActivation(database *sql.DB) bool {
 		return true
 	} else {
 		return false
+	}
+}
+
+func ActivateOrNotBotInDB(r *http.Request, database *sql.DB) {
+	var data data.AdministrateBot
+	err := json.NewDecoder(r.Body).Decode(&data)
+	CheckErr("Erreur de décodage JSON SaveCreateGroup", err)
+	newAllumage := 0
+	if data.Allumage == "false" {
+		newAllumage = 1
+	}
+	stmt, err := database.Prepare("UPDATE GestionBot SET Allumage = ? WHERE ID = 1")
+	CheckErr("Update Allumage ActivateOrNotBotInDB ", err)
+	stmt.Exec(newAllumage)
+}
+
+func UploadInformationsBot(r *http.Request, database *sql.DB) {
+	err := r.ParseMultipartForm(10 << 20) // 10 MB maximum
+	if err == nil {
+		// Récupérez les données JSON du formulaire
+		jsonData := r.PostFormValue("data")
+		if jsonData != "" {
+			// Parsez les données JSON
+			var formData data.AdministrateBot
+			err = json.Unmarshal([]byte(jsonData), &formData)
+			CheckErr("UploadInformationsBot: Erreur lors de la lecture des données JSON", err)
+			fmt.Println("formData : ", formData)
+
+			file, header, err := r.FormFile("image")
+			if err == nil {
+				defer file.Close()
+				UploadPicture(file, header, "./public/images/unit/"+header.Filename)
+				if formData.CreateUnit.Name != "" { // création d'une unité
+					createNewUnit(formData.CreateUnit, "./public/images/unit/"+header.Filename, database)
+				} else if formData.ChangeUnit.Name != "" { // Update de l'image d'une unit
+					updateImgUnit(formData.ChangeUnit, "./public/images/unit/"+header.Filename, database)
+				}
+			}
+
+			if formData.ChangeUnit.LvlMax != "" || formData.ChangeUnit.Influence != "" { // Update des data d'une unit
+				updateDataUnit(formData.ChangeUnit, database)
+			}
+		} else {
+			fmt.Println("UploadInformationsBot: Probléme dans la récupération des données JSON")
+		}
+	} else {
+		CheckErr("UploadInformationsBot: Impossible de traiter le formulaire\n", err)
+	}
+}
+
+func createNewUnit(dataCreateUnit data.Unit, filepath string, database *sql.DB) {
+	// insertion de l'unité dans la table ListUnit
+	stmt, err := database.Prepare(`INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,TypeUnit,ForceUnit,Img) VALUES(?,?,?,?,?,?);`)
+	CheckErr("1- INSERT createNewUnit ", err)
+	stmt.Exec(dataCreateUnit.Name, dataCreateUnit.Influence, dataCreateUnit.LvlMax, dataCreateUnit.Type, dataCreateUnit.Tier, filepath)
+
+	// ajout de la colonne de l'unité dans la caserne
+	// nombre de colonne -1
+	nbColum := 0
+	stmtNbColum, err := database.Prepare(`SELECT count(*) FROM pragma_table_info('Caserne');`)
+	CheckErr("2- nbColum createNewUnit ", err)
+	stmtNbColum.QueryRow().Scan(&nbColum)
+
+	if nbColum > 0 {
+		stmtColum, err := database.Prepare(`ALTER TABLE Caserne ADD COLUMN ? INTEGER DEFAULT "";`)
+		CheckErr("3- ALTER TABLE createNewUnit ", err)
+		stmtColum.Exec("Unit" + string(nbColum-1))
+	}
+}
+
+func updateImgUnit(dataCreateUnit data.Unit, filepath string, database *sql.DB) {
+	stmt, err := database.Prepare(`UPDATE ListUnit SET InfuenceMax = ?, LvlMax = ? WHERE Unit = ?;`)
+	CheckErr("Update Allumage ActivateOrNotBotInDB ", err)
+	stmt.Exec(filepath, dataCreateUnit.Name)
+}
+
+func updateDataUnit(dataCreateUnit data.Unit, database *sql.DB) {
+	if dataCreateUnit.Influence != "" && dataCreateUnit.LvlMax != "" {
+		stmt, err := database.Prepare(`UPDATE ListUnit SET InfuenceMax = ?, LvlMax = ? WHERE Unit = ?;`)
+		CheckErr("Update Allumage ActivateOrNotBotInDB ", err)
+		stmt.Exec(dataCreateUnit.Influence, dataCreateUnit.LvlMax, dataCreateUnit.Name)
+	} else if dataCreateUnit.Influence != "" {
+		stmt, err := database.Prepare(`UPDATE ListUnit SET InfuenceMax = ? WHERE Unit = ?;`)
+		CheckErr("Update Allumage ActivateOrNotBotInDB ", err)
+		stmt.Exec(dataCreateUnit.Influence, dataCreateUnit.Name)
+	} else if dataCreateUnit.LvlMax != "" {
+		stmt, err := database.Prepare(`UPDATE ListUnit SET LvlMax = ? WHERE Unit = ?;`)
+		CheckErr("Update Allumage ActivateOrNotBotInDB ", err)
+		stmt.Exec(dataCreateUnit.LvlMax, dataCreateUnit.Name)
 	}
 }

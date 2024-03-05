@@ -152,6 +152,7 @@ function containercaserne(data) {
         let buttonMAJ = document.createElement('button');
         buttonMAJ.textContent = 'Mettre à jour ma caserne';
         buttonMAJ.id = 'MAJCaserne';
+        buttonMAJ.className = 'MAJCaserne';
         caserne.appendChild(buttonMAJ);
         Container.appendChild(caserne);
 

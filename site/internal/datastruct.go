@@ -71,3 +71,14 @@ type UserGroup struct {
 	NameGroup  string   `json:"inputValue"`
 	UserToSave []string `json:"selectValues"`
 }
+
+type GestionAdministrateBot struct {
+	Data AdministrateBot `json:"data"`
+	Img  string          `json:"Allumage"`
+}
+
+type AdministrateBot struct {
+	Allumage   string `json:"Allumage"`
+	CreateUnit Unit   `json:"createUnit"`
+	ChangeUnit Unit   `json:"changeUnit"`
+}

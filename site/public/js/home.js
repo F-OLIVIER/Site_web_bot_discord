@@ -36,6 +36,7 @@ function containerhome(data) {
     let Container = document.getElementById('Container');
     Container.innerHTML = '';
 
+    // page characterCard
     let subContainer = document.createElement('div');
     subContainer.className = 'subContainer';
     let linkCharacterCard = document.createElement('a');
@@ -48,6 +49,7 @@ function containerhome(data) {
     linkCharacterCard.appendChild(buttoncharacterCard);
     subContainer.appendChild(linkCharacterCard);
 
+    // page caserne
     let linkCaserne = document.createElement('a');
     linkCaserne.href = '/caserne';
     linkCaserne.classList.add('no-style-link');
@@ -59,6 +61,7 @@ function containerhome(data) {
     subContainer.appendChild(linkCaserne);
 
     if (data.Gestion.Officier) { // si officier, affichage bouton création des groupes et bouton administration
+      // page création des groupes gvg
       let linkCreateGroup = document.createElement('a');
       linkCreateGroup.href = '/creategroup';
       linkCreateGroup.classList.add('no-style-link');
@@ -70,6 +73,18 @@ function containerhome(data) {
       linkCreateGroup.appendChild(buttonCreateGroup);
       subContainer.appendChild(linkCreateGroup);
 
+      // page des statistiques
+      let linkStat = document.createElement('a');
+      linkStat.href = '/Stat';
+      linkStat.classList.add('no-style-link');
+      let buttonStat = document.createElement('div');
+      buttonStat.id = 'buttonStat';
+      buttonStat.className = 'buttonStat';
+      buttonStat.textContent = 'Statistique des GvG';
+      linkStat.appendChild(buttonStat);
+      subContainer.appendChild(linkStat);
+
+      // page d'administration
       let linkAppAdmin = document.createElement('a');
       linkAppAdmin.href = '/AppAdmin';
       linkAppAdmin.classList.add('no-style-link');

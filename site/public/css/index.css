@@ -18,7 +18,23 @@ body {
     text-align: center;
     color: rgb(255, 255, 255);
     font-family: Agbalumo, sans-serif;
+}
+
+button {
+    padding: 5px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 15px;
+    font-size: 18px;
+    background-color: rgb(0, 206, 0);
+    color: white;
     text-shadow: 1px 1px 5px rgba(0, 0, 0), 0 0 1em rgb(0, 0, 0), 0 0 0.2em rgb(0, 0, 0);
+}
+
+button:hover {
+    cursor: pointer;
+    transform: translate(3px, 3px);
+    box-shadow: 0 0px 10px rgb(0, 0, 0);
 }
 
 /* --------------------------------------- */
@@ -43,9 +59,10 @@ body {
     height: 75px;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-around;
     font-size: 50px;
     text-align: center;
+    vertical-align: middle;
     position: fixed;
     z-index: 1;
 }
@@ -62,25 +79,35 @@ body {
 
 .Username {
     font-size: 25px;
+    vertical-align: middle;
 }
 
 .userImg {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 150px;
     width: 100%;
-    padding: 0px;
-    margin: 0px;
 }
 
 .Title {
-    height: 100%;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 150px;
     width: 80%;
-    align-items: center;
-    text-align: center;
-    justify-items: center;
     z-index: 2;
     text-align: center;
     color: rgb(255, 255, 255);
     font-family: Agbalumo, sans-serif;
     text-shadow: 1px 1px 5px rgba(0, 0, 0), 0 0 1em rgb(0, 0, 0), 0 0 0.2em rgb(0, 0, 0);
+    cursor: pointer;
+}
+
+.Title:hover {
+    color: black;
+    text-shadow: 1px 1px 5px wheat, 0 0 1em wheat, 0 0 0.2em wheat;
 }
 
 .banner {
@@ -130,6 +157,19 @@ body {
     width: 100%;
 }
 
+#disconnect {
+    height: 150px;
+    margin-top: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+.DisconnectButton {
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px;
+}
+
 /* --------------------------------------- */
 /* --------------- contenu --------------- */
 /* --------------------------------------- */
@@ -170,7 +210,8 @@ body {
 .buttoncharacterCard,
 .buttonCaserne,
 .buttonCreateGroup,
-.buttonAppAdmin {
+.buttonAppAdmin,
+.buttonStat {
     width: 100%;
     padding-bottom: 5px;
     font-size: 50px;
@@ -179,6 +220,7 @@ body {
     border-radius: 15px;
     margin-bottom: 25px;
     background-color: blue;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0), 0 0 1em rgb(0, 0, 0), 0 0 0.2em rgb(0, 0, 0);
 }
 
 /* --------------------------------------------- */
@@ -190,6 +232,7 @@ body {
     flex-direction: column;
     align-items: center;
     width: 80%;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0), 0 0 1em rgb(0, 0, 0), 0 0 0.2em rgb(0, 0, 0);
 }
 
 .caserne img {
@@ -204,6 +247,7 @@ body {
     font-size: 50px;
     text-align: center;
     cursor: pointer;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0), 0 0 1em rgb(0, 0, 0), 0 0 0.2em rgb(0, 0, 0);
 }
 
 .listUnit {
@@ -246,6 +290,16 @@ body {
     font-size: 18px;
 }
 
+.MAJCaserne {
+    width: 50%;
+    font-size: 20px;
+    border-radius: 20px;
+    padding: 10px;
+    color: white;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0), 0 0 1em rgb(0, 0, 0), 0 0 0.2em rgb(0, 0, 0);
+    background-color: rgb(0, 206, 0);
+    cursor: pointer;
+}
 
 /* --------------------------------------------- */
 /* ------------- page /creategroup ------------- */
@@ -277,6 +331,7 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0), 0 0 1em rgb(0, 0, 0), 0 0 0.2em rgb(0, 0, 0);
 }
 
 .divuser select {
@@ -298,6 +353,7 @@ body {
     background-color: gray;
     margin-bottom: 10px;
     border-radius: 15px;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0), 0 0 1em rgb(0, 0, 0), 0 0 0.2em rgb(0, 0, 0);
 }
 
 .group1 {
@@ -349,6 +405,7 @@ body {
     text-align: center;
     cursor: pointer;
     border-radius: 15px;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0), 0 0 1em rgb(0, 0, 0), 0 0 0.2em rgb(0, 0, 0);
 }
 
 .buttonAddGroup {
@@ -398,6 +455,15 @@ body {
     font-size: 25px;
 }
 
+.divError {
+    width: 100%;
+    padding: 15px;
+    color: red;
+    background-color: white;
+    border-radius: 20px;
+    margin-bottom: 20px
+}
+
 .divBotEtat,
 .divNewUnit,
 .divChangeUnit {
@@ -409,18 +475,14 @@ body {
     width: 100%;
     padding: 10px;
     margin-bottom: 20px;
-}
-
-.buttonBotEtat {
-    width: 20%;
-    text-align: center;
-    cursor: pointer;
-    border-radius: 15px;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0), 0 0 1em rgb(0, 0, 0), 0 0 0.2em rgb(0, 0, 0);
 }
 
 .titleNewUnit,
 .titleChangeUnit,
-.titleChangeUnit {
+.titleChangeUnit,
+.botEtat,
+.buttonBotEtat {
     width: 50%;
 }
 
@@ -440,4 +502,5 @@ body {
     border: 2px solid white;
     border-radius: 15px;
     margin-bottom: 5px;
+    padding: 5px;
 }
