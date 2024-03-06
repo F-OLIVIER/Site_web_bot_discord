@@ -1,3 +1,4 @@
+const adressAPI = 'http://localhost:53134/api/';
 // récupération des tokens
 const fragment = new URLSearchParams(window.location.hash.slice(1));
 const [accessToken, tokenType] = [fragment.get('access_token'), fragment.get('token_type')];
@@ -23,7 +24,7 @@ function checkid(id, username) {
     const dataToSend = { id, username };
     console.log("dataToSend : ", dataToSend);
 
-    fetch('http://localhost:53134/api/discord', {
+    fetch(adressAPI + 'discord', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

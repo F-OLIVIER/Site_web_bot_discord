@@ -170,22 +170,31 @@ button:hover {
     padding: 10px;
 }
 
-/* --------------------------------------- */
-/* --------------- contenu --------------- */
-/* --------------------------------------- */
+/* -------------------------------------------- */
+/* --------------- NotConnected --------------- */
+/* -------------------------------------------- */
 
 .discordConnect {
-    text-decoration: none;
-    width: 10%;
+    padding: 20px;
+    padding-left: 40px;
+    padding-right: 40px;
     display: flex;
-    flex-wrap: wrap;
     flex-direction: column;
-    color: rgb(255, 255, 255);
-    font-family: Agbalumo, sans-serif;
-    font-size: 20px;
-    /* text-shadow: 1px 1px 5px black, 0 0 1em rgb(0, 0, 0), 0 0 0.2em rgb(0, 0, 0); */
+    font-size: 30px;
     text-align: center;
     justify-content: center;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 25px;
+}
+
+.discordConnect a {
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+    font-family: Agbalumo, sans-serif;
+    text-shadow: 1px 1px 5px black, 0 0 1em rgb(0, 0, 0), 0 0 0.2em rgb(0, 0, 0);
+}
+.divlink {
+    margin-bottom: 20px;
 }
 
 .discordConnect img {
