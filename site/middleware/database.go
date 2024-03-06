@@ -27,10 +27,10 @@ func UserInfo(uuid string, database *sql.DB) (user_id, DiscordName, DiscordPhoto
 }
 
 func Charactercard(uuid string, database *sql.DB) (userInfo data.UserInfo, officier bool) {
-	stmt1, errdb := database.Prepare("SELECT ID, DiscordName, DiscordRole, DiscordPhoto, GameCharacter_ID, Lvl, Influence, NbGvGParticiped, NbTotalGvG, DateLastGvGParticiped FROM Users WHERE uuid = ?")
+	stmt1, errdb := database.Prepare("SELECT ID, DiscordName, DiscordRole, DiscordPhoto, GameCharacter_ID, Lvl, Influence, EtatInscription, NbGvGParticiped, NbTotalGvG, DateLastGvGParticiped FROM Users WHERE uuid = ?")
 	CheckErr("1- Requete DB UserInfo", errdb)
 	var DiscordRole string
-	stmt1.QueryRow(uuid).Scan(&userInfo.ID, &userInfo.DiscordUsername, &DiscordRole, &userInfo.DiscordPhoto, &userInfo.GameCharacter_ID, &userInfo.Lvl, &userInfo.Influence, &userInfo.NbGvGParticiped, &userInfo.NbTotalGvG, &userInfo.DateLastGvGParticiped)
+	stmt1.QueryRow(uuid).Scan(&userInfo.ID, &userInfo.DiscordUsername, &DiscordRole, &userInfo.DiscordPhoto, &userInfo.GameCharacter_ID, &userInfo.Lvl, &userInfo.Influence, &userInfo.EtatInscription, &userInfo.NbGvGParticiped, &userInfo.NbTotalGvG, &userInfo.DateLastGvGParticiped)
 
 	if userInfo.GameCharacter_ID != 0 {
 		stmt2, errdb := database.Prepare("SELECT ClasseFR FROM ListGameCharacter WHERE ID = ?")
@@ -44,6 +44,63 @@ func Charactercard(uuid string, database *sql.DB) (userInfo data.UserInfo, offic
 		return userInfo, true
 	}
 	return userInfo, false
+}
+
+func UpdateCharacter(r *http.Request, uuid string, database *sql.DB) {
+	if uuid != "" {
+		var newUserInfo data.UserInfo
+		err := json.NewDecoder(r.Body).Decode(&newUserInfo)
+		CheckErr("Erreur de décodage JSON UpdateCharacter", err)
+
+		if newUserInfo.GameCharacter != "" {
+			stmt1, errdb := database.Prepare("SELECT ID FROM ListGameCharacter WHERE ClasseFR = ?")
+			CheckErr("1- Requete DB UpdateCharacter", errdb)
+			stmt1.QueryRow(newUserInfo.GameCharacter).Scan(&newUserInfo.GameCharacter_ID)
+		}
+
+		if newUserInfo.Influence != "" && newUserInfo.Lvl != "" && newUserInfo.GameCharacter != "" {
+			// les 3 sont saisies (Class + Lvl + Influence)
+			stmt2, errdb := database.Prepare("UPDATE Users SET GameCharacter_ID = ?, Lvl = ?, Influence = ? WHERE uuid = ?")
+			CheckErr("2- Requete DB UpdateCharacter", errdb)
+			stmt2.Exec(newUserInfo.GameCharacter_ID, newUserInfo.Lvl, newUserInfo.Influence, uuid)
+		} else if newUserInfo.Influence != "" && newUserInfo.Lvl != "" {
+			// Lvl + Influence
+			stmt2, errdb := database.Prepare("UPDATE Users SET Lvl = ?, Influence = ? WHERE uuid = ?")
+			CheckErr("3- Requete DB UpdateCharacter", errdb)
+			stmt2.Exec(newUserInfo.Lvl, newUserInfo.Influence, uuid)
+		} else if newUserInfo.Influence != "" && newUserInfo.GameCharacter != "" {
+			// Class + Influence
+			stmt2, errdb := database.Prepare("UPDATE Users SET GameCharacter_ID = ?, Influence = ? WHERE uuid = ?")
+			CheckErr("4- Requete DB UpdateCharacter", errdb)
+			stmt2.Exec(newUserInfo.GameCharacter_ID, newUserInfo.Influence, uuid)
+		} else if newUserInfo.Lvl != "" && newUserInfo.GameCharacter != "" {
+			// Class + Lvl
+			stmt2, errdb := database.Prepare("UPDATE Users SET GameCharacter_ID = ?, Lvl = ? WHERE uuid = ?")
+			CheckErr("5- Requete DB UpdateCharacter", errdb)
+			stmt2.Exec(newUserInfo.GameCharacter_ID, newUserInfo.Lvl, uuid)
+		} else if newUserInfo.GameCharacter != "" {
+			// Class
+			stmt2, errdb := database.Prepare("UPDATE Users SET GameCharacter_ID = ? WHERE uuid = ?")
+			CheckErr("6- Requete DB UpdateCharacter", errdb)
+			stmt2.Exec(newUserInfo.GameCharacter_ID, uuid)
+		} else if newUserInfo.Lvl != "" {
+			// Lvl
+			stmt2, errdb := database.Prepare("UPDATE Users SET Lvl = ? WHERE uuid = ?")
+			CheckErr("7- Requete DB UpdateCharacter", errdb)
+			stmt2.Exec(newUserInfo.Lvl, uuid)
+		} else if newUserInfo.Influence != "" {
+			// Influence
+			stmt2, errdb := database.Prepare("UPDATE Users SET Influence = ? WHERE uuid = ?")
+			CheckErr("8- Requete DB UpdateCharacter", errdb)
+			stmt2.Exec(newUserInfo.Influence, uuid)
+		}
+
+		if newUserInfo.EtatInscription == 1 || newUserInfo.EtatInscription == 3 { // 1: s'incrit present, 3: s'inscrit absent
+			stmt3, errdb := database.Prepare("UPDATE Users SET EtatInscription = ? WHERE uuid = ?")
+			CheckErr("9- Requete DB UpdateCharacter", errdb)
+			stmt3.Exec(newUserInfo.EtatInscription, uuid)
+		}
+	}
 }
 
 func ListInscriptedUsers(database *sql.DB) (UsersIncripted []data.UserInfo) {

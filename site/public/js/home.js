@@ -63,6 +63,14 @@ function containerhome(data) {
     subContainer.appendChild(linkCaserne);
 
     if (data.Gestion.Officier) { // si officier, affichage bouton création des groupes et bouton administration
+      let subcontainerOfficier = document.createElement('div');
+      subcontainerOfficier.className = 'subcontainerOfficier';
+
+      let titlesubcontainerOfficier = document.createElement('div');
+      titlesubcontainerOfficier.className = 'titlesubcontainerOfficier';
+      titlesubcontainerOfficier.textContent = "Réservé aux officiers";
+      subcontainerOfficier.appendChild(titlesubcontainerOfficier);
+
       // page création des groupes gvg
       let linkCreateGroup = document.createElement('a');
       linkCreateGroup.href = '/creategroup';
@@ -73,7 +81,7 @@ function containerhome(data) {
       buttonCreateGroup.href = '/creategroup';
       buttonCreateGroup.textContent = 'Créer les groupes GvG';
       linkCreateGroup.appendChild(buttonCreateGroup);
-      subContainer.appendChild(linkCreateGroup);
+      subcontainerOfficier.appendChild(linkCreateGroup);
 
       // page des statistiques
       let linkStat = document.createElement('a');
@@ -84,7 +92,7 @@ function containerhome(data) {
       buttonStat.className = 'buttonStat';
       buttonStat.textContent = 'Statistique des GvG';
       linkStat.appendChild(buttonStat);
-      subContainer.appendChild(linkStat);
+      subcontainerOfficier.appendChild(linkStat);
 
       // page d'administration
       let linkAppAdmin = document.createElement('a');
@@ -96,10 +104,10 @@ function containerhome(data) {
       buttonAppAdmin.href = '/AppAdmin';
       buttonAppAdmin.textContent = "Page d'administration";
       linkAppAdmin.appendChild(buttonAppAdmin);
-      subContainer.appendChild(linkAppAdmin);
-
-      Container.appendChild(subContainer);
+      subcontainerOfficier.appendChild(linkAppAdmin);
+      subContainer.appendChild(subcontainerOfficier)
     }
+    Container.appendChild(subContainer);
 
   } else {
     document.cookie = cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";

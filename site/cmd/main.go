@@ -30,6 +30,7 @@ func main() {
 	// page utilisateur connecté
 	http.HandleFunc("/api/home", handlers.HomeHandler)
 	http.HandleFunc("/api/charactercard", handlers.CharacterCardHandler)
+	http.HandleFunc("/api/updateCharacterCard", handlers.UpdateCharacterCard)
 	http.HandleFunc("/api/caserne", handlers.CaserneHandler)
 	http.HandleFunc("/api/majcaserne", handlers.MAJCaserneHandler)
 	http.HandleFunc("/api/creategroup", handlers.CreateGroupHandler)
@@ -37,7 +38,6 @@ func main() {
 	http.HandleFunc("/api/CheckAppAdmin", handlers.CheckAppAdmin)
 	http.HandleFunc("/api/activateOrNotBot", handlers.ActivateOrNotBot)
 	http.HandleFunc("/api/adminitrateBot", handlers.AdminitrateBot)
-	http.HandleFunc("/api/updateCharacterCard", handlers.UpdateCharacterCard)
 
 	// Appel des fichiers annexes
 	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("./public/css/"))))

@@ -400,8 +400,7 @@ func UpdateCharacterCard(w http.ResponseWriter, r *http.Request) {
 		if !utils.CheckToken(utils.Sessions, cookie) { // si cookie non valide
 			utils.Logout(w, r, database)
 		} else { // si cookies valide
-			// userID, _, _, _ := utils.UserInfo(cookie.Value, database)
-
+			utils.UpdateCharacter(r, cookie.Value, database)
 		}
 	}
 }

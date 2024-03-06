@@ -37,22 +37,33 @@ function containerCharacterCard(data) {
         let subcontainer = document.createElement('subcontainer');
         subcontainer.className = 'subcontainerProfile';
 
+        let divError = document.createElement('div');
+        divError.id = 'divError';
+        divError.className = 'divError';
+        divError.style.display = 'none';
+        subcontainer.appendChild(divError)
+
+        let divMAJ = document.createElement('div');
+        divMAJ.className = 'divMAJ';
+
         let personnage = document.createElement('div');
         personnage.className = 'personnage';
         let titlepersonnage = document.createElement('div');
         titlepersonnage.className = 'titlepersonnage';
         titlepersonnage.textContent = 'Informations du héros';
         personnage.appendChild(titlepersonnage);
+
         // class
         let classeplay = document.createElement('div');
-        classeplay.textContent = 'Classe : ' + data.UserInfo.GameCharacter;
+        classeplay.textContent = 'Classe actuel : ' + data.UserInfo.GameCharacter;
         personnage.appendChild(classeplay);
         let changeClass = document.createElement('div');
-        changeClass.className = 'changeClass';
+        changeClass.className = 'changeInfo';
         let titlechangeClass = document.createElement('div');
         titlechangeClass.innerHTML = 'Changer de classe : ';
         changeClass.appendChild(titlechangeClass);
         let selectchangeClass = document.createElement('select');
+        selectchangeClass.id = 'newClass';
         let defaultOption = document.createElement('option');
         defaultOption.value = "";
         defaultOption.text = "Choisissez";
@@ -68,13 +79,46 @@ function containerCharacterCard(data) {
 
         // level
         let lvl = document.createElement('div');
-        lvl.textContent = 'Niveau : ' + data.UserInfo.Lvl;
+        if (data.UserInfo.Lvl == 0) {
+            lvl.textContent = 'Level jamais saisie';
+        } else {
+            lvl.textContent = 'Level actuel : ' + data.UserInfo.Lvl;
+        }
         personnage.appendChild(lvl);
+        let changelvl = document.createElement('div');
+        changelvl.className = 'changeInfo';
+        let titlechangelvl = document.createElement('div');
+        titlechangelvl.innerHTML = 'Changer de level : ';
+        changelvl.appendChild(titlechangelvl);
+        let inputlvl = document.createElement('input');
+        inputlvl.id = 'newlvl';
+        inputlvl.placeholder = "Nouveau level";
+        inputlvl.type = 'number';
+        changelvl.appendChild(inputlvl);
+        personnage.appendChild(changelvl);
+
         // influence
         let influence = document.createElement('div');
-        influence.innerHTML = 'Influence : ' + data.UserInfo.Influence;
+        influence.innerHTML = 'Influence actuel : ' + data.UserInfo.Influence;
         personnage.appendChild(influence);
-        subcontainer.appendChild(personnage);
+        let changeInflu = document.createElement('div');
+        changeInflu.className = 'changeInfo';
+        let titlechangeInflu = document.createElement('div');
+        titlechangeInflu.innerHTML = "Changer l'influence : ";
+        changeInflu.appendChild(titlechangeInflu);
+        let inputInflu = document.createElement('input');
+        inputInflu.id = 'newInflu';
+        inputInflu.placeholder = "Nouvelle influence";
+        inputInflu.type = 'number';
+        changeInflu.appendChild(inputInflu);
+        personnage.appendChild(changeInflu);
+
+        let buttonMAJpersonnage = document.createElement('button');
+        buttonMAJpersonnage.id = 'buttonMAJpersonnage';
+        buttonMAJpersonnage.className = "buttonMAJpersonnage";
+        buttonMAJpersonnage.textContent = "Mettre à jour mon personnage"
+        personnage.appendChild(buttonMAJpersonnage);
+        divMAJ.appendChild(personnage);
 
         // Information GvG
         let infoGvG = document.createElement('div');
@@ -98,15 +142,15 @@ function containerCharacterCard(data) {
             buttonAbsent.id = 'inscriptedAbsent'
             buttonAbsent.textContent = "M'inscrire absent"
             listButton.appendChild(buttonAbsent);
-        } else if (data.UserInfo.EtatInscription === 1) {
-            etatInscripted.textContent = "✅ Inscrit présent";
+        } else if (data.UserInfo.EtatInscription == 1) {
+            etatInscripted.textContent = "✅ Inscrit présent pour la prochaine GvG";
             // button absent
             let buttonAbsent = document.createElement('button');
             buttonAbsent.id = 'inscriptedAbsent';
             buttonAbsent.textContent = "M'inscrire absent"
             listButton.appendChild(buttonAbsent);
-        } else if (data.UserInfo.EtatInscription === 2) {
-            etatInscripted.textContent = "❌ inscrit absent";
+        } else if (data.UserInfo.EtatInscription == 3) {
+            etatInscripted.textContent = "❌ inscrit absent pour la prochaine GvG";
             // button present
             let buttonPresent = document.createElement('button');
             buttonPresent.id = 'inscriptedPresent';
@@ -122,21 +166,45 @@ function containerCharacterCard(data) {
         let lastGvG = document.createElement('div');
         lastGvG.textContent = 'Derniére gvg participé : ' + data.UserInfo.DateLastGvGParticiped;
         infoGvG.appendChild(lastGvG);
-        subcontainer.appendChild(infoGvG);
+        divMAJ.appendChild(infoGvG)
+        subcontainer.appendChild(divMAJ);
         container.appendChild(subcontainer);
 
-        document.getElementById('inscriptedPresent').addEventListener('click', () => {
-            changeInscription(true);
+        document.getElementById('buttonMAJpersonnage').addEventListener('click', () => {
+            majPersonnage();
         });
 
-        document.getElementById('inscriptedAbsent').addEventListener('click', () => {
-            changeInscription(false);
-        });
+        if (document.getElementById('inscriptedPresent')) {
+            document.getElementById('inscriptedPresent').addEventListener('click', () => {
+                changeInscription(true);
+            });
+        }
+        if (document.getElementById('inscriptedAbsent')) {
+            document.getElementById('inscriptedAbsent').addEventListener('click', () => {
+                changeInscription(false);
+            });
+        }
 
     } else {
         document.cookie = cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         window.location.href = '/';
     }
+}
+
+function majPersonnage() {
+    let dataToSend = {}
+    dataToSend.GameCharacter = document.getElementById('newClass').value;
+    dataToSend.Lvl = document.getElementById('newlvl').value;
+    dataToSend.Influence = document.getElementById('newInflu').value;
+
+    if (dataToSend.Influence === "" && dataToSend.Lvl === "" && dataToSend.GameCharacter === "") {
+        let divError = document.getElementById('divError');
+        divError.textContent = "Tous les champs de mise à jour de votre héros sont vide !!!";
+        divError.style.display = 'block';
+    } else {
+        fetchData(dataToSend)
+    }
+
 }
 
 function changeInscription(incripted) {
