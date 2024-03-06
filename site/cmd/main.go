@@ -1,7 +1,7 @@
 package main
 
 import (
-	"botgvg/handlers"
+	handlers "botgvg/handlers"
 	"flag"
 	"fmt"
 	"log"
