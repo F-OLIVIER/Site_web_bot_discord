@@ -35,8 +35,21 @@ Voici quelque exemple de page internet <br>
 
 ### Usage
 _______
-```go
+Méthode manuel :
+**Partie 1 : le bot discord**
+```sh
+cd bot
 npm start
+```
+**Partie 2 : le site internet**
+```sh
+cd site
+go run ./cmd/main.go
+```
+
+Méthode dockerfile :
+```sh
+docker compose up
 ```
 
 
