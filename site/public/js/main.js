@@ -50,23 +50,25 @@ switch (path) {
 
 function homeNotConnected() {
     let Container = document.getElementById('Container');
-    let discordConnect = document.createElement('div');
-    discordConnect.className = 'discordConnect';
 
-    let divlink = document.createElement('div');
-    divlink.className = "divlink";
     let link = document.createElement('a');
     link.className = 'linkDiscord';
     link.href = "https://discord.com/api/oauth2/authorize?client_id=1203301786254057534&response_type=token&redirect_uri=http%3A%2F%2Flocalhost%3A53134%2Fdiscord&scope=identify";
-    link.textContent = "Cliquer pour vous connecter avec discord";
-    divlink.appendChild(link)
+    
+    let discordConnect = document.createElement('div');
+    discordConnect.className = 'discordConnect';
+    
+    let divlink = document.createElement('div');
+    divlink.className = "divlink";
+    divlink.textContent = "Cliquer pour vous connecter avec discord";
+    discordConnect.appendChild(divlink)
 
     let divimg = document.createElement('div');
     let imgDiscord = document.createElement('img');
     imgDiscord.src = "img/Logo_Discord.png";
-
     divimg.appendChild(imgDiscord);
-    discordConnect.appendChild(divlink);
     discordConnect.appendChild(divimg);
-    Container.appendChild(discordConnect);
+
+    link.appendChild(discordConnect);
+    Container.appendChild(link);
 }

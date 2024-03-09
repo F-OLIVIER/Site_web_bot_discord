@@ -49,6 +49,17 @@ func SaveCreateGroup(r *http.Request, database *sql.DB) {
 				unit4 = ""
 			}
 
+			// check des unités identiques
+			if unit4 == unit3 || unit4 == unit2 || unit4 == unit1 {
+				unit4 = ""
+			}
+			if unit3 == unit2 || unit3 == unit1 {
+				unit3 = ""
+			}
+			if unit2 == unit1 {
+				unit2 = ""
+			}
+
 			username_ID := 0
 			stmtUsers, errdb := database.Prepare("SELECT ID FROM Users WHERE DiscordName = ?")
 			CheckErr("1- Requete DB SaveCreateGroup", errdb)

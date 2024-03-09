@@ -1,6 +1,7 @@
 import { adressAPI } from "./home.js";
 import { cookieName } from "./main.js";
 import { communBlock } from "./useful.js";
+import { viewGroup } from "./viewGroup.js";
 
 export function creategroup() {
     if (!document.cookie.split(";").some((item) => item.trim().startsWith(cookieName + "="))) {
@@ -23,7 +24,7 @@ export function creategroup() {
 }
 
 let groupNumber = 1;
-function containercreategroup(data) {
+export function containercreategroup(data) {
     if (data.Gestion.Logged) {
         communBlock(data);
 
@@ -34,31 +35,37 @@ function containercreategroup(data) {
 
         let titlename = document.createElement('div');
         titlename.textContent = 'pseudo';
+        titlename.classList = 'titlename';
         titledivuser.appendChild(titlename);
 
-        let titleinfluenceplayer = document.createElement('div');
-        titleinfluenceplayer.textContent = 'influence joueur';
-        titledivuser.appendChild(titleinfluenceplayer);
+        let titleinfluence = document.createElement('div');
+        titleinfluence.innerHTML = 'influence <br> unités / joueur';
+        titleinfluence.classList = 'titleinfluence';
+        titledivuser.appendChild(titleinfluence);
 
-        let titleinfluenceUnit = document.createElement('div');
-        titleinfluenceUnit.textContent = 'influence unité';
-        titledivuser.appendChild(titleinfluenceUnit);
+        // let titleinfluenceUnit = document.createElement('div');
+        // titleinfluenceUnit.textContent = 'influence unité';
+        // titledivuser.appendChild(titleinfluenceUnit);
+
+        let divnameunit = document.createElement('div');
+        divnameunit.className = 'divnameunit';
 
         let titleunit1 = document.createElement('div');
         titleunit1.textContent = 'unité 1';
-        titledivuser.appendChild(titleunit1);
+        divnameunit.appendChild(titleunit1);
 
         let titleunit2 = document.createElement('div');
         titleunit2.textContent = 'unité 2';
-        titledivuser.appendChild(titleunit2);
+        divnameunit.appendChild(titleunit2);
 
         let titleunit3 = document.createElement('div');
         titleunit3.textContent = 'unité 3';
-        titledivuser.appendChild(titleunit3);
+        divnameunit.appendChild(titleunit3);
 
         let titleunit4 = document.createElement('div');
         titleunit4.textContent = 'unité 4';
-        titledivuser.appendChild(titleunit4);
+        divnameunit.appendChild(titleunit4);
+        titledivuser.appendChild(divnameunit);
 
         let Container = document.getElementById('Container');
         let containerGroupe = document.createElement('div');
@@ -107,6 +114,17 @@ function containercreategroup(data) {
         buttonSaveGroup.addEventListener('click', function () {
             saveGroup();
         });
+
+        // Boutton pour voir les groupe de façon non modifiable
+        if (data.GroupGvG != null) {
+            let buttonViewGroup = document.createElement('div');
+            buttonViewGroup.className = 'buttonViewGroup';
+            buttonViewGroup.textContent = 'Voir de façon propres les groupes';
+            containerGroupe.appendChild(buttonViewGroup);
+            buttonViewGroup.addEventListener('click', function () {
+                viewGroup(data);
+            });
+        }
 
     } else {
         document.cookie = cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
@@ -177,12 +195,12 @@ async function createExistGroupe(data, userIngroup) {
         }
         divuser.appendChild(name);
 
-        let influenceplayer = document.createElement('div');
-        influenceplayer.className = 'influenceplayer';
-        divuser.appendChild(influenceplayer);
         let influenceUnit = document.createElement('div');
         influenceUnit.className = 'influenceUnit';
         divuser.appendChild(influenceUnit);
+        let influenceplayer = document.createElement('div');
+        influenceplayer.className = 'influenceplayer';
+        divuser.appendChild(influenceplayer);
         let unit1 = document.createElement('div');
         unit1.className = 'unit1';
         divuser.appendChild(unit1);
@@ -210,10 +228,10 @@ async function createExistGroupe(data, userIngroup) {
                 }
             }
             let usernameSansEspaces = infoUsersave.Username.replace(/\s/g, '');
-            influenceplayer.id = 'influPlayer' + usernameSansEspaces;
-            influenceplayer.textContent = infoUsersave.Influence;
             influenceUnit.id = 'influUnit' + usernameSansEspaces;
             influenceUnit.textContent = 0;
+            influenceplayer.id = 'influPlayer' + usernameSansEspaces;
+            influenceplayer.textContent = '/ ' + infoUsersave.Influence;
 
             // Unité 1
             selectunit1 = createSelectUnit(1, infoUsersave.UserCaserne, currentUser, usernameSansEspaces, 1)
@@ -255,8 +273,8 @@ async function createExistGroupe(data, userIngroup) {
                         }
                     }
                 }
-                influenceplayer.textContent = "";
                 influenceUnit.textContent = "";
+                influenceplayer.textContent = "";
             } else {
                 if (selectunit1 != undefined) {
                     selectunit1.style.visibility = 'visible';
@@ -271,13 +289,18 @@ async function createExistGroupe(data, userIngroup) {
                     }
                 }
                 let usernameSansEspaces = infoUserSelected.Username.replace(/\s/g, '');
-                influenceplayer.id = 'influPlayer' + usernameSansEspaces;
-                influenceplayer.textContent = infoUserSelected.Influence;
                 influenceUnit.id = 'influUnit' + usernameSansEspaces;
                 influenceUnit.textContent = 0;
+                influenceplayer.id = 'influPlayer' + usernameSansEspaces;
+                influenceplayer.textContent = '/ ' + infoUserSelected.Influence;
             }
         });
 
+        if (i !== 0) {
+            let line = document.createElement('div');
+            line.className = 'line';
+            divGroup.appendChild(line);
+        }
         divGroup.appendChild(divuser)
 
     }
@@ -305,9 +328,9 @@ function createSelectUnit(numberUnit, caserne, currentUser, usernameSansEspaces,
         nameUnit = currentUser.Unit1
     } else if (numberUnit === 2) {
         nameUnit = currentUser.Unit2
-    } else if (numberUnit === 2) {
+    } else if (numberUnit === 3) {
         nameUnit = currentUser.Unit3
-    } else if (numberUnit === 2) {
+    } else if (numberUnit === 4) {
         nameUnit = currentUser.Unit4
     }
 
@@ -352,8 +375,8 @@ function createEventSelectUnit(divName, influenceplayer, influenceUnit, selectun
         selectunit3.value = "";
         selectunit4.style.visibility = 'hidden';
         selectunit4.value = "";
-        influenceplayer.textContent = 0;
         influenceUnit.textContent = 0;
+        influenceplayer.textContent = '/ ' + 0;
     } else {
         selectunit1.style.visibility = 'visible';
         if (selectunit1.value === "") {
@@ -433,12 +456,12 @@ async function createOneGroupe(data) {
         }
         divuser.appendChild(name);
 
-        let influenceplayer = document.createElement('div');
-        influenceplayer.className = 'influenceplayer';
-        divuser.appendChild(influenceplayer);
         let influenceUnit = document.createElement('div');
         influenceUnit.className = 'influenceUnit';
         divuser.appendChild(influenceUnit);
+        let influenceplayer = document.createElement('div');
+        influenceplayer.className = 'influenceplayer';
+        divuser.appendChild(influenceplayer);
         let unit1 = document.createElement('div');
         unit1.className = 'unit1';
         divuser.appendChild(unit1);
@@ -500,10 +523,10 @@ function createNewline(divuser, divName, data, influenceplayer, influenceUnit, u
         if (userSelected !== "") {
             selectunit1.value = "";
             selectunit1.style.visibility = 'visible';
-            influenceplayer.id = 'influPlayer' + usernameSansEspaces;
-            influenceplayer.textContent = infoUserSelected.Influence;
             influenceUnit.id = 'influUnit' + usernameSansEspaces;
             influenceUnit.textContent = 0;
+            influenceplayer.id = 'influPlayer' + usernameSansEspaces;
+            influenceplayer.textContent = '/ ' + infoUserSelected.Influence;
             createEventSelectUnit(divName, influenceplayer, influenceUnit, selectunit1, selectunit2, selectunit3, selectunit4, infoUserSelected, usernameSansEspaces)
         } else {
             influenceplayer.textContent = "";
