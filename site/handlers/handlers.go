@@ -485,7 +485,7 @@ func ActivateOrNotBot(w http.ResponseWriter, r *http.Request) {
 }
 
 func AdminitrateBot(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("ENTER AdminitrateBot")
+	// fmt.Println("ENTER AdminitrateBot")
 
 	// lecture du cookie
 	cookie, err1 := r.Cookie("user_token")
@@ -505,4 +505,59 @@ func AdminitrateBot(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	}
+}
+
+func StatGvG(w http.ResponseWriter, r *http.Request) {
+	// fmt.Println("ENTER StatGvG")
+
+	var sendHTML *data.SendHTML
+	// lecture du cookie
+	cookie, err1 := r.Cookie("user_token")
+	if r.URL.Path == "/api/statGvG" && err1 != http.ErrNoCookie {
+		database, err := sql.Open("sqlite3", "../database/databaseGvG.db")
+		utils.CheckErr("open db in homehandler", err)
+		defer database.Close()
+
+		if !utils.CheckToken(utils.Sessions, cookie) { // si cookie non valide
+			utils.Logout(w, r, database)
+			gestion := &data.Gestion{
+				Logged:   false,
+				Redirect: "/",
+			}
+			sendHTML = &data.SendHTML{
+				Gestion: *gestion,
+			}
+		} else { // si cookies valide
+			_, DiscordName, DiscordPhoto, officier := utils.UserInfo(cookie.Value, database)
+			userInfo := &data.UserInfo{
+				DiscordUsername: DiscordName,
+				DiscordPhoto:    DiscordPhoto,
+			}
+			gestion := &data.Gestion{
+				Logged:   true,
+				Officier: officier,
+			}
+			sendHTML = &data.SendHTML{
+				Gestion:        *gestion,
+				UserInfo:       *userInfo,
+				ListInscripted: utils.SendStatGvG(database),
+			}
+		}
+	} else { // absence de cookie
+		gestion := &data.Gestion{
+			Logged:   false,
+			Redirect: "/",
+		}
+
+		sendHTML = &data.SendHTML{
+			Gestion: *gestion,
+		}
+	}
+	jsonData, err := json.Marshal(sendHTML)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(jsonData)
 }

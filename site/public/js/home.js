@@ -85,12 +85,12 @@ function containerhome(data) {
 
       // page des statistiques
       let linkStat = document.createElement('a');
-      linkStat.href = '/Stat';
+      linkStat.href = '/stat';
       linkStat.classList.add('no-style-link');
       let buttonStat = document.createElement('div');
       buttonStat.id = 'buttonStat';
       buttonStat.className = 'buttonStat';
-      buttonStat.textContent = 'Statistique des GvG';
+      buttonStat.textContent = 'Statistique';
       linkStat.appendChild(buttonStat);
       subcontainerOfficier.appendChild(linkStat);
 

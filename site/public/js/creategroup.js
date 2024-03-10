@@ -1,7 +1,6 @@
 import { adressAPI } from "./home.js";
 import { cookieName } from "./main.js";
 import { communBlock } from "./useful.js";
-import { viewGroup } from "./viewGroup.js";
 
 export function creategroup() {
     if (!document.cookie.split(";").some((item) => item.trim().startsWith(cookieName + "="))) {
@@ -25,7 +24,7 @@ export function creategroup() {
 
 let groupNumber = 1;
 export function containercreategroup(data) {
-    if (data.Gestion.Logged) {
+    if (data.Gestion.Logged && data.Gestion.Officier) {
         communBlock(data);
 
         // création des en-tête
@@ -113,6 +112,7 @@ export function containercreategroup(data) {
         containerGroupe.appendChild(buttonSaveGroup);
         buttonSaveGroup.addEventListener('click', function () {
             saveGroup();
+            window.location.href = '/creategroup';
         });
 
         // Boutton pour voir les groupe de façon non modifiable
@@ -122,7 +122,8 @@ export function containercreategroup(data) {
             buttonViewGroup.textContent = 'Voir de façon propres les groupes';
             containerGroupe.appendChild(buttonViewGroup);
             buttonViewGroup.addEventListener('click', function () {
-                viewGroup(data);
+                saveGroup();
+                window.location.href = '/viewGroup';
             });
         }
 
@@ -604,8 +605,6 @@ function saveGroupInDB(dataToSend) {
         .catch(error => {
             console.error('Erreur lors de la récupération des données:', error);
         });
-
-    window.location.href = '/creategroup';
 }
 
 function usersInGroup(listGroupGvG) {

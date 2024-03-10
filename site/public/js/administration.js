@@ -44,13 +44,13 @@ function containerAppAdmin(data) {
         buttonBotEtat.id = 'buttonBotEtat';
         buttonBotEtat.className = 'buttonBotEtat';
         if (data.Gestion.BotActivate) {
-            botEtat.textContent = "Bot discord actif";
+            botEtat.textContent = "Fonction automatique du bot discord actif";
             buttonBotEtat.value = "false";
-            buttonBotEtat.textContent = 'Désactiver le bot';
+            buttonBotEtat.textContent = 'Désactiver les fonctions automatique';
         } else {
-            botEtat.textContent = "Bot discord inactif";
+            botEtat.textContent = "Fonction automatique du bot discord inactif";
             buttonBotEtat.value = "true";
-            buttonBotEtat.textContent = 'Activer le bot';
+            buttonBotEtat.textContent = 'Activer les fonctions automatique';
         }
         divBotEtat.appendChild(botEtat);
         divBotEtat.appendChild(buttonBotEtat);

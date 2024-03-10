@@ -272,3 +272,23 @@ func updateDataUnit(dataCreateUnit data.Unit, database *sql.DB) {
 		stmt.Exec(dataCreateUnit.LvlMax, dataCreateUnit.Name)
 	}
 }
+
+func SendStatGvG(database *sql.DB) (listuser []data.UserInfo) {
+	listUser, err := database.Prepare(`SELECT ConnectedSite, DiscordName, GameCharacter_ID, Lvl, Influence, EtatInscription, NbGvGParticiped, NbTotalGvG, DateLastGvGParticiped FROM Users;`)
+	CheckErr("1- Requete DB fonction SendStatGvG", err)
+	rows, err := listUser.Query()
+	CheckErr("2- Requete DB fonction SendStatGvG", err)
+	for rows.Next() {
+		var user data.UserInfo
+		err = rows.Scan(&user.ID, &user.DiscordUsername, &user.GameCharacter_ID, &user.Lvl, &user.Influence, &user.EtatInscription, &user.NbGvGParticiped, &user.NbTotalGvG, &user.DateLastGvGParticiped)
+		CheckErr("3- Requete DB fonction SendStatGvG", err)
+
+		if user.GameCharacter_ID != 0 {
+			class, errdb := database.Prepare("SELECT ClasseFR FROM ListGameCharacter WHERE ID = ?")
+			CheckErr("Requete DB SendStatGvG", errdb)
+			class.QueryRow(user.GameCharacter_ID).Scan(&user.GameCharacter)
+		}
+		listuser = append(listuser, user)
+	}
+	return listuser
+}
