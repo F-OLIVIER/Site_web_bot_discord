@@ -42,10 +42,6 @@ export function containercreategroup(data) {
         titleinfluence.classList = 'titleinfluence';
         titledivuser.appendChild(titleinfluence);
 
-        // let titleinfluenceUnit = document.createElement('div');
-        // titleinfluenceUnit.textContent = 'influence unité';
-        // titledivuser.appendChild(titleinfluenceUnit);
-
         let divnameunit = document.createElement('div');
         divnameunit.className = 'divnameunit';
 
@@ -67,14 +63,31 @@ export function containercreategroup(data) {
         titledivuser.appendChild(divnameunit);
 
         let Container = document.getElementById('Container');
+
         let containerGroupe = document.createElement('div');
         containerGroupe.className = 'containerGroupe';
+        // affichage de la liste des inscrits
+        let divlistInscripted = listInscripted(data.ListInscripted);
+        containerGroupe.appendChild(divlistInscripted);
+        let divcreategroup = document.createElement('div');
+        divcreategroup.id = 'divcreategroup';
+        divcreategroup.className = 'divcreategroup';
+        divcreategroup.style.display = 'none';
+
+        // Boutton pour afficher l'encart de création des groupes
+        let buttonDisplaycreategroup = document.createElement('div');
+        buttonDisplaycreategroup.id = 'buttonDisplaycreategroup';
+        buttonDisplaycreategroup.className = 'buttonDisplaycreategroup';
+        buttonDisplaycreategroup.textContent = 'Création des groupes GvG';
+        containerGroupe.appendChild(buttonDisplaycreategroup);
+
+        // affiche la création des groupes GvG
         let creategroup = document.createElement('div');
         creategroup.id = 'creategroup';
         creategroup.className = "creategroup";
-
         creategroup.appendChild(titledivuser);
-        containerGroupe.appendChild(creategroup);
+        divcreategroup.appendChild(creategroup);
+        containerGroupe.appendChild(divcreategroup);
         Container.appendChild(containerGroupe);
 
 
@@ -99,7 +112,7 @@ export function containercreategroup(data) {
         let buttonAddGroup = document.createElement('div');
         buttonAddGroup.className = 'buttonAddGroup';
         buttonAddGroup.textContent = 'Ajouter un groupe';
-        containerGroupe.appendChild(buttonAddGroup);
+        divcreategroup.appendChild(buttonAddGroup);
         buttonAddGroup.addEventListener('click', function () {
             createOneGroupe(data)
             groupNumber += 1;
@@ -109,7 +122,7 @@ export function containercreategroup(data) {
         let buttonSaveGroup = document.createElement('div');
         buttonSaveGroup.className = 'buttonSaveGroup';
         buttonSaveGroup.textContent = 'Sauvegarder les groupes';
-        containerGroupe.appendChild(buttonSaveGroup);
+        divcreategroup.appendChild(buttonSaveGroup);
         buttonSaveGroup.addEventListener('click', function () {
             saveGroup();
             window.location.href = '/creategroup';
@@ -119,13 +132,31 @@ export function containercreategroup(data) {
         if (data.GroupGvG != null) {
             let buttonViewGroup = document.createElement('div');
             buttonViewGroup.className = 'buttonViewGroup';
-            buttonViewGroup.textContent = 'Voir de façon propres les groupes';
+            buttonViewGroup.textContent = 'Voir de façon propres les groupes déjà crée';
             containerGroupe.appendChild(buttonViewGroup);
             buttonViewGroup.addEventListener('click', function () {
                 saveGroup();
                 window.location.href = '/viewGroup';
             });
         }
+
+        // événements du boutton d'affichage des inscrits
+        document.getElementById('buttonDisplayInscripted').addEventListener('click', function () {
+            if (document.getElementById('divinscripted').style.display === 'none') {
+                document.getElementById('divinscripted').style.display = 'block';
+            } else {
+                document.getElementById('divinscripted').style.display = 'none';
+            }
+        });
+
+        // événements du boutton d'affichage des inscrits
+        document.getElementById('buttonDisplaycreategroup').addEventListener('click', function () {
+            if (document.getElementById('divcreategroup').style.display === 'none') {
+                document.getElementById('divcreategroup').style.display = 'block';
+            } else {
+                document.getElementById('divcreategroup').style.display = 'none';
+            }
+        });
 
     } else {
         document.cookie = cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
@@ -616,4 +647,71 @@ function usersInGroup(listGroupGvG) {
         }
     }
     return usersInGroup
+}
+
+function listInscripted(data) {
+    let divlistInscripted = document.createElement('div');
+    divlistInscripted.className = 'listInscripted';
+
+    // Boutton pour afficher la liste des inscrits
+    let buttonDisplayInscripted = document.createElement('div');
+    buttonDisplayInscripted.id = 'buttonDisplayInscripted';
+    buttonDisplayInscripted.className = 'buttonDisplayInscripted';
+    buttonDisplayInscripted.textContent = 'Liste des inscrits';
+    divlistInscripted.appendChild(buttonDisplayInscripted);
+
+    let divinscripted = document.createElement('div');
+    divinscripted.id = 'divinscripted';
+    divinscripted.className = 'divinscripted';
+    divinscripted.style.display = 'none';
+
+    // en tête liste des inscrits
+    let titledivuser = document.createElement('div');
+    titledivuser.classList.add('inscriptedtitledivuser');
+    titledivuser.classList.add('inscripted');
+
+    let titlename = document.createElement('div');
+    titlename.textContent = 'pseudo';
+    titlename.classList = 'inscriptedname';
+    titledivuser.appendChild(titlename);
+
+    let titleinfluence = document.createElement('div');
+    titleinfluence.innerHTML = 'influence joueur';
+    titleinfluence.classList = 'inscriptedinfluence';
+    titledivuser.appendChild(titleinfluence);
+
+    let titleclass = document.createElement('div');
+    titleclass.innerHTML = 'classe joué';
+    titleclass.classList = 'inscriptedclass';
+    titledivuser.appendChild(titleclass);
+    divinscripted.appendChild(titledivuser)
+
+
+    // liste des inscrits
+    if (data !== null) {
+        for (let i = 0; i < data.length; i++) {
+            const player = data[i];
+
+            let divuser = document.createElement('div');
+            divuser.classList.add('inscripted');
+
+            let name = document.createElement('div');
+            name.textContent = player.Username;
+            name.classList = 'inscriptedname';
+            divuser.appendChild(name);
+
+            let influence = document.createElement('div');
+            influence.innerHTML = player.Influence;
+            influence.classList = 'inscriptedinfluence';
+            divuser.appendChild(influence);
+
+            let classPlayer = document.createElement('div');
+            classPlayer.innerHTML = player.GameCharacter;
+            classPlayer.classList = 'inscriptedclass';
+            divuser.appendChild(classPlayer);
+            divinscripted.appendChild(divuser)
+        }
+    }
+    divlistInscripted.appendChild(divinscripted);
+    return divlistInscripted
 }

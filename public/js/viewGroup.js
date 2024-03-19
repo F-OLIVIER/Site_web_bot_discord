@@ -48,14 +48,6 @@ function containerviewGroup(data) {
         titleclass.className = 'titleclass';
         titledivuser.appendChild(titleclass);
 
-        // let titleinfluenceplayer = document.createElement('div');
-        // titleinfluenceplayer.textContent = 'influence joueur';
-        // titledivuser.appendChild(titleinfluenceplayer);
-
-        // let titleinfluenceUnit = document.createElement('div');
-        // titleinfluenceUnit.textContent = 'influence unité';
-        // titledivuser.appendChild(titleinfluenceUnit);
-
         let divnameunit = document.createElement('div');
         divnameunit.className = 'divnameunit';
 
@@ -108,7 +100,7 @@ function containerviewGroup(data) {
 
                     let divuser = document.createElement('div');
                     divuser.classList.add(groupName);
-                    divuser.classList.add('divuser');
+                    divuser.classList.add('divuserviewgroup');
 
                     // pseudo player
                     let name = document.createElement('div');
@@ -121,18 +113,6 @@ function containerviewGroup(data) {
                     classplayer.className = 'classplayer';
                     classplayer.textContent = currentPlayer.class;
                     divuser.appendChild(classplayer);
-
-                    // // influence player
-                    // let influenceplayer = document.createElement('div');
-                    // influenceplayer.className = 'influenceplayer';
-                    // influenceplayer.textContent = currentPlayer.influence;
-                    // divuser.appendChild(influenceplayer);
-
-                    // // Influence unité
-                    // let influenceUnit = document.createElement('div');
-                    // influenceUnit.className = 'influenceUnit';
-                    // influenceUnit.textContent = currentPlayer.influUnit;
-                    // divuser.appendChild(influenceUnit);
 
                     // Unité du joueur
                     let divlistUnit = document.createElement('div');
@@ -178,7 +158,7 @@ function containerviewGroup(data) {
         buttonDownloadGroup.textContent = "Télécharger l'image des groupes";
         containerGroupe.appendChild(buttonDownloadGroup);
         buttonDownloadGroup.addEventListener('click', function () {
-            html2canvas(creategroup, { allowTaint: true }).then(function (canvas) {
+            html2canvas(viewgroup, { allowTaint: true }).then(function (canvas) {
                 var link = document.createElement("a");
                 document.body.appendChild(link);
                 const now = new Date(Date.now());

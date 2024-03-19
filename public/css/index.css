@@ -336,15 +336,57 @@ button:hover {
     cursor: pointer;
 }
 
-/* --------------------------------------------- */
-/* ------------- page /creategroup ------------- */
-/* --------------------------------------------- */
+/* ----------------------------------------------------------- */
+/* ------------- page /creategroup et /viewgroup ------------- */
+/* ----------------------------------------------------------- */
 
 .containerGroupe {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 80%;
+}
+
+.listInscripted {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.divinscripted {
+    width: 100%;
+    background-color: yellowgreen;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 18px;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0), 0 0 1em rgb(0, 0, 0), 0 0 0.2em rgb(0, 0, 0);
+}
+
+.inscripted {
+    width: 100%;
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+}
+
+.inscriptedtitledivuser {
+    font-size: 22px;
+    color: black;
+    text-shadow: 1px 1px 5px rgb(255, 255, 255), 0 0 1em rgb(255, 255, 255), 0 0 rgb(255, 254, 254);
+}
+
+.inscriptedname,
+.inscriptedinfluence,
+.inscriptedclass {
+    width: 33.33%;
+}
+
+.divcreategroup {
+    width: 100%;
 }
 
 .creategroup,
@@ -362,7 +404,8 @@ button:hover {
     margin-bottom: 10px;
 }
 
-.divuser {
+.divuser,
+.divuserviewgroup {
     padding: 5px;
     width: 100%;
     min-height: 15px;
@@ -370,6 +413,10 @@ button:hover {
     align-items: center;
     flex-direction: row;
     text-shadow: 1px 1px 5px rgba(0, 0, 0), 0 0 1em rgb(0, 0, 0), 0 0 0.2em rgb(0, 0, 0);
+}
+
+.divuserviewgroup {
+    font-size: 18px;
 }
 
 .line {
@@ -493,7 +540,9 @@ button:hover {
 .buttonSaveGroup,
 .buttonViewGroup,
 .buttonEditGroup,
-.buttonDownloadGroup {
+.buttonDownloadGroup,
+.buttonDisplayInscripted,
+.buttonDisplaycreategroup {
     margin-top: 20px;
     width: 100%;
     padding-bottom: 5px;
@@ -504,18 +553,18 @@ button:hover {
     text-shadow: 1px 1px 5px rgba(0, 0, 0), 0 0 1em rgb(0, 0, 0), 0 0 0.2em rgb(0, 0, 0);
 }
 
-.buttonAddGroup,
-.buttonDownloadGroup {
+.buttonDisplayInscripted,
+.buttonDisplaycreategroup,
+.buttonViewGroup,
+.buttonEditGroup {
+    margin-bottom: 10px;
     background-color: blue;
 }
 
+.buttonAddGroup,
+.buttonDownloadGroup,
 .buttonSaveGroup {
-    background-color: green;
-}
-
-.buttonViewGroup,
-.buttonEditGroup {
-    background-color: yellow;
+    background-color: rgb(195, 15, 231);
 }
 
 /* --------------------------------------------- */
