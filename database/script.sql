@@ -5,16 +5,16 @@
 -- run query
 
 -- Information de fonctionnement pour le bot discord
-CREATE TABLE GestionBot( 
+CREATE TABLE IF NOT EXIST GestionBot( 
     ID INTEGER PRIMARY KEY,
     Allumage INTEGER, -- 0 on, 1 off
     IDMessageGvG VARCHAR(50)
 );
-INSERT INTO GestionBot(Allumage,IDMessageGvG) VALUES(0,1206146217592225792);
+-- INSERT INTO GestionBot(Allumage,IDMessageGvG) VALUES(0,1206146217592225792);
 
 
 -- Fiche personnage IG
-CREATE TABLE Users( 
+CREATE TABLE IF NOT EXIST Users( 
     ID INTEGER PRIMARY KEY,
     uuid INTEGER , 
     ConnectedSite INTEGER DEFAULT 0,
@@ -41,7 +41,7 @@ CREATE TABLE Users(
 );
 
 -- Liste des GVG (pour les Stats)
-CREATE TABLE GvG( 
+CREATE TABLE IF NOT EXIST GvG( 
     ID INTEGER PRIMARY KEY,
     User_ID INTEGER,
     -- Saison_ID INTEGER,
@@ -54,7 +54,7 @@ CREATE TABLE GvG(
 );
 
 -- Information de saison
-CREATE TABLE Saison( 
+CREATE TABLE IF NOT EXIST Saison( 
     ID INTEGER PRIMARY KEY,
     NameSaison VARCHAR(50),
     DateDebut DATE,
@@ -63,7 +63,7 @@ CREATE TABLE Saison(
 );
 
 -- liste des classes IG
-CREATE TABLE ListGameCharacter( 
+CREATE TABLE IF NOT EXIST ListGameCharacter( 
     ID INTEGER PRIMARY KEY,
     CodeFR VARCHAR(5),
     CodeEN VARCHAR(5),
@@ -86,7 +86,7 @@ INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('dac','chb
 INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('piq','pik','Pique','Pike');
 
 
-CREATE TABLE ListUnit(
+CREATE TABLE IF NOT EXIST ListUnit(
     ID INTEGER PRIMARY KEY,
     Unit VARCHAR(50),
     InfuenceMax INTEGER,
@@ -166,7 +166,7 @@ INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,TypeUnit,ForceUnit,Img) VALUES('Ban
 INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,TypeUnit,ForceUnit,Img) VALUES('Cavaliers de Yanyuedao',320,30,'Cavalerie','T5','./img/unit/');
 
 -- exemple Unit1 (Hallebardiers) = "18" // -1: n'a pas l'unité sinon le lvl de l'unit
-CREATE TABLE Caserne( 
+CREATE TABLE IF NOT EXIST Caserne( 
     ID INTEGER PRIMARY KEY,
     User_ID INTEGER not NULL,
     Unit1 INTEGER DEFAULT "",
@@ -240,7 +240,7 @@ CREATE TABLE Caserne(
     FOREIGN KEY(User_ID) REFERENCES Users(ID)
 );
 
-CREATE TABLE GroupGvG( 
+CREATE TABLE IF NOT EXIST GroupGvG( 
     ID INTEGER PRIMARY KEY,
     User_ID INTEGER,
 

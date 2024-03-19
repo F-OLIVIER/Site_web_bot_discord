@@ -36,20 +36,20 @@ Voici quelque exemple de page internet <br>
 ### Usage
 _______
 **Méthode manuel :** <br>
-Pour demarrer le bot discord
+Pour demarrer le bot discord (se trouve dans le dossier bot)
 ```sh
 cd bot
 npm start
 ```
-Pour demarrer le site internet
+Pour demarrer le site internet (se trouve dans la racine du dossier)
 ```sh
-cd site
 go run ./cmd/main.go
 ```
 
 **Méthode dockerfile :**
+Permet de lancer le bot discord ainsi que le site internet en même temps dans un docker 
 ```sh
-docker compose up
+sudo docker compose up
 ```
 
 
