@@ -18,7 +18,7 @@ export function administration() {
         })
         .then(data => {
             // Traiter les données récupérées
-            console.log('Data received (administration):', data);
+            // console.log('Data received (administration):', data);
             containerAppAdmin(data);
         })
         .catch(error => {
@@ -220,17 +220,26 @@ function containerAppAdmin(data) {
     }
 }
 
+let timerThrottlebutton = 0;
 function addEventOnAllButton(listUnit, connectedUsername) {
     // Activation/Désactivation du bot
     document.getElementById('buttonBotEtat').addEventListener('click', (event) => {
         event.preventDefault();
-        adminitrateBot('buttonBotEtat');
+        const now = new Date();
+        if (now - timerThrottlebutton > 500) {
+            timerThrottlebutton = now;
+            adminitrateBot('buttonBotEtat');
+        }
     });
 
     // Ajout d'une nouvelle unité
     document.getElementById('formNewUnit').addEventListener('submit', (event) => {
         event.preventDefault();
-        adminitrateBot('buttonNewUnit');
+        const now = new Date();
+        if (now - timerThrottlebutton > 500) {
+            timerThrottlebutton = now;
+            adminitrateBot('buttonNewUnit');
+        }
     });
 
     // Modification d'une unité existante
@@ -291,7 +300,11 @@ function addEventOnAllButton(listUnit, connectedUsername) {
 
         document.getElementById('formchangeUnit').addEventListener('submit', (event) => {
             event.preventDefault();
-            adminitrateBot('buttonChangeUnit');
+            const now = new Date();
+            if (now - timerThrottlebutton > 500) {
+                timerThrottlebutton = now;
+                adminitrateBot('buttonChangeUnit');
+            }
         });
     });
 
@@ -332,7 +345,11 @@ function addEventOnAllButton(listUnit, connectedUsername) {
 
                 document.getElementById('buttonConfirmDeleteUser').addEventListener('click', (event) => {
                     event.preventDefault();
-                    adminitrateBot('buttonConfirmDeleteUser')
+                    const now = new Date();
+                    if (now - timerThrottlebutton > 500) {
+                        timerThrottlebutton = now;
+                        adminitrateBot('buttonConfirmDeleteUser');
+                    }
                 });
             }
         }

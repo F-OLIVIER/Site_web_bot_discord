@@ -14,7 +14,7 @@ export function stat() {
             return response.json();
         })
         .then(data => {
-            console.log('Data received (stat):', data);
+            // console.log('Data received (stat):', data);
             containerviewGroup(data);
         })
         .catch(error => {

@@ -20,7 +20,7 @@ export function caserne() {
         })
         .then(data => {
             // Traiter les données récupérées
-            console.log('Data received (caserne):', data);
+            // console.log('Data received (caserne):', data);
             containercaserne(data);
         })
         .catch(error => {

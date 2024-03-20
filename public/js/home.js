@@ -21,7 +21,7 @@ export function home() {
     })
     .then(data => {
       // Traiter les données récupérées
-      console.log('Data received (home):', data);
+      // console.log('Data received (home):', data);
       containerhome(data);
     })
     .catch(error => {

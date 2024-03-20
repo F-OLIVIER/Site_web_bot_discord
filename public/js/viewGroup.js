@@ -14,7 +14,7 @@ export function viewgroup() {
             return response.json();
         })
         .then(data => {
-            console.log('Data received (viewGroup):', data);
+            // console.log('Data received (viewGroup):', data);
             containerviewGroup(data);
         })
         .catch(error => {

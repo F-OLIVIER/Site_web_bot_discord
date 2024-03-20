@@ -20,7 +20,7 @@ export function characterCard() {
         })
         .then(data => {
             // Traiter les données récupérées
-            console.log('Data received (characterCard):', data);
+            // console.log('Data received (characterCard):', data);
             containerCharacterCard(data);
         })
         .catch(error => {

@@ -15,7 +15,6 @@ fetch('https://discord.com/api/users/@me', {
         const { username, id } = response;
         // envoie des informations au serveur
         checkid(id, username);
-
     })
     .catch(console.error);
 
@@ -39,7 +38,7 @@ function checkid(id, username) {
         })
         .then(data => {
             if (typeof data === 'object') {
-                console.log('Data received (Register):', data);
+                // console.log('Data received (Register):', data);
                 if (data.Redirect !== "") {
                     window.location.href = data.Redirect;
                 }

@@ -14,7 +14,7 @@ export function creategroup() {
             return response.json();
         })
         .then(data => {
-            console.log('Data received (creategroup):', data);
+            // console.log('Data received (creategroup):', data);
             containercreategroup(data);
         })
         .catch(error => {
@@ -27,45 +27,11 @@ export function containercreategroup(data) {
     if (data.Gestion.Logged && data.Gestion.Officier) {
         communBlock(data);
 
-        // création des en-tête
-        let titledivuser = document.createElement('div');
-        titledivuser.classList.add('titledivuser');
-        titledivuser.classList.add('divuser');
-
-        let titlename = document.createElement('div');
-        titlename.textContent = 'pseudo';
-        titlename.classList = 'titlename';
-        titledivuser.appendChild(titlename);
-
-        let titleinfluence = document.createElement('div');
-        titleinfluence.innerHTML = 'influence <br> unités / joueur';
-        titleinfluence.classList = 'titleinfluence';
-        titledivuser.appendChild(titleinfluence);
-
-        let divnameunit = document.createElement('div');
-        divnameunit.className = 'divnameunit';
-
-        let titleunit1 = document.createElement('div');
-        titleunit1.textContent = 'unité 1';
-        divnameunit.appendChild(titleunit1);
-
-        let titleunit2 = document.createElement('div');
-        titleunit2.textContent = 'unité 2';
-        divnameunit.appendChild(titleunit2);
-
-        let titleunit3 = document.createElement('div');
-        titleunit3.textContent = 'unité 3';
-        divnameunit.appendChild(titleunit3);
-
-        let titleunit4 = document.createElement('div');
-        titleunit4.textContent = 'unité 4';
-        divnameunit.appendChild(titleunit4);
-        titledivuser.appendChild(divnameunit);
-
         let Container = document.getElementById('Container');
 
         let containerGroupe = document.createElement('div');
         containerGroupe.className = 'containerGroupe';
+
         // affichage de la liste des inscrits
         let divlistInscripted = listInscripted(data.ListInscripted);
         containerGroupe.appendChild(divlistInscripted);
@@ -81,15 +47,17 @@ export function containercreategroup(data) {
         buttonDisplaycreategroup.textContent = 'Création des groupes GvG';
         containerGroupe.appendChild(buttonDisplaycreategroup);
 
-        // affiche la création des groupes GvG
+        // div de la création des groupes GvG
         let creategroup = document.createElement('div');
         creategroup.id = 'creategroup';
         creategroup.className = "creategroup";
+        // en-tête
+        let titledivuser = entete();
         creategroup.appendChild(titledivuser);
+        // div de création des groupes
         divcreategroup.appendChild(creategroup);
         containerGroupe.appendChild(divcreategroup);
         Container.appendChild(containerGroupe);
-
 
         // Création des groupes déja existant
         if (data.GroupGvG != null) {
@@ -128,7 +96,7 @@ export function containercreategroup(data) {
             window.location.href = '/creategroup';
         });
 
-        // Boutton pour voir les groupe de façon non modifiable
+        // Boutton pour voir les groupes de façon non modifiable
         if (data.GroupGvG != null) {
             let buttonViewGroup = document.createElement('div');
             buttonViewGroup.className = 'buttonViewGroup';
@@ -164,6 +132,44 @@ export function containercreategroup(data) {
     }
 }
 
+function entete() {
+    let titledivuser = document.createElement('div');
+    titledivuser.classList.add('titledivuser');
+    titledivuser.classList.add('divuser');
+
+    let titlename = document.createElement('div');
+    titlename.textContent = 'pseudo';
+    titlename.classList = 'titlename';
+    titledivuser.appendChild(titlename);
+
+    let titleinfluence = document.createElement('div');
+    titleinfluence.innerHTML = 'influence <br> unités / joueur';
+    titleinfluence.classList = 'titleinfluence';
+    titledivuser.appendChild(titleinfluence);
+
+    let divnameunit = document.createElement('div');
+    divnameunit.className = 'divnameunit';
+
+    let titleunit1 = document.createElement('div');
+    titleunit1.textContent = 'unité 1';
+    divnameunit.appendChild(titleunit1);
+
+    let titleunit2 = document.createElement('div');
+    titleunit2.textContent = 'unité 2';
+    divnameunit.appendChild(titleunit2);
+
+    let titleunit3 = document.createElement('div');
+    titleunit3.textContent = 'unité 3';
+    divnameunit.appendChild(titleunit3);
+
+    let titleunit4 = document.createElement('div');
+    titleunit4.textContent = 'unité 4';
+    divnameunit.appendChild(titleunit4);
+    titledivuser.appendChild(divnameunit);
+
+    return titledivuser
+}
+
 async function createExistGroupe(data, userIngroup) {
     const creategroup = document.getElementById('creategroup');
     const groupName = 'group' + groupNumber;
@@ -190,7 +196,6 @@ async function createExistGroupe(data, userIngroup) {
         }
 
         let divuser = document.createElement('div');
-        // divuser.classList.add(groupName);
         divuser.classList.add('divuser');
 
         let inputHidden = document.createElement('input');
@@ -281,7 +286,7 @@ async function createExistGroupe(data, userIngroup) {
             createEventSelectUnit(name, influenceplayer, influenceUnit, selectunit1, selectunit2, selectunit3, selectunit4, infoUsersave, usernameSansEspaces)
 
         } else { // utilisateur non present
-            createNewline(divuser, name, data, influenceplayer, influenceUnit, unit1, unit2, unit3, unit4);
+            createNewline(name, data, influenceplayer, influenceUnit, unit1, unit2, unit3, unit4);
         }
 
         // création des events listener
@@ -507,13 +512,13 @@ async function createOneGroupe(data) {
         unit4.className = 'unit4';
         divuser.appendChild(unit4);
 
-        createNewline(divuser, name, data, influenceplayer, influenceUnit, unit1, unit2, unit3, unit4);
+        createNewline(name, data, influenceplayer, influenceUnit, unit1, unit2, unit3, unit4);
         divGroup.appendChild(divuser)
     }
     creategroup.appendChild(divGroup)
 }
 
-function createNewline(divuser, divName, data, influenceplayer, influenceUnit, unit1, unit2, unit3, unit4) {
+function createNewline(divName, data, influenceplayer, influenceUnit, unit1, unit2, unit3, unit4) {
     let selectunit1;
     let selectunit2;
     let selectunit3;
@@ -605,7 +610,7 @@ function saveGroup() {
     const creategroup = document.getElementById('creategroup');
     const divuserElements = creategroup.querySelectorAll('.divuser');
 
-    let dataToSend = [];
+    let arrayDataToSend = [];
     divuserElements.forEach((divuserElement, index) => {
         let divuserObject = {};
 
@@ -617,21 +622,15 @@ function saveGroup() {
         const selectValues = Array.from(selectElements).map(select => select.value);
         divuserObject['selectValues'] = selectValues;
 
-        dataToSend.push(divuserObject);
-        // dataToSend[index] = divuserObject;
+        arrayDataToSend.push(divuserObject);
     });
-    saveGroupInDB({ dataToSend })
-}
-
-function saveGroupInDB(dataToSend) {
-    console.log("dataToSend : ", dataToSend);
 
     fetch(adressAPI + 'saveGroupInDB', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(dataToSend),
+        body: JSON.stringify({ arrayDataToSend }),
     })
         .catch(error => {
             console.error('Erreur lors de la récupération des données:', error);
@@ -689,7 +688,6 @@ function listInscripted(data) {
     titleclass.classList = 'inscriptedclass';
     titledivuser.appendChild(titleclass);
     divinscripted.appendChild(titledivuser)
-
 
     // liste des inscrits
     if (data !== null) {
