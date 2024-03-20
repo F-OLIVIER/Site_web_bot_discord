@@ -20,6 +20,7 @@ type UserInfo struct {
 	NbGvGParticiped       string `json:"NbGvGParticiped"`
 	DateLastGvGParticiped string `json:"DateLastGvGParticiped"`
 	UserCaserne           []Unit
+	ConnectedSite         string `json:"ConnectedSite"`
 }
 
 type Gestion struct {
@@ -80,6 +81,7 @@ type GestionAdministrateBot struct {
 
 type AdministrateBot struct {
 	Allumage   string `json:"Allumage"`
+	DeleteUser string `json:"DeleteUser"`
 	CreateUnit Unit   `json:"createUnit"`
 	ChangeUnit Unit   `json:"changeUnit"`
 }

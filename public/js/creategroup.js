@@ -670,6 +670,10 @@ function listInscripted(data) {
     titledivuser.classList.add('inscriptedtitledivuser');
     titledivuser.classList.add('inscripted');
 
+    let titledivconnected = document.createElement('div');
+    titledivconnected.classList = 'divconnected';
+    titledivuser.appendChild(titledivconnected);
+
     let titlename = document.createElement('div');
     titlename.textContent = 'pseudo';
     titlename.classList = 'inscriptedname';
@@ -694,6 +698,15 @@ function listInscripted(data) {
 
             let divuser = document.createElement('div');
             divuser.classList.add('inscripted');
+
+            let divconnected = document.createElement('div');
+            divconnected.classList = 'divconnected';
+            if (player.ConnectedSite === "1") {
+                divconnected.textContent = '✅';
+            } else {
+                divconnected.textContent = '❌';
+            }
+            divuser.appendChild(divconnected);
 
             let name = document.createElement('div');
             name.textContent = player.Username;

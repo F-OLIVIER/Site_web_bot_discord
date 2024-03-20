@@ -13,7 +13,6 @@ export function administration() {
             if (!response.ok) {
                 throw new Error(`Erreur de réseau: ${response.status}`);
             }
-
             // Convertir la réponse en JSON
             return response.json();
         })
@@ -42,6 +41,7 @@ function containerAppAdmin(data) {
         botEtat.className = 'botEtat';
         let buttonBotEtat = document.createElement('button');
         buttonBotEtat.id = 'buttonBotEtat';
+        buttonBotEtat.type = 'button';
         buttonBotEtat.className = 'buttonBotEtat';
         if (data.Gestion.BotActivate) {
             botEtat.textContent = "Fonction automatique du bot discord actif";
@@ -178,11 +178,41 @@ function containerAppAdmin(data) {
         divChangeUnit.appendChild(formChangeUnit);
         subContainer.appendChild(divChangeUnit);
 
+        // Suprimer un utilisateur
+        let divDeleteUser = document.createElement('div');
+        divDeleteUser.id = 'divDeleteUser';
+        divDeleteUser.className = 'divDeleteUser';
+        let titleDeleteUser = document.createElement('div');
+        titleDeleteUser.className = 'titleDeleteUser'
+        titleDeleteUser.textContent = 'Suprimer un joueur';
+        divDeleteUser.appendChild(titleDeleteUser);
+        let formDeleteUser = document.createElement('form');
+        formDeleteUser.enctype = 'multipart/form-data';
+        formDeleteUser.method = 'POST';
+        formDeleteUser.id = 'formDeleteUser';
+        formDeleteUser.className = 'formDeleteUser';
+        let selectDeleteUser = document.createElement('select');
+        selectDeleteUser.id = 'selectDeleteUser';
+        let defaultDeleteUser = document.createElement('option');
+        defaultDeleteUser.value = "";
+        defaultDeleteUser.text = "Choisissez";
+        selectDeleteUser.appendChild(defaultDeleteUser);
+        for (let i = 0; i < data.ListInscripted.length; i++) {
+            const currentPlayer = data.ListInscripted[i];
+            let option = document.createElement('option');
+            option.text = currentPlayer.Username;
+            option.value = currentPlayer.ID + '-' + currentPlayer.Username;
+            selectDeleteUser.appendChild(option);
+        }
+        formDeleteUser.appendChild(selectDeleteUser);
+        divDeleteUser.appendChild(formDeleteUser);
+        subContainer.appendChild(divDeleteUser);
+
         let Container = document.getElementById('Container');
         Container.innerHTML = '';
         Container.appendChild(subContainer);
 
-        addEventOnAllButton(data.ListUnit);
+        addEventOnAllButton(data.ListUnit, data.UserInfo.Username);
 
     } else {
         document.cookie = cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
@@ -190,9 +220,10 @@ function containerAppAdmin(data) {
     }
 }
 
-function addEventOnAllButton(listUnit) {
+function addEventOnAllButton(listUnit, connectedUsername) {
     // Activation/Désactivation du bot
-    document.getElementById('buttonBotEtat').addEventListener('click', () => {
+    document.getElementById('buttonBotEtat').addEventListener('click', (event) => {
+        event.preventDefault();
         adminitrateBot('buttonBotEtat');
     });
 
@@ -237,24 +268,6 @@ function addEventOnAllButton(listUnit) {
             input_Unit_lvlMax.type = 'number';
             input_Unit_lvlMax.placeholder = 'Level max actuel : ' + unitSelected.Unit_lvlMax;
             formChangeUnit.appendChild(input_Unit_lvlMax);
-            // Unit_tier
-            // let input_Unit_tier = document.createElement('select');
-            // input_Unit_tier.id = 'changeUnitTier';
-            // let option_Unit_tier = [unitSelected.Unit_tier, "T3", "T4", "T5"];
-            // console.log('unitSelected.Unit_tier : ', unitSelected.Unit_tier)
-            // let defaultOption_Unit_tier = document.createElement('option');
-            // defaultOption_Unit_tier.value = unitSelected.Unit_tier;
-            // defaultOption_Unit_tier.text = unitSelected.Unit_tier;
-            // input_Unit_tier.appendChild(defaultOption_Unit_tier);
-            // for (let i = 0; i < option_Unit_tier.length; i++) {
-            //     if (option_Unit_tier[i] !== unitSelected.Unit_tier) {
-            //         let option = document.createElement('option');
-            //         option.value = option_Unit_tier[i];
-            //         option.text = option_Unit_tier[i];
-            //         input_Unit_tier.appendChild(option);
-            //     }
-            // }
-            // formChangeUnit.appendChild(input_Unit_tier);
 
             // Unit_img
             let input_Unit_img = document.createElement('input');
@@ -281,6 +294,50 @@ function addEventOnAllButton(listUnit) {
             adminitrateBot('buttonChangeUnit');
         });
     });
+
+    // Suppression d'un joueur
+    let selectDeleteUser = document.getElementById('selectDeleteUser');
+    selectDeleteUser.addEventListener('change', () => {
+        const parts = selectDeleteUser.value.split('-');
+        const playerSelectedwithoutID = parts.slice(1).join('-');
+
+        // suppression des anciens éléments si existant
+        if (document.getElementById('divInfoDeleteUser')) {
+            document.getElementById('divInfoDeleteUser').remove();
+            if (document.getElementById('buttonConfirmDeleteUser')) {
+                document.getElementById('buttonConfirmDeleteUser').remove();
+            }
+        }
+
+        if (selectDeleteUser.value != "") {
+            let formDeleteUser = document.getElementById('formDeleteUser');
+
+            // Div d'information
+            let divInfo = document.createElement('div');
+            divInfo.id = 'divInfoDeleteUser'
+            if (playerSelectedwithoutID === connectedUsername) {
+                divInfo.textContent = 'Pour supprimer votre propre compte contactez un administrateur';
+                formDeleteUser.appendChild(divInfo)
+            } else {
+                divInfo.textContent = 'ATTENTION : vous êtes sur le point de supprimer le joueur ' + playerSelectedwithoutID;
+                formDeleteUser.appendChild(divInfo)
+
+                // button de confirmation de la suppression
+                let buttonDeleteUser = document.createElement('button');
+                buttonDeleteUser.id = 'buttonConfirmDeleteUser';
+                buttonDeleteUser.type = 'button';
+                buttonDeleteUser.className = 'buttonConfirmDeleteUser';
+                buttonDeleteUser.textContent = "Confirmer la supression";
+                formDeleteUser.appendChild(buttonDeleteUser);
+
+                document.getElementById('buttonConfirmDeleteUser').addEventListener('click', (event) => {
+                    event.preventDefault();
+                    adminitrateBot('buttonConfirmDeleteUser')
+                });
+            }
+        }
+
+    });
 }
 
 // option et le name du button cliquer
@@ -290,18 +347,10 @@ async function adminitrateBot(option) {
     // activate or desactivate bot
     if (option === 'buttonBotEtat') {
         dataToSend.Allumage = document.getElementById('buttonBotEtat').value; // false = desactivation, true = activation
-
-        fetch(adressAPI + 'activateOrNotBot', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(dataToSend),
-
-        })
-            .catch(error => {
-                console.error('Erreur avec les données:', error);
-            });
+        sendData(dataToSend);
+    } else if (option === 'buttonConfirmDeleteUser') { // suppression d'un utilisateur
+        dataToSend.DeleteUser = document.getElementById('selectDeleteUser').value;
+        sendData(dataToSend);
     } else {
         let formData = new FormData();
 
@@ -324,10 +373,7 @@ async function adminitrateBot(option) {
                     var image = new Image();
                     image.src = e.target.result;
                     formData.append('image', input_new_img.files[0]);
-                    // console.log('1- dataToSend : ', dataToSend);
-                    // formData.forEach((value, key) => {
-                    //     console.log(key, value);
-                    // });
+
                     if (createUnit.Unit_name === "" ||
                         createUnit.Unit_influence === "" ||
                         createUnit.Unit_lvlMax === "" ||
@@ -385,6 +431,22 @@ async function adminitrateBot(option) {
     }
 }
 
+function sendData(dataToSend) {
+    // console.log('dataToSend : ', dataToSend);
+    fetch(adressAPI + 'activateOrNotBot', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataToSend),
+    })
+        .catch(error => {
+            console.error('Erreur avec les données:', error);
+        });
+
+    // rechargement de page aprés modification
+    window.location.href = '/AppAdmin';
+}
 function sendFormData(formData) {
     // console.log('formData : ', formData);
     fetch(adressAPI + 'adminitrateBot', {

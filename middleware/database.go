@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
 
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -104,7 +105,7 @@ func UpdateCharacter(r *http.Request, uuid string, database *sql.DB) {
 }
 
 func ListInscriptedUsers(database *sql.DB) (UsersIncripted []data.UserInfo) {
-	listUnit, err := database.Prepare(`SELECT ID, GameCharacter_ID, DiscordName, Lvl, Influence, NbGvGParticiped, DateLastGvGParticiped
+	listUnit, err := database.Prepare(`SELECT ID, ConnectedSite, GameCharacter_ID, DiscordName, Lvl, Influence, NbGvGParticiped, DateLastGvGParticiped
 										FROM Users
 										WHERE Users.EtatInscription = '1';
 										`)
@@ -113,7 +114,7 @@ func ListInscriptedUsers(database *sql.DB) (UsersIncripted []data.UserInfo) {
 	CheckErr("2- Requete DB fonction ListInscriptedusers", err)
 	for rows.Next() {
 		var user data.UserInfo
-		err = rows.Scan(&user.ID, &user.GameCharacter_ID, &user.DiscordUsername, &user.Lvl, &user.Influence, &user.NbGvGParticiped, &user.DateLastGvGParticiped)
+		err = rows.Scan(&user.ID, &user.ConnectedSite, &user.GameCharacter_ID, &user.DiscordUsername, &user.Lvl, &user.Influence, &user.NbGvGParticiped, &user.DateLastGvGParticiped)
 		CheckErr("3- Requete DB fonction ListInscriptedusers", err)
 
 		if user.GameCharacter_ID != 0 {
@@ -188,13 +189,40 @@ func ActivateOrNotBotInDB(r *http.Request, database *sql.DB) {
 	var data data.AdministrateBot
 	err := json.NewDecoder(r.Body).Decode(&data)
 	CheckErr("Erreur de décodage JSON SaveCreateGroup", err)
-	newAllumage := 0
-	if data.Allumage == "false" {
-		newAllumage = 1
+
+	if data.Allumage != "" {
+		newAllumage := 0
+		if data.Allumage == "false" {
+			newAllumage = 1
+		}
+		stmt, err := database.Prepare("UPDATE GestionBot SET Allumage = ? WHERE ID = 1")
+		CheckErr("Update Allumage ActivateOrNotBotInDB ", err)
+		stmt.Exec(newAllumage)
+	} else if data.DeleteUser != "" {
+		parts := strings.Split(data.DeleteUser, "-")
+		UserID := parts[0]
+		Username := strings.Join(parts[1:], "-")
+
+		test, errdb := database.Prepare("SELECT ID FROM Users WHERE ID = ? AND DiscordName = ?")
+		CheckErr("Requete DB UserInfo", errdb)
+		existID := 0
+		test.QueryRow(UserID, Username).Scan(&existID)
+		if existID != 0 {
+			// supression de l'utilisateur dans la table Users
+			stmtUsers, err := database.Prepare("DELETE FROM Users WHERE ID = ?")
+			CheckErr("Delete User ActivateOrNotBotInDB ", err)
+			_, err = stmtUsers.Exec(existID)
+			CheckErr("Execute delete statement ActivateOrNotBotInDB", err)
+
+			// supression de l'utilisateur dans la table Caserne
+			stmtCaserne, err := database.Prepare("DELETE FROM Caserne WHERE User_ID = ?")
+			CheckErr("Delete User ActivateOrNotBotInDB ", err)
+			_, err = stmtCaserne.Exec(existID)
+			CheckErr("Execute delete statement ActivateOrNotBotInDB", err)
+
+			// la suppression de l'utilisateur dans la table GroupGvG (si present) sera automatique au prochain reset
+		}
 	}
-	stmt, err := database.Prepare("UPDATE GestionBot SET Allumage = ? WHERE ID = 1")
-	CheckErr("Update Allumage ActivateOrNotBotInDB ", err)
-	stmt.Exec(newAllumage)
 }
 
 func UploadInformationsBot(r *http.Request, database *sql.DB) {

@@ -437,9 +437,10 @@ func CheckAppAdmin(w http.ResponseWriter, r *http.Request) {
 				BotActivate: utils.BotActivation(database),
 			}
 			sendHTML = &data.SendHTML{
-				Gestion:  *gestion,
-				UserInfo: *userInfo,
-				ListUnit: utils.CaserneUser(userID, database),
+				Gestion:        *gestion,
+				UserInfo:       *userInfo,
+				ListUnit:       utils.CaserneUser(userID, database),
+				ListInscripted: utils.SendStatGvG(database),
 			}
 		}
 	} else { // absence de cookie
@@ -463,7 +464,7 @@ func CheckAppAdmin(w http.ResponseWriter, r *http.Request) {
 }
 
 func ActivateOrNotBot(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("ENTER ActivateOrNotBot")
+	// fmt.Println("ENTER ActivateOrNotBot")
 
 	// lecture du cookie
 	cookie, err1 := r.Cookie("user_token")

@@ -379,10 +379,16 @@ button:hover {
     text-shadow: 1px 1px 5px rgb(255, 255, 255), 0 0 1em rgb(255, 255, 255), 0 0 rgb(255, 254, 254);
 }
 
+.divconnected {
+    width: 15px;
+}
+.inscriptedinfluence {
+    width: 180px;
+}
+
 .inscriptedname,
-.inscriptedinfluence,
 .inscriptedclass {
-    width: 33.33%;
+    width: calc((100% - 15px - 180px) / 2);
 }
 
 .divcreategroup {
@@ -679,7 +685,8 @@ button:hover {
 
 .divBotEtat,
 .divNewUnit,
-.divChangeUnit {
+.divChangeUnit,
+.divDeleteUser {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -694,13 +701,15 @@ button:hover {
 .titleNewUnit,
 .titleChangeUnit,
 .titleChangeUnit,
+.titleDeleteUser,
 .botEtat,
 .buttonBotEtat {
     width: 50%;
 }
 
 .newUnit,
-.formchangeUnit {
+.formchangeUnit,
+.formDeleteUser {
     width: 50%;
     display: flex;
     flex-direction: column;
@@ -709,13 +718,20 @@ button:hover {
 .divNewUnit select,
 .divNewUnit input,
 .divChangeUnit select,
-.divChangeUnit input {
+.divChangeUnit input,
+.formDeleteUser select,
+.formDeleteUser input {
     font-size: 16px;
     text-align: center;
     border: 2px solid white;
     border-radius: 15px;
     margin-bottom: 5px;
     padding: 5px;
+}
+
+#buttonConfirmDeleteUser {
+    margin-top: 5px;
+    background-color: red;
 }
 
 /* --------------------------------------------- */
