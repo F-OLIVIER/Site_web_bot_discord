@@ -55,3 +55,10 @@ function DisconnectedButton() {
     }
     DisconnectedButton.addEventListener('click', DisconnectedButtonClick);
 }
+
+export function createHTMLElement(type, name) {
+    const div = document.createElement(type);
+    div.id = name;
+    div.className = name;
+    return div
+}

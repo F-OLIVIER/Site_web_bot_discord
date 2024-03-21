@@ -1,6 +1,6 @@
 import { adressAPI } from "./home.js";
 import { cookieName } from "./main.js";
-import { communBlock } from "./useful.js";
+import { communBlock, createHTMLElement } from "./useful.js";
 
 export function viewgroup() {
     if (!document.cookie.split(";").some((item) => item.trim().startsWith(cookieName + "="))) {
@@ -38,14 +38,16 @@ function containerviewGroup(data) {
         titledivuser.classList.add('titledivuser');
         titledivuser.classList.add('divuser');
 
-        let titlename = document.createElement('div');
+        // let titlename = document.createElement('div');
+        // titlename.className = 'viewtitlename';
+        let titlename = createHTMLElement('div', 'viewtitlename');
         titlename.textContent = 'Pseudo joueur';
-        titlename.className = 'viewtitlename';
         titledivuser.appendChild(titlename);
 
-        let titleclass = document.createElement('div');
+        // let titleclass = document.createElement('div');
+        // titleclass.className = 'titleclass';
+        let titleclass = createHTMLElement('div', 'titleclass');
         titleclass.textContent = 'classe joué';
-        titleclass.className = 'titleclass';
         titledivuser.appendChild(titleclass);
 
         let divnameunit = document.createElement('div');
@@ -70,9 +72,7 @@ function containerviewGroup(data) {
 
         let containerGroupe = document.createElement('div');
         containerGroupe.className = 'containerGroupe';
-        let viewgroup = document.createElement('div');
-        viewgroup.id = 'viewgroup';
-        viewgroup.className = "viewgroup";
+        let viewgroup = createHTMLElement('div', 'viewgroup');
         viewgroup.appendChild(titledivuser);
 
         // compte le nombre de groupe existant
@@ -88,7 +88,6 @@ function containerviewGroup(data) {
             // récupération des utilisateurs present dans le groupe
             for (let i = 0; i < groupNumberMax; i++) {
                 const currentGroupe = usersInGroup(data, groupNumber);
-                console.log('currentGroupe : ', currentGroupe)
                 const groupName = 'group' + groupNumber;
 
                 let divGroup = document.createElement('div');
@@ -103,39 +102,31 @@ function containerviewGroup(data) {
                     divuser.classList.add('divuserviewgroup');
 
                     // pseudo player
-                    let name = document.createElement('div');
-                    name.className = 'viewusername'
+                    let name = createHTMLElement('div', 'viewusername');
                     name.textContent = currentPlayer.Username;
                     divuser.appendChild(name);
 
                     // classe player
-                    let classplayer = document.createElement('div');
-                    classplayer.className = 'classplayer';
+                    let classplayer = createHTMLElement('div', 'classplayer');
                     classplayer.textContent = currentPlayer.class;
                     divuser.appendChild(classplayer);
 
                     // Unité du joueur
-                    let divlistUnit = document.createElement('div');
-                    divlistUnit.className = 'viewdivlistUnit';
-                    let unit1 = document.createElement('div');
-                    unit1.className = 'unit1';
+                    let divlistUnit = createHTMLElement('div', 'viewdivlistUnit');
+                    let unit1 = createHTMLElement('div', 'unit1');
                     unit1.textContent = currentPlayer.Unit1;
                     divlistUnit.appendChild(unit1);
-                    let unit2 = document.createElement('div');
-                    unit2.className = 'unit2';
+                    let unit2 = createHTMLElement('div', 'unit2');
                     unit2.textContent = currentPlayer.Unit2;
                     divlistUnit.appendChild(unit2);
-                    let unit3 = document.createElement('div');
-                    unit3.className = 'unit3';
+                    let unit3 = createHTMLElement('div', 'unit3');
                     unit3.textContent = currentPlayer.Unit3;
                     divlistUnit.appendChild(unit3);
-                    let unit4 = document.createElement('div');
-                    unit4.className = 'unit4';
+                    let unit4 = createHTMLElement('div', 'unit4');
                     unit4.textContent = currentPlayer.Unit4;
                     divlistUnit.appendChild(unit4);
                     if (j !== 0) {
-                        let line = document.createElement('div');
-                        line.className = 'line';
+                        let line = createHTMLElement('div', 'line');
                         divGroup.appendChild(line);
                     }
                     divuser.appendChild(divlistUnit);
@@ -153,8 +144,7 @@ function containerviewGroup(data) {
         let script = document.createElement('script');
         script.src = "https://html2canvas.hertzen.com/dist/html2canvas.js";
         container.appendChild(script);
-        let buttonDownloadGroup = document.createElement('div');
-        buttonDownloadGroup.className = 'buttonDownloadGroup';
+        let buttonDownloadGroup = createHTMLElement('div', 'buttonDownloadGroup');
         buttonDownloadGroup.textContent = "Télécharger l'image des groupes";
         containerGroupe.appendChild(buttonDownloadGroup);
         buttonDownloadGroup.addEventListener('click', function () {
@@ -172,8 +162,7 @@ function containerviewGroup(data) {
         });
 
         // bouton pour revenir à l'édition des groupes
-        let buttonEditGroup = document.createElement('div');
-        buttonEditGroup.className = 'buttonEditGroup';
+        let buttonEditGroup = createHTMLElement('div', 'buttonEditGroup');
         buttonEditGroup.textContent = "Revenir à l'édition des groupes";
         containerGroupe.appendChild(buttonEditGroup);
         buttonEditGroup.addEventListener('click', function () {

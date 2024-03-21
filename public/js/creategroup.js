@@ -1,6 +1,6 @@
 import { adressAPI } from "./home.js";
 import { cookieName } from "./main.js";
-import { communBlock } from "./useful.js";
+import { communBlock, createHTMLElement } from "./useful.js";
 
 export function creategroup() {
     if (!document.cookie.split(";").some((item) => item.trim().startsWith(cookieName + "="))) {
@@ -28,29 +28,21 @@ export function containercreategroup(data) {
         communBlock(data);
 
         let Container = document.getElementById('Container');
-
-        let containerGroupe = document.createElement('div');
-        containerGroupe.className = 'containerGroupe';
+        let containerGroupe = createHTMLElement('div', 'containerGroupe');
 
         // affichage de la liste des inscrits
         let divlistInscripted = listInscripted(data.ListInscripted);
         containerGroupe.appendChild(divlistInscripted);
-        let divcreategroup = document.createElement('div');
-        divcreategroup.id = 'divcreategroup';
-        divcreategroup.className = 'divcreategroup';
+        let divcreategroup = createHTMLElement('div', 'divcreategroup');
         divcreategroup.style.display = 'none';
 
         // Boutton pour afficher l'encart de création des groupes
-        let buttonDisplaycreategroup = document.createElement('div');
-        buttonDisplaycreategroup.id = 'buttonDisplaycreategroup';
-        buttonDisplaycreategroup.className = 'buttonDisplaycreategroup';
+        let buttonDisplaycreategroup = createHTMLElement('div', 'buttonDisplaycreategroup');
         buttonDisplaycreategroup.textContent = 'Création des groupes GvG';
         containerGroupe.appendChild(buttonDisplaycreategroup);
 
         // div de la création des groupes GvG
-        let creategroup = document.createElement('div');
-        creategroup.id = 'creategroup';
-        creategroup.className = "creategroup";
+        let creategroup = createHTMLElement('div', 'creategroup');
         // en-tête
         let titledivuser = entete();
         creategroup.appendChild(titledivuser);
@@ -77,8 +69,7 @@ export function containercreategroup(data) {
         }
 
         // Boutton pour ajouter un groupe (5 joueurs)
-        let buttonAddGroup = document.createElement('div');
-        buttonAddGroup.className = 'buttonAddGroup';
+        let buttonAddGroup = createHTMLElement('div', 'buttonAddGroup');
         buttonAddGroup.textContent = 'Ajouter un groupe';
         divcreategroup.appendChild(buttonAddGroup);
         buttonAddGroup.addEventListener('click', function () {
@@ -87,8 +78,7 @@ export function containercreategroup(data) {
         });
 
         // Boutton pour ajouter un groupe (5 joueurs)
-        let buttonSaveGroup = document.createElement('div');
-        buttonSaveGroup.className = 'buttonSaveGroup';
+        let buttonSaveGroup = createHTMLElement('div', 'buttonSaveGroup');
         buttonSaveGroup.textContent = 'Sauvegarder les groupes';
         divcreategroup.appendChild(buttonSaveGroup);
         buttonSaveGroup.addEventListener('click', function () {
@@ -98,12 +88,11 @@ export function containercreategroup(data) {
 
         // Boutton pour voir les groupes de façon non modifiable
         if (data.GroupGvG != null) {
-            let buttonViewGroup = document.createElement('div');
-            buttonViewGroup.className = 'buttonViewGroup';
+            let buttonViewGroup = createHTMLElement('div', 'buttonViewGroup');
             buttonViewGroup.textContent = 'Voir de façon propres les groupes déjà crée';
             containerGroupe.appendChild(buttonViewGroup);
             buttonViewGroup.addEventListener('click', function () {
-                saveGroup();
+                // saveGroup();
                 window.location.href = '/viewGroup';
             });
         }
@@ -137,18 +126,15 @@ function entete() {
     titledivuser.classList.add('titledivuser');
     titledivuser.classList.add('divuser');
 
-    let titlename = document.createElement('div');
+    let titlename = createHTMLElement('div', 'titlename');
     titlename.textContent = 'pseudo';
-    titlename.classList = 'titlename';
     titledivuser.appendChild(titlename);
 
-    let titleinfluence = document.createElement('div');
+    let titleinfluence = createHTMLElement('div', 'titleinfluence');
     titleinfluence.innerHTML = 'influence <br> unités / joueur';
-    titleinfluence.classList = 'titleinfluence';
     titledivuser.appendChild(titleinfluence);
 
-    let divnameunit = document.createElement('div');
-    divnameunit.className = 'divnameunit';
+    let divnameunit = createHTMLElement('div', 'divnameunit');
 
     let titleunit1 = document.createElement('div');
     titleunit1.textContent = 'unité 1';
@@ -204,7 +190,7 @@ async function createExistGroupe(data, userIngroup) {
         divuser.appendChild(inputHidden);
 
         let name = document.createElement('select');
-        name.className = 'username'
+        name.className = 'username';
         let defaultoption = document.createElement("option");
         name.appendChild(defaultoption);
         if (currentUser.Username === "") {
@@ -232,26 +218,20 @@ async function createExistGroupe(data, userIngroup) {
         }
         divuser.appendChild(name);
 
-        let influenceUnit = document.createElement('div');
-        influenceUnit.className = 'influenceUnit';
+        let influenceUnit = createHTMLElement('div', 'influenceUnit');
         divuser.appendChild(influenceUnit);
-        let influenceplayer = document.createElement('div');
-        influenceplayer.className = 'influenceplayer';
+        let influenceplayer = createHTMLElement('div', 'influenceplayer');
         divuser.appendChild(influenceplayer);
-        let unit1 = document.createElement('div');
-        unit1.className = 'unit1';
+        let unit1 = createHTMLElement('div', 'unit1');
         divuser.appendChild(unit1);
         let selectunit1;
-        let unit2 = document.createElement('div');
-        unit2.className = 'unit2';
+        let unit2 = createHTMLElement('div', 'unit2');
         divuser.appendChild(unit2);
         let selectunit2;
-        let unit3 = document.createElement('div');
-        unit3.className = 'unit3';
+        let unit3 = createHTMLElement('div', 'unit3');
         divuser.appendChild(unit3);
         let selectunit3;
-        let unit4 = document.createElement('div');
-        unit4.className = 'unit4';
+        let unit4 = createHTMLElement('div', 'unit4');
         divuser.appendChild(unit4);
         let selectunit4;
 
@@ -371,8 +351,7 @@ function createSelectUnit(numberUnit, caserne, currentUser, usernameSansEspaces,
         nameUnit = currentUser.Unit4
     }
 
-    let selectunit = document.createElement('select');
-    selectunit.id = 'unit' + numberUnit + usernameSansEspaces;
+    let selectunit = createHTMLElement('select', 'unit' + numberUnit + usernameSansEspaces);
     selectunit.name = 'unit' + numberUnit + usernameSansEspaces;
     let defaultoptionUnit = document.createElement("option");
     selectunit.appendChild(defaultoptionUnit);
@@ -476,8 +455,7 @@ async function createOneGroupe(data) {
         inputHidden.hidden = true;
         divuser.appendChild(inputHidden);
 
-        let name = document.createElement('select');
-        name.className = 'username'
+        let name = createHTMLElement('select', 'username');
         let defaultoption = document.createElement("option");
         defaultoption.value = "";
         defaultoption.text = "Choisissez";
@@ -493,23 +471,17 @@ async function createOneGroupe(data) {
         }
         divuser.appendChild(name);
 
-        let influenceUnit = document.createElement('div');
-        influenceUnit.className = 'influenceUnit';
+        let influenceUnit = createHTMLElement('div', 'influenceUnit');
         divuser.appendChild(influenceUnit);
-        let influenceplayer = document.createElement('div');
-        influenceplayer.className = 'influenceplayer';
+        let influenceplayer = createHTMLElement('div', 'influenceplayer');
         divuser.appendChild(influenceplayer);
-        let unit1 = document.createElement('div');
-        unit1.className = 'unit1';
+        let unit1 = createHTMLElement('div', 'unit1');
         divuser.appendChild(unit1);
-        let unit2 = document.createElement('div');
-        unit2.className = 'unit2';
+        let unit2 = createHTMLElement('div', 'unit2');
         divuser.appendChild(unit2);
-        let unit3 = document.createElement('div');
-        unit3.className = 'unit3';
+        let unit3 = createHTMLElement('div', 'unit3');
         divuser.appendChild(unit3);
-        let unit4 = document.createElement('div');
-        unit4.className = 'unit4';
+        let unit4 = createHTMLElement('div', 'unit4');
         divuser.appendChild(unit4);
 
         createNewline(name, data, influenceplayer, influenceUnit, unit1, unit2, unit3, unit4);
@@ -610,8 +582,8 @@ function saveGroup() {
     const creategroup = document.getElementById('creategroup');
     const divuserElements = creategroup.querySelectorAll('.divuser');
 
-    let arrayDataToSend = [];
-    divuserElements.forEach((divuserElement, index) => {
+    let dataToSend = [];
+    divuserElements.forEach((divuserElement) => {
         let divuserObject = {};
 
         const inputElement = divuserElement.querySelector('input');
@@ -622,19 +594,21 @@ function saveGroup() {
         const selectValues = Array.from(selectElements).map(select => select.value);
         divuserObject['selectValues'] = selectValues;
 
-        arrayDataToSend.push(divuserObject);
+        dataToSend.push(divuserObject);
     });
 
-    fetch(adressAPI + 'saveGroupInDB', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ arrayDataToSend }),
-    })
-        .catch(error => {
-            console.error('Erreur lors de la récupération des données:', error);
-        });
+    if (dataToSend.length !== 0) {
+        fetch(adressAPI + 'saveGroupInDB', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ dataToSend }),
+        })
+            .catch(error => {
+                console.error('Erreur lors de la récupération des données:', error);
+            });
+    }
 }
 
 function usersInGroup(listGroupGvG) {
@@ -649,19 +623,16 @@ function usersInGroup(listGroupGvG) {
 }
 
 function listInscripted(data) {
-    let divlistInscripted = document.createElement('div');
-    divlistInscripted.className = 'listInscripted';
+    let divlistInscripted = createHTMLElement('div', 'listInscripted');
 
     // Boutton pour afficher la liste des inscrits
-    let buttonDisplayInscripted = document.createElement('div');
+    let buttonDisplayInscripted = createHTMLElement('div', 'buttonDisplayInscripted');
     buttonDisplayInscripted.id = 'buttonDisplayInscripted';
-    buttonDisplayInscripted.className = 'buttonDisplayInscripted';
     buttonDisplayInscripted.textContent = 'Liste des inscrits';
     divlistInscripted.appendChild(buttonDisplayInscripted);
 
-    let divinscripted = document.createElement('div');
+    let divinscripted = createHTMLElement('div', 'divinscripted');
     divinscripted.id = 'divinscripted';
-    divinscripted.className = 'divinscripted';
     divinscripted.style.display = 'none';
 
     // en tête liste des inscrits
@@ -669,23 +640,19 @@ function listInscripted(data) {
     titledivuser.classList.add('inscriptedtitledivuser');
     titledivuser.classList.add('inscripted');
 
-    let titledivconnected = document.createElement('div');
-    titledivconnected.classList = 'divconnected';
+    let titledivconnected = createHTMLElement('div', 'divconnected');
     titledivuser.appendChild(titledivconnected);
 
-    let titlename = document.createElement('div');
+    let titlename = createHTMLElement('div', 'inscriptedname');
     titlename.textContent = 'pseudo';
-    titlename.classList = 'inscriptedname';
     titledivuser.appendChild(titlename);
 
-    let titleinfluence = document.createElement('div');
+    let titleinfluence = createHTMLElement('div', 'inscriptedinfluence');
     titleinfluence.innerHTML = 'influence joueur';
-    titleinfluence.classList = 'inscriptedinfluence';
     titledivuser.appendChild(titleinfluence);
 
-    let titleclass = document.createElement('div');
+    let titleclass = createHTMLElement('div', 'inscriptedclass');
     titleclass.innerHTML = 'classe joué';
-    titleclass.classList = 'inscriptedclass';
     titledivuser.appendChild(titleclass);
     divinscripted.appendChild(titledivuser)
 
@@ -693,12 +660,10 @@ function listInscripted(data) {
     if (data !== null) {
         for (let i = 0; i < data.length; i++) {
             const player = data[i];
+;
+            let divuser = createHTMLElement('div', 'inscripted');
+            let divconnected = createHTMLElement('div', 'divconnected');
 
-            let divuser = document.createElement('div');
-            divuser.classList.add('inscripted');
-
-            let divconnected = document.createElement('div');
-            divconnected.classList = 'divconnected';
             if (player.ConnectedSite === "1") {
                 divconnected.textContent = '✅';
             } else {
@@ -706,19 +671,16 @@ function listInscripted(data) {
             }
             divuser.appendChild(divconnected);
 
-            let name = document.createElement('div');
+            let name = createHTMLElement('div', 'inscriptedname');
             name.textContent = player.Username;
-            name.classList = 'inscriptedname';
             divuser.appendChild(name);
 
-            let influence = document.createElement('div');
+            let influence = createHTMLElement('div', 'inscriptedinfluence');
             influence.innerHTML = player.Influence;
-            influence.classList = 'inscriptedinfluence';
             divuser.appendChild(influence);
 
-            let classPlayer = document.createElement('div');
+            let classPlayer = createHTMLElement('div', 'inscriptedclass');
             classPlayer.innerHTML = player.GameCharacter;
-            classPlayer.classList = 'inscriptedclass';
             divuser.appendChild(classPlayer);
             divinscripted.appendChild(divuser)
         }
