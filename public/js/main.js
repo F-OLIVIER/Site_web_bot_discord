@@ -5,6 +5,7 @@ import { characterCard } from "./characterCard.js";
 import { administration } from "./administration.js";
 import { viewgroup } from "./viewGroup.js";
 import { stat } from "./stat.js";
+import { createHTMLElement } from "./useful.js";
 export const cookieName = "user_token";
 
 let path = window.location.pathname;
@@ -61,8 +62,7 @@ function homeNotConnected() {
     link.href = "https://discord.com/api/oauth2/authorize?client_id=1203301786254057534&response_type=token&redirect_uri=http%3A%2F%2Flocalhost%3A53134%2Fdiscord&scope=identify";
 
     let discordConnect = createHTMLElement('div', 'discordConnect');
-    let divlink = document.createElement('div');
-    divlink.className = "divlink";
+    let divlink = createHTMLElement('div', 'divlink');
     
     divlink.textContent = "Cliquer pour vous connecter avec discord";
     discordConnect.appendChild(divlink)

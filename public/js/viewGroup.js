@@ -38,14 +38,10 @@ function containerviewGroup(data) {
         titledivuser.classList.add('titledivuser');
         titledivuser.classList.add('divuser');
 
-        // let titlename = document.createElement('div');
-        // titlename.className = 'viewtitlename';
         let titlename = createHTMLElement('div', 'viewtitlename');
-        titlename.textContent = 'Pseudo joueur';
+        titlename.textContent = 'Joueur';
         titledivuser.appendChild(titlename);
 
-        // let titleclass = document.createElement('div');
-        // titleclass.className = 'titleclass';
         let titleclass = createHTMLElement('div', 'titleclass');
         titleclass.textContent = 'classe joué';
         titledivuser.appendChild(titleclass);
@@ -70,8 +66,7 @@ function containerviewGroup(data) {
         divnameunit.appendChild(titleunit4);
         titledivuser.appendChild(divnameunit);
 
-        let containerGroupe = document.createElement('div');
-        containerGroupe.className = 'containerGroupe';
+        let containerGroupe = createHTMLElement('div', 'containerGroupe');
         let viewgroup = createHTMLElement('div', 'viewgroup');
         viewgroup.appendChild(titledivuser);
 
@@ -88,7 +83,7 @@ function containerviewGroup(data) {
             // récupération des utilisateurs present dans le groupe
             for (let i = 0; i < groupNumberMax; i++) {
                 const currentGroupe = usersInGroup(data, groupNumber);
-                const groupName = 'group' + groupNumber;
+                const groupName = 'viewgroup' + groupNumber;
 
                 let divGroup = document.createElement('div');
                 divGroup.classList.add('divViewGroup');
@@ -125,10 +120,10 @@ function containerviewGroup(data) {
                     let unit4 = createHTMLElement('div', 'unit4');
                     unit4.textContent = currentPlayer.Unit4;
                     divlistUnit.appendChild(unit4);
-                    if (j !== 0) {
-                        let line = createHTMLElement('div', 'line');
-                        divGroup.appendChild(line);
-                    }
+                    // if (j !== 0) {
+                    //     let line = createHTMLElement('div', 'line');
+                    //     divGroup.appendChild(line);
+                    // }
                     divuser.appendChild(divlistUnit);
                     divGroup.appendChild(divuser);
                 }

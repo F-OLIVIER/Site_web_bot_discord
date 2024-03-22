@@ -312,11 +312,11 @@ async function createExistGroupe(data, userIngroup) {
             }
         });
 
-        if (i !== 0) {
-            let line = document.createElement('div');
-            line.className = 'line';
-            divGroup.appendChild(line);
-        }
+        // if (i !== 0) {
+        //     let line = document.createElement('div');
+        //     line.className = 'line';
+        //     divGroup.appendChild(line);
+        // }
         divGroup.appendChild(divuser)
 
     }

@@ -382,6 +382,7 @@ button:hover {
 .divconnected {
     width: 15px;
 }
+
 .inscriptedinfluence {
     width: 180px;
 }
@@ -395,24 +396,34 @@ button:hover {
     width: 100%;
 }
 
-.creategroup,
-.viewgroup {
+.creategroup {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
 }
 
-.divgroup,
-.divViewGroup {
+.viewgroup {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.divgroup {
     width: 100%;
     border-radius: 15px;
     margin-bottom: 10px;
 }
 
+.divViewGroup {
+    width: 100%;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
 .divuser,
 .divuserviewgroup {
-    padding: 5px;
     width: 100%;
     min-height: 15px;
     display: flex;
@@ -421,7 +432,26 @@ button:hover {
     text-shadow: 1px 1px 5px rgba(0, 0, 0), 0 0 1em rgb(0, 0, 0), 0 0 0.2em rgb(0, 0, 0);
 }
 
+.divuser,
 .divuserviewgroup {
+    border-bottom: 1px solid black;
+    box-sizing: border-box;
+}
+
+.divuser {
+    padding: 5px;
+
+}
+
+.divuser:last-child,
+.divuserviewgroup:last-child {
+    border-bottom: none;
+}
+
+
+.divuserviewgroup {
+    padding-top: 10px;
+    padding-bottom: 10px;
     font-size: 18px;
 }
 
@@ -430,6 +460,7 @@ button:hover {
 }
 
 .divuser select {
+    margin: 5px;
     text-align: center;
     border: 2px solid white;
     border-radius: 15px;
@@ -466,7 +497,7 @@ button:hover {
 
 .viewtitlename {
     width: 18%;
-    padding-left: 20px;
+    /* padding-left: 20px; */
 }
 
 .viewusername {
@@ -502,44 +533,67 @@ button:hover {
     text-shadow: 1px 1px 5px rgba(0, 0, 0), 0 0 1em rgb(0, 0, 0), 0 0 0.2em rgb(0, 0, 0);
 }
 
-.group1 {
-    background-color: cyan;
+/* .viewgroup1,
+.viewgroup2,
+.viewgroup3,
+.viewgroup4,
+.viewgroup5,
+.viewgroup6,
+.viewgroup7,
+.viewgroup8,
+.viewgroup9,
+.viewgroup10 {
+    border-radius: 15px;
+} */
+
+.group1,
+.viewgroup1 {
+    background-color: #D44144;
 }
 
-.group2 {
-    background-color: magenta;
+.group2,
+.viewgroup2 {
+    background-color: #F3722C;
 }
 
-.group3 {
-    background-color: yellow;
+.group3,
+.viewgroup3 {
+    background-color: #F8961E;
 }
 
-.group4 {
-    background-color: blue;
+.group4,
+.viewgroup4 {
+    background-color: #F9844A;
 }
 
-.group5 {
-    background-color: beige;
+.group5,
+.viewgroup5 {
+    background-color: #F9C74F;
 }
 
-.group6 {
-    background-color: blueviolet;
+.group6,
+.viewgroup6 {
+    background-color: #90BE6D;
 }
 
-.group7 {
-    background-color: gray;
+.group7,
+.viewgroup7 {
+    background-color: #43AA8B;
 }
 
-.group8 {
-    background-color: cyan;
+.group8,
+.viewgroup8 {
+    background-color: #4D908E;
 }
 
-.group9 {
-    background-color: magenta;
+.group9,
+.viewgroup9 {
+    background-color: #577590;
 }
 
-.group10 {
-    background-color: yellow;
+.group10,
+.viewgroup10 {
+    background-color: #277DA1;
 }
 
 .buttonAddGroup,
