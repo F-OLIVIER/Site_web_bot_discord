@@ -1,6 +1,6 @@
 import { adressAPI } from "./home.js";
 import { cookieName } from "./main.js";
-import { communBlock } from "./useful.js";
+import { communBlock, createHTMLElement } from "./useful.js";
 
 export function caserne() {
     if (!document.cookie.split(";").some((item) => item.trim().startsWith(cookieName + "="))) {
@@ -34,11 +34,9 @@ function containercaserne(data) {
         communBlock(data)
 
         let Container = document.getElementById('Container');
-        let caserne = document.createElement('div');
-        caserne.className = "caserne";
+        let caserne = createHTMLElement('div', 'caserne');
 
-        let divInfanterie = document.createElement('div');
-        divInfanterie.className = 'divInfanterie';
+        let divInfanterie = createHTMLElement('div', 'divInfanterie');
         let TitleDivInfanterie = document.createElement('div');
         TitleDivInfanterie.id = 'titleInfanterie';
         TitleDivInfanterie.classList.add("titlelistUnit");
@@ -47,8 +45,7 @@ function containercaserne(data) {
         listUnitInfanterie.classList.add("listUnit");
         listUnitInfanterie.style.display = 'none';
 
-        let divDistant = document.createElement('div');
-        divDistant.className = 'divDistant';
+        let divDistant = createHTMLElement('div', 'divDistant');
         let TitleDivDistant = document.createElement('div');
         TitleDivDistant.id = 'titleDistant';
         TitleDivDistant.classList.add("titlelistUnit");
@@ -57,8 +54,7 @@ function containercaserne(data) {
         listUnitDistant.classList.add("listUnit");
         listUnitDistant.style.display = 'none';
 
-        let divCav = document.createElement('div');
-        divCav.className = 'divCav';
+        let divCav = createHTMLElement('div', 'divCav');
         let TitleDivCav = document.createElement('div');
         TitleDivCav.id = 'titleCav';
         TitleDivCav.classList.add("titlelistUnit");

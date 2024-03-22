@@ -1,6 +1,6 @@
 import { adressAPI } from "./home.js";
 import { cookieName } from "./main.js";
-import { communBlock } from "./useful.js";
+import { communBlock, createHTMLElement } from "./useful.js";
 
 export function characterCard() {
     if (!document.cookie.split(";").some((item) => item.trim().startsWith(cookieName + "="))) {
@@ -34,22 +34,16 @@ function containerCharacterCard(data) {
         communBlock(data);
 
         let container = document.getElementById('Container');
-        let subcontainer = document.createElement('subcontainer');
-        subcontainer.className = 'subcontainerProfile';
+        let subcontainer = createHTMLElement('div', 'subcontainerProfile');
 
-        let divError = document.createElement('div');
-        divError.id = 'divError';
-        divError.className = 'divError';
+        let divError = createHTMLElement('div', 'divError');
         divError.style.display = 'none';
         subcontainer.appendChild(divError)
 
-        let divMAJ = document.createElement('div');
-        divMAJ.className = 'divMAJ';
+        let divMAJ = createHTMLElement('div', 'divMAJ');
 
-        let personnage = document.createElement('div');
-        personnage.className = 'personnage';
-        let titlepersonnage = document.createElement('div');
-        titlepersonnage.className = 'titlepersonnage';
+        let personnage = createHTMLElement('div', 'personnage');
+        let titlepersonnage = createHTMLElement('div', 'titlepersonnage');
         titlepersonnage.textContent = 'Informations du héros';
         personnage.appendChild(titlepersonnage);
 
@@ -57,13 +51,11 @@ function containerCharacterCard(data) {
         let classeplay = document.createElement('div');
         classeplay.textContent = 'Classe actuel : ' + data.UserInfo.GameCharacter;
         personnage.appendChild(classeplay);
-        let changeClass = document.createElement('div');
-        changeClass.className = 'changeInfo';
+        let changeClass = createHTMLElement('div', 'changeInfo');
         let titlechangeClass = document.createElement('div');
         titlechangeClass.innerHTML = 'Changer de classe : ';
         changeClass.appendChild(titlechangeClass);
-        let selectchangeClass = document.createElement('select');
-        selectchangeClass.id = 'newClass';
+        let selectchangeClass = createHTMLElement('select', 'newClass');
         let defaultOption = document.createElement('option');
         defaultOption.value = "";
         defaultOption.text = "Choisissez";
@@ -85,13 +77,11 @@ function containerCharacterCard(data) {
             lvl.textContent = 'Level actuel : ' + data.UserInfo.Lvl;
         }
         personnage.appendChild(lvl);
-        let changelvl = document.createElement('div');
-        changelvl.className = 'changeInfo';
+        let changelvl = createHTMLElement('div', 'changeInfo');
         let titlechangelvl = document.createElement('div');
         titlechangelvl.innerHTML = 'Changer de level : ';
         changelvl.appendChild(titlechangelvl);
-        let inputlvl = document.createElement('input');
-        inputlvl.id = 'newlvl';
+        let inputlvl = createHTMLElement('input', 'newlvl');
         inputlvl.placeholder = "Nouveau level";
         inputlvl.type = 'number';
         changelvl.appendChild(inputlvl);
@@ -101,59 +91,48 @@ function containerCharacterCard(data) {
         let influence = document.createElement('div');
         influence.innerHTML = 'Influence actuel : ' + data.UserInfo.Influence;
         personnage.appendChild(influence);
-        let changeInflu = document.createElement('div');
-        changeInflu.className = 'changeInfo';
+        let changeInflu = createHTMLElement('div', 'changeInfo');
         let titlechangeInflu = document.createElement('div');
         titlechangeInflu.innerHTML = "Changer l'influence : ";
         changeInflu.appendChild(titlechangeInflu);
-        let inputInflu = document.createElement('input');
-        inputInflu.id = 'newInflu';
+        let inputInflu = createHTMLElement('input', 'newInflu');
         inputInflu.placeholder = "Nouvelle influence";
         inputInflu.type = 'number';
         changeInflu.appendChild(inputInflu);
         personnage.appendChild(changeInflu);
 
-        let buttonMAJpersonnage = document.createElement('button');
-        buttonMAJpersonnage.id = 'buttonMAJpersonnage';
-        buttonMAJpersonnage.className = "buttonMAJpersonnage";
+        let buttonMAJpersonnage = createHTMLElement('button', 'buttonMAJpersonnage');
         buttonMAJpersonnage.textContent = "Mettre à jour mon personnage"
         personnage.appendChild(buttonMAJpersonnage);
         divMAJ.appendChild(personnage);
 
         // Information GvG
-        let infoGvG = document.createElement('div');
-        infoGvG.className = 'infoGvG';
-        let titleinfoGvG = document.createElement('div');
-        titleinfoGvG.className = 'titleinfoGvG';
+        let infoGvG = createHTMLElement('div', 'infoGvG');
+        let titleinfoGvG = createHTMLElement('div', 'titleinfoGvG');
         titleinfoGvG.textContent = 'Informations GvG';
         infoGvG.appendChild(titleinfoGvG);
         let etatInscripted = document.createElement('div');
-        let listButton = document.createElement('div');
-        listButton.classList = 'listButton';
+        let listButton = createHTMLElement('div', 'listButton');
         if (data.UserInfo.EtatInscription === 0) {
             etatInscripted.textContent = "⁉️ Vous n'éte pas inscrit pour la prochaine GvG";
             // button present
-            let buttonPresent = document.createElement('button');
-            buttonPresent.id = 'inscriptedPresent';
+            let buttonPresent = createHTMLElement('button', 'inscriptedPresent');
             buttonPresent.textContent = "M'inscrire présent"
             listButton.appendChild(buttonPresent);
             // button absent
-            let buttonAbsent = document.createElement('button');
-            buttonAbsent.id = 'inscriptedAbsent'
+            let buttonAbsent = createHTMLElement('button', 'inscriptedAbsent');
             buttonAbsent.textContent = "M'inscrire absent"
             listButton.appendChild(buttonAbsent);
         } else if (data.UserInfo.EtatInscription == 1) {
             etatInscripted.textContent = "✅ Inscrit présent pour la prochaine GvG";
             // button absent
-            let buttonAbsent = document.createElement('button');
-            buttonAbsent.id = 'inscriptedAbsent';
+            let buttonAbsent = createHTMLElement('button', 'inscriptedAbsent');
             buttonAbsent.textContent = "M'inscrire absent"
             listButton.appendChild(buttonAbsent);
         } else if (data.UserInfo.EtatInscription == 3) {
             etatInscripted.textContent = "❌ inscrit absent pour la prochaine GvG";
             // button present
-            let buttonPresent = document.createElement('button');
-            buttonPresent.id = 'inscriptedPresent';
+            let buttonPresent = createHTMLElement('button', 'inscriptedPresent');
             buttonPresent.textContent = "M'inscrire présent"
             listButton.appendChild(buttonPresent);
         }

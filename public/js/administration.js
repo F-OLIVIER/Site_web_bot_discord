@@ -1,6 +1,6 @@
 import { adressAPI } from "./home.js";
 import { cookieName } from "./main.js";
-import { communBlock } from "./useful.js";
+import { communBlock, createHTMLElement } from "./useful.js";
 
 export function administration() {
     if (!document.cookie.split(";").some((item) => item.trim().startsWith(cookieName + "="))) {
@@ -31,16 +31,12 @@ function containerAppAdmin(data) {
     if (data.Gestion.Logged && data.Gestion.Officier) {
         communBlock(data)
 
-        let subContainer = document.createElement('div');
-        subContainer.className = 'subContainerbotEtat';
+        let subContainer = createHTMLElement('div', 'subContainerbotEtat');
 
         // Etat du bot
-        let divBotEtat = document.createElement('div');
-        divBotEtat.className = 'divBotEtat';
-        let botEtat = document.createElement('div');
-        botEtat.className = 'botEtat';
-        let buttonBotEtat = document.createElement('button');
-        buttonBotEtat.id = 'buttonBotEtat';
+        let divBotEtat = createHTMLElement('div', 'divBotEtat');
+        let botEtat = createHTMLElement('div', 'botEtat');
+        let buttonBotEtat = createHTMLElement('button', 'buttonBotEtat');
         buttonBotEtat.type = 'button';
         buttonBotEtat.className = 'buttonBotEtat';
         if (data.Gestion.BotActivate) {
@@ -63,41 +59,35 @@ function containerAppAdmin(data) {
         divErrorAddUnit.style.display = 'none';
         subContainer.appendChild(divErrorAddUnit);
 
-        let divNewUnit = document.createElement('div');
-        divNewUnit.className = 'divNewUnit';
-        let titleNewUnit = document.createElement('div');
-        titleNewUnit.className = 'titleNewUnit'
+        let divNewUnit = createHTMLElement('div', 'divNewUnit');
+        let titleNewUnit = createHTMLElement('div', 'titleNewUnit');
         titleNewUnit.textContent = 'Ajouter une nouvelle unité';
         divNewUnit.appendChild(titleNewUnit);
 
         let formNewUnit = document.createElement('form');
         formNewUnit.id = 'formNewUnit';
-        formNewUnit.method = 'POST';
         formNewUnit.className = 'newUnit';
+        formNewUnit.method = 'POST';
         formNewUnit.enctype = 'multipart/form-data';
         // Unit_name
-        let input_Unit_name = document.createElement('input');
-        input_Unit_name.id = 'nameNewUnit';
+        let input_Unit_name = createHTMLElement('input', 'nameNewUnit');
         input_Unit_name.placeholder = "Nom de l'unité";
         input_Unit_name.required;
         formNewUnit.appendChild(input_Unit_name);
         // Unit_influence
-        let input_Unit_influence = document.createElement('input');
-        input_Unit_influence.id = 'influNewUnit';
+        let input_Unit_influence = createHTMLElement('input', 'influNewUnit');
         input_Unit_influence.type = 'number';
         input_Unit_influence.required;
         input_Unit_influence.placeholder = "Influence de l'unité";
         formNewUnit.appendChild(input_Unit_influence);
         // Unit_lvlMax
-        let input_Unit_lvlMax = document.createElement('input');
-        input_Unit_lvlMax.id = 'lvlMaxNewUnit';
+        let input_Unit_lvlMax = createHTMLElement('input', 'lvlMaxNewUnit');
         input_Unit_lvlMax.type = 'number';
         input_Unit_lvlMax.required;
         input_Unit_lvlMax.placeholder = "Level max de l'unité";
         formNewUnit.appendChild(input_Unit_lvlMax);
         // Unit_tier
-        let input_Unit_tier = document.createElement('select');
-        input_Unit_tier.id = 'tierNewUnit';
+        let input_Unit_tier = createHTMLElement('select', 'tierNewUnit');
         input_Unit_tier.required;
         let title_option_Unit_tier = ["Tier de l'unité", "T3", "T4", "T5"];
         let option_Unit_tier = ["", "T3", "T4", "T5"];
@@ -109,8 +99,7 @@ function containerAppAdmin(data) {
         }
         formNewUnit.appendChild(input_Unit_tier);
         // Unit_type
-        let input_Unit_type = document.createElement('select');
-        input_Unit_type.id = 'typeNewUnit';
+        let input_Unit_type = createHTMLElement('select', 'typeNewUnit');
         input_Unit_type.required;
         let titleOption_Unit_type = ["Type d'unité", "Infanterie", "Distant", "Cavalerie"];
         let option_Unit_type = ["", "Infanterie", "Distant", "Cavalerie"];
@@ -123,8 +112,7 @@ function containerAppAdmin(data) {
         formNewUnit.appendChild(input_Unit_type);
 
         // Unit_img
-        let input_Unit_img = document.createElement('input');
-        input_Unit_img.id = 'imgNewUnit';
+        let input_Unit_img = createHTMLElement('input', 'imgNewUnit');
         input_Unit_img.required;
         input_Unit_img.type = 'file';
         input_Unit_img.lang = 'fr';
@@ -132,9 +120,7 @@ function containerAppAdmin(data) {
         formNewUnit.appendChild(input_Unit_img);
 
         // button
-        let buttonNewUnit = document.createElement('button');
-        buttonNewUnit.id = 'buttonNewUnit';
-        buttonNewUnit.className = 'buttonNewUnit';
+        let buttonNewUnit = createHTMLElement('button', 'buttonNewUnit');
         buttonNewUnit.textContent = "Ajouter l'unité";
         buttonNewUnit.type = 'submit';
         formNewUnit.appendChild(buttonNewUnit);
@@ -149,20 +135,16 @@ function containerAppAdmin(data) {
         divErrorChangeUnit.style.display = 'none';
         subContainer.appendChild(divErrorChangeUnit);
 
-        let divChangeUnit = document.createElement('div');
-        divChangeUnit.id = 'divChangeUnit';
-        divChangeUnit.className = 'divChangeUnit';
+        let divChangeUnit = createHTMLElement('div', 'divChangeUnit');
         let titleChangeUnit = document.createElement('div');
         titleChangeUnit.className = 'titleChangeUnit'
         titleChangeUnit.textContent = 'Modifier une unité';
         divChangeUnit.appendChild(titleChangeUnit);
-        let formChangeUnit = document.createElement('form');
+
+        let formChangeUnit = createHTMLElement('form', 'formchangeUnit');
         formChangeUnit.enctype = 'multipart/form-data';
         formChangeUnit.method = 'POST';
-        formChangeUnit.id = 'formchangeUnit';
-        formChangeUnit.className = 'formchangeUnit';
-        let selectChangeUnit = document.createElement('select');
-        selectChangeUnit.id = 'selectChangeUnit';
+        let selectChangeUnit = createHTMLElement('select', 'selectChangeUnit');
         let defaultChangeUnit = document.createElement('option');
         defaultChangeUnit.value = "";
         defaultChangeUnit.text = "Choisissez";
@@ -179,20 +161,14 @@ function containerAppAdmin(data) {
         subContainer.appendChild(divChangeUnit);
 
         // Suprimer un utilisateur
-        let divDeleteUser = document.createElement('div');
-        divDeleteUser.id = 'divDeleteUser';
-        divDeleteUser.className = 'divDeleteUser';
-        let titleDeleteUser = document.createElement('div');
-        titleDeleteUser.className = 'titleDeleteUser'
+        let divDeleteUser = createHTMLElement('div', 'divDeleteUser');
+        let titleDeleteUser = createHTMLElement('div', 'titleDeleteUser');
         titleDeleteUser.textContent = 'Suprimer un joueur';
         divDeleteUser.appendChild(titleDeleteUser);
-        let formDeleteUser = document.createElement('form');
+        let formDeleteUser = createHTMLElement('form', 'formDeleteUser');
         formDeleteUser.enctype = 'multipart/form-data';
         formDeleteUser.method = 'POST';
-        formDeleteUser.id = 'formDeleteUser';
-        formDeleteUser.className = 'formDeleteUser';
-        let selectDeleteUser = document.createElement('select');
-        selectDeleteUser.id = 'selectDeleteUser';
+        let selectDeleteUser = createHTMLElement('select', 'selectDeleteUser');
         let defaultDeleteUser = document.createElement('option');
         defaultDeleteUser.value = "";
         defaultDeleteUser.text = "Choisissez";
@@ -266,31 +242,26 @@ function addEventOnAllButton(listUnit, connectedUsername) {
             // Ajout des nouveaux éléments
             let formChangeUnit = document.getElementById('formchangeUnit');
             // Unit_influence
-            let input_Unit_influence = document.createElement('input');
-            input_Unit_influence.id = 'changeUnitInfluence';
+            let input_Unit_influence = createHTMLElement('input', 'changeUnitInfluence');
             input_Unit_influence.type = 'number';
             input_Unit_influence.placeholder = 'Influence actuel : ' + unitSelected.Unit_influence;
             formChangeUnit.appendChild(input_Unit_influence);
             // Unit_lvlMax
-            let input_Unit_lvlMax = document.createElement('input');
-            input_Unit_lvlMax.id = 'changeUnitLvlMax';
+            let input_Unit_lvlMax = createHTMLElement('input', 'changeUnitLvlMax');
             input_Unit_lvlMax.type = 'number';
             input_Unit_lvlMax.placeholder = 'Level max actuel : ' + unitSelected.Unit_lvlMax;
             formChangeUnit.appendChild(input_Unit_lvlMax);
 
             // Unit_img
-            let input_Unit_img = document.createElement('input');
-            input_Unit_img.id = 'changeUnitimg';
+            let input_Unit_img = createHTMLElement('input', 'changeUnitimg');
             input_Unit_img.type = 'file';
             input_Unit_img.lang = 'fr';
             input_Unit_img.accept = '.jpg, .jpeg, .png,';
             formChangeUnit.appendChild(input_Unit_img);
 
             // button
-            let buttonChangeUnit = document.createElement('button');
-            buttonChangeUnit.id = 'buttonChangeUnit';
+            let buttonChangeUnit = createHTMLElement('button', 'buttonChangeUnit');
             buttonChangeUnit.type = 'submit';
-            buttonChangeUnit.className = 'buttonChangeUnit';
             buttonChangeUnit.textContent = "Modifier l'unité";
             formChangeUnit.appendChild(buttonChangeUnit);
 

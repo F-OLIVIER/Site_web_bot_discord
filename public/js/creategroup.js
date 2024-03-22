@@ -181,8 +181,7 @@ async function createExistGroupe(data, userIngroup) {
             currentUser.Unit4 = userIngroup[i].Unit4;
         }
 
-        let divuser = document.createElement('div');
-        divuser.classList.add('divuser');
+        let divuser = createHTMLElement('div', 'divuser');
 
         let inputHidden = document.createElement('input');
         inputHidden.value = groupName;

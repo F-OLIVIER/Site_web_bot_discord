@@ -1,6 +1,6 @@
 import { adressAPI } from "./home.js";
 import { cookieName } from "./main.js";
-import { communBlock } from "./useful.js";
+import { communBlock, createHTMLElement } from "./useful.js";
 
 export function stat() {
     if (!document.cookie.split(";").some((item) => item.trim().startsWith(cookieName + "="))) {
@@ -26,11 +26,9 @@ function containerviewGroup(data) {
     if (data.Gestion.Logged && data.Gestion.Officier) {
         communBlock(data);
 
-        let subContainerStat = document.createElement('div');
-        subContainerStat.className = 'subContainerStat';
+        let subContainerStat = createHTMLElement('div', 'subContainerStat');
 
-        let filter = document.createElement('div');
-        filter.className = 'statfilter';
+        let filter = createHTMLElement('div', 'statfilter');
         filter.textContent = 'filtre de trie ici';
         subContainerStat.appendChild(filter);
 
@@ -39,39 +37,32 @@ function containerviewGroup(data) {
         titledivstat.classList.add('divTitleStat');
         titledivstat.classList.add('divstat');
 
-        let titleconnected = document.createElement('div');
+        let titleconnected = createHTMLElement('div', 'statconnected');
         titleconnected.textContent = '';
-        titleconnected.className = 'statconnected';
         titledivstat.appendChild(titleconnected);
 
-        let titlename = document.createElement('div');
+        let titlename = createHTMLElement('div', 'statname');
         titlename.textContent = 'Pseudo joueur';
-        titlename.className = 'statname';
         titledivstat.appendChild(titlename);
 
-        let titleclass = document.createElement('div');
+        let titleclass = createHTMLElement('div', 'statclass');
         titleclass.textContent = 'classe joué';
-        titleclass.className = 'statclass';
         titledivstat.appendChild(titleclass);
 
-        let titleinfluenceplayer = document.createElement('div');
+        let titleinfluenceplayer = createHTMLElement('div', 'statinfluence');
         titleinfluenceplayer.textContent = 'influence joueur';
-        titleinfluenceplayer.className = 'statinfluence'
         titledivstat.appendChild(titleinfluenceplayer);
 
-        let titlelvlplayer = document.createElement('div');
+        let titlelvlplayer = createHTMLElement('div', 'statlvl');
         titlelvlplayer.textContent = 'Level joueur';
-        titlelvlplayer.className = 'statlvl';
         titledivstat.appendChild(titlelvlplayer);
 
-        let titlenbGvGparticiped = document.createElement('div');
+        let titlenbGvGparticiped = createHTMLElement('div', 'statnbgvg');
         titlenbGvGparticiped.textContent = 'GvG participé/total';
-        titlenbGvGparticiped.className = 'statnbgvg';
         titledivstat.appendChild(titlenbGvGparticiped);
 
-        let titlelastGvGparticiped = document.createElement('div');
+        let titlelastGvGparticiped = createHTMLElement('div', 'statlastgvg');
         titlelastGvGparticiped.textContent = 'Derniére GvG participé le';
-        titlelastGvGparticiped.className = 'statlastgvg'
         titledivstat.appendChild(titlelastGvGparticiped);
 
         subContainerStat.appendChild(titledivstat);
@@ -79,46 +70,37 @@ function containerviewGroup(data) {
         for (let i = 0; i < data.ListInscripted.length; i++) {
             const currentUser = data.ListInscripted[i];
 
-            let divstat = document.createElement('div');
-            divstat.classList.add('divstat');
-
-            let connected = document.createElement('div');
+            let divstat = createHTMLElement('div', 'divstat');
+            let connected = createHTMLElement('div', 'connected');
             if (currentUser.ID == 1) {
                 connected.textContent = '✅';
             } else {
                 connected.textContent = '❌';
             }
-            connected.className = 'statconnected';
             divstat.appendChild(connected);
 
-            let name = document.createElement('div');
+            let name = createHTMLElement('div', 'statname');
             name.textContent = currentUser.Username;
-            name.className = 'statname';
             divstat.appendChild(name);
 
-            let classPlayer = document.createElement('div');
+            let classPlayer = createHTMLElement('div', 'statclass');
             classPlayer.textContent = currentUser.GameCharacter;
-            classPlayer.className = 'statclass';
             divstat.appendChild(classPlayer);
 
-            let influenceplayer = document.createElement('div');
+            let influenceplayer = createHTMLElement('div', 'statinfluence');
             influenceplayer.textContent = currentUser.Influence;
-            influenceplayer.className = 'statinfluence'
             divstat.appendChild(influenceplayer);
 
-            let lvlplayer = document.createElement('div');
+            let lvlplayer = createHTMLElement('div', 'statlvl');
             lvlplayer.textContent = currentUser.Lvl;
-            lvlplayer.className = 'statlvl';
             divstat.appendChild(lvlplayer);
 
-            let nbGvGparticiped = document.createElement('div');
+            let nbGvGparticiped = createHTMLElement('div', 'statnbgvg');
             nbGvGparticiped.textContent = currentUser.NbGvGParticiped + ' / ' + currentUser.NbTotalGvG;
-            nbGvGparticiped.className = 'statnbgvg';
             divstat.appendChild(nbGvGparticiped);
 
-            let lastGvGparticiped = document.createElement('div');
+            let lastGvGparticiped = createHTMLElement('div', 'statlastgvg');
             lastGvGparticiped.textContent = currentUser.DateLastGvGParticiped;
-            lastGvGparticiped.className = 'statlastgvg'
             divstat.appendChild(lastGvGparticiped);
 
             subContainerStat.appendChild(divstat);

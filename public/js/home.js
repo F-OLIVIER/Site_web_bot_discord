@@ -1,5 +1,5 @@
 import { cookieName } from "./main.js";
-import { communBlock } from "./useful.js";
+import { communBlock, createHTMLElement } from "./useful.js";
 
 export const adressAPI = 'http://localhost:53134/api/';
 
@@ -39,68 +39,49 @@ function containerhome(data) {
     Container.innerHTML = '';
 
     // page characterCard
-    let subContainer = document.createElement('div');
-    subContainer.className = 'subContainer';
-    let linkCharacterCard = document.createElement('a');
+    let subContainer = createHTMLElement('div', 'subContainer');
+    let linkCharacterCard = createHTMLElement('a', 'no-style-link');
     linkCharacterCard.href = '/characterCard';
-    linkCharacterCard.classList.add('no-style-link');
-    let buttoncharacterCard = document.createElement('div');
-    buttoncharacterCard.className = 'buttoncharacterCard';
-    buttoncharacterCard.id = 'buttonCharacterCard';
+    let buttoncharacterCard = createHTMLElement('div', 'buttoncharacterCard');
     buttoncharacterCard.textContent = 'Ma fiche personnage';
     linkCharacterCard.appendChild(buttoncharacterCard);
     subContainer.appendChild(linkCharacterCard);
 
     // page caserne
-    let linkCaserne = document.createElement('a');
+    let linkCaserne = createHTMLElement('a', 'no-style-link');
     linkCaserne.href = '/caserne';
-    linkCaserne.classList.add('no-style-link');
-    let buttonCaserne = document.createElement('div');
-    buttonCaserne.id = 'buttonCaserne';
-    buttonCaserne.className = 'buttonCaserne';
+    let buttonCaserne = createHTMLElement('div', 'buttonCaserne');
     buttonCaserne.textContent = 'Modifier ma caserne';
     linkCaserne.appendChild(buttonCaserne);
     subContainer.appendChild(linkCaserne);
 
     if (data.Gestion.Officier) { // si officier, affichage bouton création des groupes et bouton administration
-      let subcontainerOfficier = document.createElement('div');
-      subcontainerOfficier.className = 'subcontainerOfficier';
-
-      let titlesubcontainerOfficier = document.createElement('div');
-      titlesubcontainerOfficier.className = 'titlesubcontainerOfficier';
+      let subcontainerOfficier = createHTMLElement('div', 'subcontainerOfficier');
+      let titlesubcontainerOfficier = createHTMLElement('div', 'titlesubcontainerOfficier');
       titlesubcontainerOfficier.textContent = "Réservé aux officiers";
       subcontainerOfficier.appendChild(titlesubcontainerOfficier);
 
       // page création des groupes gvg
-      let linkCreateGroup = document.createElement('a');
+      let linkCreateGroup = createHTMLElement('a', 'no-style-link');
       linkCreateGroup.href = '/creategroup';
-      linkCreateGroup.classList.add('no-style-link');
-      let buttonCreateGroup = document.createElement('div');
-      buttonCreateGroup.id = 'buttonCreateGroup';
-      buttonCreateGroup.className = 'buttonCreateGroup';
+      let buttonCreateGroup = createHTMLElement('div', 'buttonCreateGroup');
       buttonCreateGroup.href = '/creategroup';
       buttonCreateGroup.textContent = 'Créer les groupes GvG';
       linkCreateGroup.appendChild(buttonCreateGroup);
       subcontainerOfficier.appendChild(linkCreateGroup);
 
       // page des statistiques
-      let linkStat = document.createElement('a');
+      let linkStat = createHTMLElement('a', 'no-style-link');
       linkStat.href = '/stat';
-      linkStat.classList.add('no-style-link');
-      let buttonStat = document.createElement('div');
-      buttonStat.id = 'buttonStat';
-      buttonStat.className = 'buttonStat';
+      let buttonStat = createHTMLElement('div', 'buttonStat');
       buttonStat.textContent = 'Statistique';
       linkStat.appendChild(buttonStat);
       subcontainerOfficier.appendChild(linkStat);
 
       // page d'administration
-      let linkAppAdmin = document.createElement('a');
+      let linkAppAdmin = createHTMLElement('a', 'no-style-link');
       linkAppAdmin.href = '/AppAdmin';
-      linkAppAdmin.classList.add('no-style-link');
-      let buttonAppAdmin = document.createElement('div');
-      buttonAppAdmin.id = 'buttonAppAdmin';
-      buttonAppAdmin.className = 'buttonAppAdmin';
+      let buttonAppAdmin = createHTMLElement('div', 'buttonAppAdmin');
       buttonAppAdmin.href = '/AppAdmin';
       buttonAppAdmin.textContent = "Page d'administration";
       linkAppAdmin.appendChild(buttonAppAdmin);

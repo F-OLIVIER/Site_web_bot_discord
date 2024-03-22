@@ -9,13 +9,11 @@ export function communBlock(data) {
     
     let disconnect = document.getElementById('disconnect');
     let Username = document.createElement('div');
-    Username.textContent = 'Connecté en tant que ' + data.UserInfo.Username;
     Username.className = 'Username';
+    Username.textContent = 'Connecté en tant que ' + data.UserInfo.Username;
     disconnect.appendChild(Username);
 
-    let button = document.createElement('button');
-    button.id = 'DisconnectButton';
-    button.className = 'DisconnectButton';
+    let button = createHTMLElement('button', 'DisconnectButton');
     button.type = 'submit';
     button.textContent = 'Se déconnecter';
     disconnect.appendChild(button)
