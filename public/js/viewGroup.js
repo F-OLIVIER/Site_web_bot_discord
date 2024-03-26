@@ -120,14 +120,9 @@ function containerviewGroup(data) {
                     let unit4 = createHTMLElement('div', 'unit4');
                     unit4.textContent = currentPlayer.Unit4;
                     divlistUnit.appendChild(unit4);
-                    // if (j !== 0) {
-                    //     let line = createHTMLElement('div', 'line');
-                    //     divGroup.appendChild(line);
-                    // }
                     divuser.appendChild(divlistUnit);
                     divGroup.appendChild(divuser);
                 }
-
                 viewgroup.appendChild(divGroup);
             }
             groupNumber += 1;

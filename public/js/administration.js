@@ -160,6 +160,30 @@ function containerAppAdmin(data) {
         divChangeUnit.appendChild(formChangeUnit);
         subContainer.appendChild(divChangeUnit);
 
+        // Ajouter une nouvelle classe
+        let divNewclass = createHTMLElement('div', 'divNewclass');
+        let titleNewclass = createHTMLElement('div', 'titleNewclass');
+        titleNewclass.textContent = 'Ajouter une nouvelle arme';
+        divNewclass.appendChild(titleNewclass);
+
+        let formNewclass = document.createElement('form');
+        formNewclass.id = 'formNewclass';
+        formNewclass.className = 'formNewclass';
+        formNewclass.method = 'POST';
+        // class_name
+        let input_class_name = createHTMLElement('input', 'nameNewclass');
+        input_class_name.placeholder = "Nom de la nouvelle arme";
+        input_class_name.required;
+        formNewclass.appendChild(input_class_name);
+
+        let buttonNewclass = createHTMLElement('button', 'buttonNewclass');
+        buttonNewclass.textContent = "Ajouter la classe";
+        buttonNewclass.type = 'submit';
+        formNewclass.appendChild(buttonNewclass);
+
+        divNewclass.appendChild(formNewclass);
+        subContainer.appendChild(divNewclass);
+
         // Suprimer un utilisateur
         let divDeleteUser = createHTMLElement('div', 'divDeleteUser');
         let titleDeleteUser = createHTMLElement('div', 'titleDeleteUser');
@@ -279,6 +303,16 @@ function addEventOnAllButton(listUnit, connectedUsername) {
         });
     });
 
+    // Ajouter une nouvelle arme (new class)
+    document.getElementById('buttonNewclass').addEventListener('click', (event) => {
+        event.preventDefault();
+        const now = new Date();
+        if (now - timerThrottlebutton > 500) {
+            timerThrottlebutton = now;
+            adminitrateBot('buttonNewclass');
+        }
+    });
+
     // Suppression d'un joueur
     let selectDeleteUser = document.getElementById('selectDeleteUser');
     selectDeleteUser.addEventListener('change', () => {
@@ -338,6 +372,9 @@ async function adminitrateBot(option) {
         sendData(dataToSend);
     } else if (option === 'buttonConfirmDeleteUser') { // suppression d'un utilisateur
         dataToSend.DeleteUser = document.getElementById('selectDeleteUser').value;
+        sendData(dataToSend);
+    } else if (option === 'buttonNewclass') {
+        dataToSend.newWeapon = document.getElementById('nameNewclass').value;
         sendData(dataToSend);
     } else {
         let formData = new FormData();
@@ -421,7 +458,7 @@ async function adminitrateBot(option) {
 
 function sendData(dataToSend) {
     // console.log('dataToSend : ', dataToSend);
-    fetch(adressAPI + 'activateOrNotBot', {
+    fetch(adressAPI + 'UpdateAdmin', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

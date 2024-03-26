@@ -185,20 +185,20 @@ func BotActivation(database *sql.DB) bool {
 	}
 }
 
-func ActivateOrNotBotInDB(r *http.Request, database *sql.DB) {
+func UpdateAdministration(r *http.Request, database *sql.DB) {
 	var data data.AdministrateBot
 	err := json.NewDecoder(r.Body).Decode(&data)
 	CheckErr("Erreur de décodage JSON SaveCreateGroup", err)
 
-	if data.Allumage != "" {
+	if data.Allumage != "" { // changement de l'etat du bot
 		newAllumage := 0
 		if data.Allumage == "false" {
 			newAllumage = 1
 		}
 		stmt, err := database.Prepare("UPDATE GestionBot SET Allumage = ? WHERE ID = 1")
-		CheckErr("Update Allumage ActivateOrNotBotInDB ", err)
+		CheckErr("Update Allumage UpdateAdministration ", err)
 		stmt.Exec(newAllumage)
-	} else if data.DeleteUser != "" {
+	} else if data.DeleteUser != "" { // suppression d'un utilisateur de la db
 		parts := strings.Split(data.DeleteUser, "-")
 		UserID := parts[0]
 		Username := strings.Join(parts[1:], "-")
@@ -210,18 +210,23 @@ func ActivateOrNotBotInDB(r *http.Request, database *sql.DB) {
 		if existID != 0 {
 			// supression de l'utilisateur dans la table Users
 			stmtUsers, err := database.Prepare("DELETE FROM Users WHERE ID = ?")
-			CheckErr("Delete User ActivateOrNotBotInDB ", err)
+			CheckErr("Delete User UpdateAdministration ", err)
 			_, err = stmtUsers.Exec(existID)
-			CheckErr("Execute delete statement ActivateOrNotBotInDB", err)
+			CheckErr("Execute delete statement UpdateAdministration", err)
 
 			// supression de l'utilisateur dans la table Caserne
 			stmtCaserne, err := database.Prepare("DELETE FROM Caserne WHERE User_ID = ?")
-			CheckErr("Delete User ActivateOrNotBotInDB ", err)
+			CheckErr("Delete User UpdateAdministration ", err)
 			_, err = stmtCaserne.Exec(existID)
-			CheckErr("Execute delete statement ActivateOrNotBotInDB", err)
+			CheckErr("Execute delete statement UpdateAdministration", err)
 
 			// la suppression de l'utilisateur dans la table GroupGvG (si present) sera automatique au prochain reset
 		}
+	} else if data.NewWeapon != "" { // ajout d'une nouvelle arme de héros
+		// insertion de la nouvelle arme dans la db
+		stmt, err := database.Prepare(`INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES(?,?);`)
+		CheckErr("1- INSERT NewWeapon in UpdateAdministration ", err)
+		stmt.Exec(data.NewWeapon, "")
 	}
 }
 

@@ -463,12 +463,12 @@ func CheckAppAdmin(w http.ResponseWriter, r *http.Request) {
 	w.Write(jsonData)
 }
 
-func ActivateOrNotBot(w http.ResponseWriter, r *http.Request) {
-	// fmt.Println("ENTER ActivateOrNotBot")
+func UpdateAdmin(w http.ResponseWriter, r *http.Request) {
+	// fmt.Println("ENTER UpdateAdmin")
 
 	// lecture du cookie
 	cookie, err1 := r.Cookie("user_token")
-	if r.URL.Path == "/api/activateOrNotBot" && err1 != http.ErrNoCookie && r.Method == "POST" {
+	if r.URL.Path == "/api/UpdateAdmin" && err1 != http.ErrNoCookie && r.Method == "POST" {
 		database, err := sql.Open("sqlite3", "./database/databaseGvG.db")
 		utils.CheckErr("open db in homehandler", err)
 		defer database.Close()
@@ -479,7 +479,7 @@ func ActivateOrNotBot(w http.ResponseWriter, r *http.Request) {
 		} else { // si cookies valide
 			_, _, _, officier := utils.UserInfo(cookie.Value, database)
 			if officier { // si l'utilisateur a le droit de modifier
-				utils.ActivateOrNotBotInDB(r, database)
+				utils.UpdateAdministration(r, database)
 			}
 		}
 	}

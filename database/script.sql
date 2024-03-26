@@ -65,25 +65,23 @@ CREATE TABLE IF NOT EXIST Saison(
 -- liste des classes IG
 CREATE TABLE IF NOT EXIST ListGameCharacter( 
     ID INTEGER PRIMARY KEY,
-    CodeFR VARCHAR(5),
-    CodeEN VARCHAR(5),
     ClasseFR VARCHAR(50),
-    ClasseEN VARCHAR(50)
+    ClasseEN VARCHAR(50) DEFAULT ""
 );
 -- Insertion automatique de la liste des classes lors de la création de la databases
-INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('arc','sar','Arc court','Short bow');
-INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('acl','lar','Arc long','Long bow');
-INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('lju','tbl','Lames jumelles','Twin blades (dual blade)');
-INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('ecb','sss','Épée courte & bouclier','Short sword & shield');
-INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('elb','lss','Épée longue & bouclier','Long sword & shield');
-INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('gua','gua','Guandao','Guandao');
-INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('hda','wax','Hache d''arme','Weapon ax (poleaxe)');
-INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('lan','spe','Lance','Spear');
-INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('mou','mus','Mousquet','Musket');
-INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('nod','nod','Nodashi','Nodashi');
-INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('mas','mas','Masse de guerre','Mass of war');
-INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('dac','chb','Dague à chaine (cimeterre)','Chain dart (scimitar)');
-INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('piq','pik','Pique','Pike');
+INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('Arc court','Short bow');
+INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('Arc long','Long bow');
+INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('Lames jumelles','Twin blades (dual blade)');
+INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('Épée courte & bouclier','Short sword & shield');
+INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('Épée longue & bouclier','Long sword & shield');
+INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('Guandao','Guandao');
+INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('Hache d''arme','Weapon ax (poleaxe)');
+INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('Lance','Spear');
+INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('Mousquet','Musket');
+INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('Nodashi','Nodashi');
+INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('Masse de guerre','Mass of war');
+INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('Dague à chaine (cimeterre)','Chain dart (scimitar)');
+INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('Pique','Pike');
 
 
 CREATE TABLE IF NOT EXIST ListUnit(

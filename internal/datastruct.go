@@ -82,6 +82,7 @@ type GestionAdministrateBot struct {
 type AdministrateBot struct {
 	Allumage   string `json:"Allumage"`
 	DeleteUser string `json:"DeleteUser"`
+	NewWeapon  string `json:"newWeapon"`
 	CreateUnit Unit   `json:"createUnit"`
 	ChangeUnit Unit   `json:"changeUnit"`
 }

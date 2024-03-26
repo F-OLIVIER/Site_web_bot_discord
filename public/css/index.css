@@ -740,7 +740,8 @@ button:hover {
 .divBotEtat,
 .divNewUnit,
 .divChangeUnit,
-.divDeleteUser {
+.divDeleteUser,
+.divNewclass {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -756,6 +757,7 @@ button:hover {
 .titleChangeUnit,
 .titleChangeUnit,
 .titleDeleteUser,
+.titleNewclass,
 .botEtat,
 .buttonBotEtat {
     width: 50%;
@@ -763,7 +765,8 @@ button:hover {
 
 .newUnit,
 .formchangeUnit,
-.formDeleteUser {
+.formDeleteUser,
+.formNewclass {
     width: 50%;
     display: flex;
     flex-direction: column;
@@ -774,7 +777,8 @@ button:hover {
 .divChangeUnit select,
 .divChangeUnit input,
 .formDeleteUser select,
-.formDeleteUser input {
+.formDeleteUser input,
+.formNewclass input {
     font-size: 16px;
     text-align: center;
     border: 2px solid white;

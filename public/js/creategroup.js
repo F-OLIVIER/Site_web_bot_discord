@@ -311,15 +311,9 @@ async function createExistGroupe(data, userIngroup) {
                 influenceplayer.textContent = '/ ' + infoUserSelected.Influence;
             }
         });
-
-        // if (i !== 0) {
-        //     let line = document.createElement('div');
-        //     line.className = 'line';
-        //     divGroup.appendChild(line);
-        // }
         divGroup.appendChild(divuser)
-
     }
+
     creategroup.appendChild(divGroup);
     for (let i = 0; i < userIngroup.length; i++) {
         let currentUser = userIngroup[i];

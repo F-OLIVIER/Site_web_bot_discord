@@ -36,7 +36,7 @@ func main() {
 	http.HandleFunc("/api/creategroup", handlers.CreateGroupHandler)
 	http.HandleFunc("/api/saveGroupInDB", handlers.SaveGroupInDB)
 	http.HandleFunc("/api/CheckAppAdmin", handlers.CheckAppAdmin)
-	http.HandleFunc("/api/activateOrNotBot", handlers.ActivateOrNotBot)
+	http.HandleFunc("/api/UpdateAdmin", handlers.UpdateAdmin)
 	http.HandleFunc("/api/adminitrateBot", handlers.AdminitrateBot)
 	http.HandleFunc("/api/statGvG", handlers.StatGvG)
 
