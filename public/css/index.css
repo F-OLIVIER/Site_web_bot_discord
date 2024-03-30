@@ -379,8 +379,13 @@ button:hover {
     text-shadow: 1px 1px 5px rgb(255, 255, 255), 0 0 1em rgb(255, 255, 255), 0 0 rgb(255, 254, 254);
 }
 
-.divconnected {
+.divconnected,
+.divplace {
     width: 15px;
+}
+
+.divconnected {
+    padding-left: 10px;
 }
 
 .inscriptedinfluence {
@@ -389,7 +394,8 @@ button:hover {
 
 .inscriptedname,
 .inscriptedclass {
-    width: calc((100% - 15px - 180px) / 2);
+    /* 40px = 15 + 15 + 10 (.divconnected et .divplace) */
+    width: calc((100% - 40px - 180px) / 2);
 }
 
 .divcreategroup {
@@ -533,19 +539,6 @@ button:hover {
     text-shadow: 1px 1px 5px rgba(0, 0, 0), 0 0 1em rgb(0, 0, 0), 0 0 0.2em rgb(0, 0, 0);
 }
 
-/* .viewgroup1,
-.viewgroup2,
-.viewgroup3,
-.viewgroup4,
-.viewgroup5,
-.viewgroup6,
-.viewgroup7,
-.viewgroup8,
-.viewgroup9,
-.viewgroup10 {
-    border-radius: 15px;
-} */
-
 .group1,
 .viewgroup1 {
     background-color: #D44144;
@@ -625,6 +618,14 @@ button:hover {
 .buttonDownloadGroup,
 .buttonSaveGroup {
     background-color: rgb(195, 15, 231);
+}
+
+.consultOff {
+    color: black;
+    text-shadow: none;
+    border: 1px #e9ddb1 solid;
+    border-radius: 25px;
+    background-color: #fef4c3;
 }
 
 /* --------------------------------------------- */

@@ -121,6 +121,84 @@ export function containercreategroup(data) {
     }
 }
 
+function listInscripted(data) {
+    let divlistInscripted = createHTMLElement('div', 'listInscripted');
+
+    // Boutton pour afficher la liste des inscrits
+    let buttonDisplayInscripted = createHTMLElement('div', 'buttonDisplayInscripted');
+    buttonDisplayInscripted.id = 'buttonDisplayInscripted';
+    buttonDisplayInscripted.textContent = 'Liste des inscrits';
+    divlistInscripted.appendChild(buttonDisplayInscripted);
+
+    let divinscripted = createHTMLElement('div', 'divinscripted');
+    divinscripted.id = 'divinscripted';
+    divinscripted.style.display = 'none';
+
+    // en tête liste des inscrits
+    let titledivuser = document.createElement('div');
+    titledivuser.classList.add('inscriptedtitledivuser');
+    titledivuser.classList.add('inscripted');
+
+    let titledivplace = createHTMLElement('div', 'divplace');
+    titledivuser.appendChild(titledivplace);
+
+    let titledivconnected = createHTMLElement('div', 'divconnected');
+    titledivuser.appendChild(titledivconnected);
+
+    let titlename = createHTMLElement('div', 'inscriptedname');
+    titlename.textContent = 'pseudo';
+    titledivuser.appendChild(titlename);
+
+    let titleinfluence = createHTMLElement('div', 'inscriptedinfluence');
+    titleinfluence.innerHTML = 'influence joueur';
+    titledivuser.appendChild(titleinfluence);
+
+    let titleclass = createHTMLElement('div', 'inscriptedclass');
+    titleclass.innerHTML = "classe d'arme";
+    titledivuser.appendChild(titleclass);
+    divinscripted.appendChild(titledivuser)
+
+    // liste des inscrits
+    if (data !== null) {
+        // création des div pour chaque inscrit
+        for (let i = 0; i < data.length; i++) {
+            const player = data[i];
+
+            let divuser = createHTMLElement('div', 'inscripted');
+
+            // indique si l'utilisateur est placé dans un groupe ✅ ❌
+            let divplace = createHTMLElement('div', 'divplace');
+            divplace.id = 'player_' + player.Username.replace(/\s/g, '');
+            divplace.textContent = '❌';
+            divuser.appendChild(divplace);
+
+            // indique si l'utilisateur c'est connecté au site internet 📱 📵
+            let divconnected = createHTMLElement('div', 'divconnected');
+            if (player.ConnectedSite === "1") {
+                divconnected.textContent = '📱';
+            } else {
+                divconnected.textContent = '📵';
+            }
+            divuser.appendChild(divconnected);
+
+            let name = createHTMLElement('div', 'inscriptedname');
+            name.textContent = player.Username;
+            divuser.appendChild(name);
+
+            let influence = createHTMLElement('div', 'inscriptedinfluence');
+            influence.innerHTML = player.Influence;
+            divuser.appendChild(influence);
+
+            let classPlayer = createHTMLElement('div', 'inscriptedclass');
+            classPlayer.innerHTML = player.GameCharacter;
+            divuser.appendChild(classPlayer);
+            divinscripted.appendChild(divuser)
+        }
+    }
+    divlistInscripted.appendChild(divinscripted);
+    return divlistInscripted
+}
+
 function entete() {
     let titledivuser = document.createElement('div');
     titledivuser.classList.add('titledivuser');
@@ -179,6 +257,9 @@ async function createExistGroupe(data, userIngroup) {
             currentUser.Unit2 = userIngroup[i].Unit2;
             currentUser.Unit3 = userIngroup[i].Unit3;
             currentUser.Unit4 = userIngroup[i].Unit4;
+
+            // mise a jour de la divplace pour chaque joueur deja placé dans la liste des inscrits
+            document.getElementById('player_' + userIngroup[i].Username.replace(/\s/g, '')).textContent = '✅';
         }
 
         let divuser = createHTMLElement('div', 'divuser');
@@ -334,6 +415,7 @@ async function createExistGroupe(data, userIngroup) {
 // optionUser 1 = utilisateur deja present dans la sauvegarde
 function createSelectUnit(numberUnit, caserne, currentUser, usernameSansEspaces, optionUser) {
     let nameUnit = "";
+    let Consulterunofficier = false;
     if (numberUnit === 1) {
         nameUnit = currentUser.Unit1
     } else if (numberUnit === 2) {
@@ -359,6 +441,21 @@ function createSelectUnit(numberUnit, caserne, currentUser, usernameSansEspaces,
             defaultoptionUnit.value = nameUnit;
             defaultoptionUnit.text = nameUnit + ' (lvl ' + unit.Unit_lvl + ')';
         }
+        if (nameUnit === 'Consulter un officier') {
+            Consulterunofficier = true;
+        }
+    }
+
+    if (Consulterunofficier) {
+        defaultoptionUnit.value = 'Consulter un officier';
+        defaultoptionUnit.text = 'Consulter un officier';
+        defaultoptionUnit.style.color = 'red';
+    } else {
+        let officieroptionUnit = document.createElement("option");
+        officieroptionUnit.value = 'Consulter un officier';
+        officieroptionUnit.text = 'Consulter un officier';
+        officieroptionUnit.style.color = 'red';
+        selectunit.appendChild(officieroptionUnit);
     }
 
     if (nameUnit !== "" && optionUser == 1) {
@@ -388,13 +485,13 @@ function createEventSelectUnit(divName, influenceplayer, influenceUnit, selectun
         influenceplayer.textContent = '/ ' + 0;
     } else {
         selectunit1.style.visibility = 'visible';
-        if (selectunit1.value === "") {
+        if (selectunit1.value === "" || selectunit1.value === "Consulter un officier") {
             selectunit2.style.visibility = 'hidden';
         }
-        if (selectunit2.value === "") {
+        if (selectunit2.value === "" || selectunit2.value === "Consulter un officier") {
             selectunit3.style.visibility = 'hidden';
         }
-        if (selectunit3.value === "") {
+        if (selectunit3.value === "" || selectunit3.value === "Consulter un officier") {
             selectunit4.style.visibility = 'hidden';
         }
     }
@@ -402,6 +499,18 @@ function createEventSelectUnit(divName, influenceplayer, influenceUnit, selectun
     selectunit1.addEventListener('change', function () {
         if (selectunit1.value === "") {
             selectunit2.style.visibility = 'hidden';
+            selectunit2.value = "";
+            selectunit3.style.visibility = 'hidden';
+            selectunit3.value = "";
+            selectunit4.style.visibility = 'hidden';
+            selectunit4.value = "";
+        } else if (selectunit1.value === "Consulter un officier") {
+            selectunit2.style.visibility = 'hidden';
+            selectunit2.value = "";
+            selectunit3.style.visibility = 'hidden';
+            selectunit3.value = "";
+            selectunit4.style.visibility = 'hidden';
+            selectunit4.value = "";
         } else {
             selectunit2.style.visibility = 'visible';
         }
@@ -411,6 +520,14 @@ function createEventSelectUnit(divName, influenceplayer, influenceUnit, selectun
     selectunit2.addEventListener('change', function () {
         if (selectunit2.value === "") {
             selectunit3.style.visibility = 'hidden';
+            selectunit3.value = "";
+            selectunit4.style.visibility = 'hidden';
+            selectunit4.value = "";
+        } else if (selectunit2.value === "Consulter un officier") {
+            selectunit3.style.visibility = 'hidden';
+            selectunit3.value = "";
+            selectunit4.style.visibility = 'hidden';
+            selectunit4.value = "";
         } else {
             selectunit3.style.visibility = 'visible';
         }
@@ -420,6 +537,10 @@ function createEventSelectUnit(divName, influenceplayer, influenceUnit, selectun
     selectunit3.addEventListener('change', function () {
         if (selectunit3.value === "") {
             selectunit4.style.visibility = 'hidden';
+            selectunit4.value = "";
+        } else if (selectunit3.value === "Consulter un officier") {
+            selectunit4.style.visibility = 'hidden';
+            selectunit4.value = "";
         } else {
             selectunit4.style.visibility = 'visible';
         }
@@ -440,7 +561,6 @@ async function createOneGroupe(data) {
 
     for (let i = 0; i < 5; i++) {
         let divuser = document.createElement('div');
-        // divuser.classList.add(groupName);
         divuser.classList.add('divuser');
 
         let inputHidden = document.createElement('input');
@@ -501,6 +621,9 @@ function createNewline(divName, data, influenceplayer, influenceUnit, unit1, uni
             }
         }
         let usernameSansEspaces = infoUserSelected.Username.replace(/\s/g, '');
+        // affiche dans la liste des joueurs inscrit que le joueur est placé
+        document.getElementById('player_' + usernameSansEspaces).textContent = '✅';
+
         // Unité 1
         if (selectunit1 === undefined) {
             selectunit1 = createSelectUnit(1, infoUserSelected.UserCaserne, infoUserSelected, usernameSansEspaces)
@@ -613,71 +736,4 @@ function usersInGroup(listGroupGvG) {
         }
     }
     return usersInGroup
-}
-
-function listInscripted(data) {
-    let divlistInscripted = createHTMLElement('div', 'listInscripted');
-
-    // Boutton pour afficher la liste des inscrits
-    let buttonDisplayInscripted = createHTMLElement('div', 'buttonDisplayInscripted');
-    buttonDisplayInscripted.id = 'buttonDisplayInscripted';
-    buttonDisplayInscripted.textContent = 'Liste des inscrits';
-    divlistInscripted.appendChild(buttonDisplayInscripted);
-
-    let divinscripted = createHTMLElement('div', 'divinscripted');
-    divinscripted.id = 'divinscripted';
-    divinscripted.style.display = 'none';
-
-    // en tête liste des inscrits
-    let titledivuser = document.createElement('div');
-    titledivuser.classList.add('inscriptedtitledivuser');
-    titledivuser.classList.add('inscripted');
-
-    let titledivconnected = createHTMLElement('div', 'divconnected');
-    titledivuser.appendChild(titledivconnected);
-
-    let titlename = createHTMLElement('div', 'inscriptedname');
-    titlename.textContent = 'pseudo';
-    titledivuser.appendChild(titlename);
-
-    let titleinfluence = createHTMLElement('div', 'inscriptedinfluence');
-    titleinfluence.innerHTML = 'influence joueur';
-    titledivuser.appendChild(titleinfluence);
-
-    let titleclass = createHTMLElement('div', 'inscriptedclass');
-    titleclass.innerHTML = 'classe joué';
-    titledivuser.appendChild(titleclass);
-    divinscripted.appendChild(titledivuser)
-
-    // liste des inscrits
-    if (data !== null) {
-        for (let i = 0; i < data.length; i++) {
-            const player = data[i];
-;
-            let divuser = createHTMLElement('div', 'inscripted');
-            let divconnected = createHTMLElement('div', 'divconnected');
-
-            if (player.ConnectedSite === "1") {
-                divconnected.textContent = '✅';
-            } else {
-                divconnected.textContent = '❌';
-            }
-            divuser.appendChild(divconnected);
-
-            let name = createHTMLElement('div', 'inscriptedname');
-            name.textContent = player.Username;
-            divuser.appendChild(name);
-
-            let influence = createHTMLElement('div', 'inscriptedinfluence');
-            influence.innerHTML = player.Influence;
-            divuser.appendChild(influence);
-
-            let classPlayer = createHTMLElement('div', 'inscriptedclass');
-            classPlayer.innerHTML = player.GameCharacter;
-            divuser.appendChild(classPlayer);
-            divinscripted.appendChild(divuser)
-        }
-    }
-    divlistInscripted.appendChild(divinscripted);
-    return divlistInscripted
 }

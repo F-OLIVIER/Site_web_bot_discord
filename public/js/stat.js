@@ -73,9 +73,9 @@ function containerviewGroup(data) {
             let divstat = createHTMLElement('div', 'divstat');
             let connected = createHTMLElement('div', 'connected');
             if (currentUser.ID == 1) {
-                connected.textContent = '✅';
+                connected.textContent = '📱';
             } else {
-                connected.textContent = '❌';
+                connected.textContent = '📵';
             }
             divstat.appendChild(connected);
 

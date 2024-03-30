@@ -109,16 +109,28 @@ function containerviewGroup(data) {
                     // Unité du joueur
                     let divlistUnit = createHTMLElement('div', 'viewdivlistUnit');
                     let unit1 = createHTMLElement('div', 'unit1');
-                    unit1.textContent = currentPlayer.Unit1;
+                    unit1.textContent = currentPlayer.Unit1;   
+                    if (currentPlayer.Unit1 === "Consulter un officier") {
+                        unit1.classList.add('consultOff');
+                    }
                     divlistUnit.appendChild(unit1);
                     let unit2 = createHTMLElement('div', 'unit2');
                     unit2.textContent = currentPlayer.Unit2;
+                    if (currentPlayer.Unit2 === "Consulter un officier") {
+                        unit2.classList.add('consultOff');
+                    }
                     divlistUnit.appendChild(unit2);
                     let unit3 = createHTMLElement('div', 'unit3');
                     unit3.textContent = currentPlayer.Unit3;
+                    if (currentPlayer.Unit3 === "Consulter un officier") {
+                        unit3.classList.add('consultOff');
+                    }
                     divlistUnit.appendChild(unit3);
                     let unit4 = createHTMLElement('div', 'unit4');
                     unit4.textContent = currentPlayer.Unit4;
+                    if (currentPlayer.Unit4 === "Consulter un officier") {
+                        unit4.classList.add('consultOff');
+                    }
                     divlistUnit.appendChild(unit4);
                     divuser.appendChild(divlistUnit);
                     divGroup.appendChild(divuser);

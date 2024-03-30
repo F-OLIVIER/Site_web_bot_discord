@@ -20,9 +20,9 @@ COPY . .
 RUN curl -sSf http://google.com >/dev/null || exit 1
 
 # Compilation de l'appplication
-RUN go mod download && go build -o /sitelnb cmd/main.go
+RUN go mod download && go build -o /site cmd/main.go
 EXPOSE 53134
 
 # CMD pour lancer l'application Go
-CMD ["/sitelnb"]
+CMD ["/site"]
 
