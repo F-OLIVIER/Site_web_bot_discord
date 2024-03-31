@@ -65,7 +65,7 @@ func DiscordApiHandler(w http.ResponseWriter, r *http.Request) {
 					Gestion: *gestion,
 				}
 			}
-		} else { // pasen méthode POST
+		} else { // pas en méthode POST ou non autorisé
 			gestion := &data.Gestion{
 				Logged:   false,
 				Redirect: "/",

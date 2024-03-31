@@ -28,8 +28,8 @@ func CheckUser(w http.ResponseWriter, r *http.Request, database *sql.DB) bool {
 		stmt, err := database.Prepare("SELECT ID, ConnectedSite FROM Users WHERE DiscordID = ?")
 		CheckErr("db Prepare CheckUser : ", err)
 		err1 := stmt.QueryRow(discordUser.Id).Scan(&ID, &connectedSite)
+		// CheckErr("QueryRow CheckUser, user not autorised ", err1)
 
-		CheckErr("QueryRow CheckUser : ", err1)
 		if err1 == nil {
 			userUUID := uuid.Must(uuid.NewV4())
 			uuid := userUUID.String()

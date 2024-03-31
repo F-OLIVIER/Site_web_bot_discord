@@ -5,7 +5,7 @@
 -- run query
 
 -- Information de fonctionnement pour le bot discord
-CREATE TABLE IF NOT EXIST GestionBot( 
+CREATE TABLE GestionBot( 
     ID INTEGER PRIMARY KEY,
     Allumage INTEGER, -- 0 on, 1 off
     IDMessageGvG VARCHAR(50)
@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXIST GestionBot(
 
 
 -- Fiche personnage IG
-CREATE TABLE IF NOT EXIST Users( 
+CREATE TABLE Users( 
     ID INTEGER PRIMARY KEY,
     uuid INTEGER , 
     ConnectedSite INTEGER DEFAULT 0,
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXIST Users(
 );
 
 -- Liste des GVG (pour les Stats)
-CREATE TABLE IF NOT EXIST GvG( 
+CREATE TABLE GvG( 
     ID INTEGER PRIMARY KEY,
     User_ID INTEGER,
     -- Saison_ID INTEGER,
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXIST GvG(
 );
 
 -- Information de saison
-CREATE TABLE IF NOT EXIST Saison( 
+CREATE TABLE Saison( 
     ID INTEGER PRIMARY KEY,
     NameSaison VARCHAR(50),
     DateDebut DATE,
@@ -63,28 +63,28 @@ CREATE TABLE IF NOT EXIST Saison(
 );
 
 -- liste des classes IG
-CREATE TABLE IF NOT EXIST ListGameCharacter( 
+CREATE TABLE ListGameCharacter( 
     ID INTEGER PRIMARY KEY,
     ClasseFR VARCHAR(50),
     ClasseEN VARCHAR(50) DEFAULT ""
 );
 -- Insertion automatique de la liste des classes lors de la création de la databases
-INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('Arc court','Short bow');
-INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('Arc long','Long bow');
-INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('Lames jumelles','Twin blades (dual blade)');
-INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('Épée courte & bouclier','Short sword & shield');
-INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('Épée longue & bouclier','Long sword & shield');
-INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('Guandao','Guandao');
-INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('Hache d''arme','Weapon ax (poleaxe)');
-INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('Lance','Spear');
-INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('Mousquet','Musket');
-INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('Nodashi','Nodashi');
-INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('Masse de guerre','Mass of war');
-INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('Dague à chaine (cimeterre)','Chain dart (scimitar)');
-INSERT INTO ListGameCharacter(CodeFR,CodeEN,ClasseFR,ClasseEN) VALUES('Pique','Pike');
+INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES('Arc court','Short bow');
+INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES('Arc long','Long bow');
+INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES('Lames jumelles','Twin blades (dual blade)');
+INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES('Épée courte & bouclier','Short sword & shield');
+INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES('Épée longue & bouclier','Long sword & shield');
+INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES('Guandao','Guandao');
+INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES('Hache d''arme','Weapon ax (poleaxe)');
+INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES('Lance','Spear');
+INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES('Mousquet','Musket');
+INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES('Nodashi','Nodashi');
+INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES('Masse de guerre','Mass of war');
+INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES('Dague à chaine (cimeterre)','Chain dart (scimitar)');
+INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES('Pique','Pike');
 
 
-CREATE TABLE IF NOT EXIST ListUnit(
+CREATE TABLE ListUnit(
     ID INTEGER PRIMARY KEY,
     Unit VARCHAR(50),
     InfuenceMax INTEGER,
@@ -164,7 +164,7 @@ INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,TypeUnit,ForceUnit,Img) VALUES('Ban
 INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,TypeUnit,ForceUnit,Img) VALUES('Cavaliers de Yanyuedao',320,30,'Cavalerie','T5','./img/unit/');
 
 -- exemple Unit1 (Hallebardiers) = "18" // -1: n'a pas l'unité sinon le lvl de l'unit
-CREATE TABLE IF NOT EXIST Caserne( 
+CREATE TABLE Caserne( 
     ID INTEGER PRIMARY KEY,
     User_ID INTEGER not NULL,
     Unit1 INTEGER DEFAULT "",
@@ -238,7 +238,7 @@ CREATE TABLE IF NOT EXIST Caserne(
     FOREIGN KEY(User_ID) REFERENCES Users(ID)
 );
 
-CREATE TABLE IF NOT EXIST GroupGvG( 
+CREATE TABLE GroupGvG( 
     ID INTEGER PRIMARY KEY,
     User_ID INTEGER,
 
