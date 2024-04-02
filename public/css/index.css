@@ -325,6 +325,15 @@ button:hover {
     font-size: 18px;
 }
 
+.selecctLevelCaserne,
+.selecctMaitriseCaserne {
+    width: 100%;
+}
+
+.selecctMaitriseCaserne {
+    margin-top: 8px;
+}
+
 .MAJCaserne {
     width: 50%;
     font-size: 20px;

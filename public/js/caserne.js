@@ -6,7 +6,6 @@ export function caserne() {
     if (!document.cookie.split(";").some((item) => item.trim().startsWith(cookieName + "="))) {
         window.location.href = '/';
     }
-    console.log('ENTER caserne JS')
     // Si le cookie est present, fetch des données. Le back fera une vérification de la validité du cookie
     fetch(adressAPI + 'caserne')
         .then(response => {
@@ -20,7 +19,7 @@ export function caserne() {
         })
         .then(data => {
             // Traiter les données récupérées
-            // console.log('Data received (caserne):', data);
+            console.log('Data received (caserne):', data);
             containercaserne(data);
         })
         .catch(error => {
@@ -75,6 +74,7 @@ function containercaserne(data) {
             name.textContent = Currentunit.Unit_name;
             unit.appendChild(name);
             let selecctlvl = document.createElement('select');
+            selecctlvl.className = 'selecctLevelCaserne';
             selecctlvl.name = "Unit" + Currentunit.Unit_id;
             selecctlvl.id = "lvl-unit" + Currentunit.Unit_id;
             let defaultoption = document.createElement("option");
@@ -90,19 +90,63 @@ function containercaserne(data) {
                 selecctlvl.style.backgroundColor = 'red';
             }
             selecctlvl.style.borderRadius = '15px';
-            selecctlvl.style.fontSize = '16px'
+            selecctlvl.style.fontSize = '16px';
             selecctlvl.appendChild(defaultoption);
-            let optionAbsent = document.createElement("option");
-            optionAbsent.value = -1;
-            optionAbsent.text = 'Absent de la caserne';
-            selecctlvl.appendChild(optionAbsent);
-            for (let j = 0; j <= Currentunit.Unit_lvlMax; j++) {
+            if (Currentunit.Unit_lvl !== "") {
+                let optionAbsent = document.createElement("option");
+                optionAbsent.value = -1;
+                optionAbsent.text = 'Absent de la caserne';
+                optionAbsent.style.backgroundColor = 'red';
+                selecctlvl.appendChild(optionAbsent);
+            }
+            for (let j = 1; j <= Currentunit.Unit_lvlMax; j++) {
                 let option = document.createElement("option");
                 option.value = j;
                 option.text = 'level ' + j;
+                if (j < Currentunit.Unit_lvlMax) {
+                    option.style.backgroundColor = 'orange';
+                } else {
+                    option.style.backgroundColor = 'green';
+                }
+
                 selecctlvl.appendChild(option);
             }
             unit.appendChild(selecctlvl);
+
+            // Ajout de la maitrise
+            if (Currentunit.Unit_maitrise === '1') { // presence d'une maitrise sur l'unité
+                const listoption = [["", "Ne maitrise pas", 'red'], ["1", "Maitrise en cours", 'orange'], ["2", "Maitrise compléte", 'green']];
+                let selecctMaitrise = document.createElement('select');
+                selecctMaitrise.className = 'selecctMaitriseCaserne';
+                selecctMaitrise.name = "Unit" + Currentunit.Unit_id;
+                selecctMaitrise.id = "maitrise-unit" + Currentunit.Unit_id;
+                selecctMaitrise.style.borderRadius = '15px';
+                selecctMaitrise.style.fontSize = '16px';
+                let defaultoption = document.createElement("option");
+                selecctMaitrise.appendChild(defaultoption);
+                for (let i = 0; i < listoption.length; i++) {
+                    const element = listoption[i];
+                    if (Currentunit.UserMaitrise == element[0]) { // ne maitrise pas
+                        defaultoption.text = element[1];
+                        defaultoption.value = element[0];
+                        defaultoption.style.backgroundColor = element[2];
+                        selecctMaitrise.style.backgroundColor = element[2];
+                    } else {
+                        if (i === 0 && Currentunit.UserMaitrise == "") {
+                            defaultoption.text = listoption[0][1];
+                            defaultoption.value = listoption[0][0];
+                            selecctMaitrise.style.backgroundColor = element[2];
+                        } else {
+                            let option = document.createElement('option');
+                            option.text = element[1];
+                            option.value = element[0];
+                            option.style.backgroundColor = element[2];
+                            selecctMaitrise.appendChild(option);
+                        }
+                    }
+                }
+                unit.appendChild(selecctMaitrise);
+            }
 
             if (Currentunit.Unit_type === "Infanterie") {
                 listUnitInfanterie.appendChild(unit)
@@ -181,11 +225,18 @@ function sendDataMAJCaserne(nbunit) {
         let majUnit = [];
         majUnit.push('Unit' + (i + 1));
         majUnit.push(selectElement.value);
+
+        if (document.getElementById('maitrise-unit' + (i + 1))) {
+            var selectMaitrise = document.getElementById('maitrise-unit' + (i + 1));
+            majUnit.push(selectMaitrise.value);
+        } else {
+            majUnit.push("");
+        }
         listNewLvlUnitCaserne.push(majUnit);
     }
 
     const dataToSend = { listNewLvlUnitCaserne };
-    console.log("dataToSend : ", dataToSend);
+    // console.log('dataToSend', dataToSend)
 
     fetch(adressAPI + 'majcaserne', {
         method: 'POST',

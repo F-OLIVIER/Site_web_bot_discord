@@ -42,9 +42,13 @@ func CheckUser(w http.ResponseWriter, r *http.Request, database *sql.DB) bool {
 			}
 			SessionLogger(w, r, ID, discordUser.Id, cookie, database)
 			if connectedSite == "0" {
-				newuser, errdb := database.Prepare("INSERT INTO Caserne (User_ID) Values(?)")
+				newuser_part1, errdb := database.Prepare("INSERT INTO Caserne (User_ID) Values(?)")
 				CheckErr("Requete DB newuser in caserne in CheckUser", errdb)
-				newuser.Exec(ID)
+				newuser_part1.Exec(ID)
+
+				newuser_part2, errdb := database.Prepare("INSERT INTO CaserneMaitrise (User_ID) Values(?)")
+				CheckErr("Requete DB newuser in caserne in CheckUser", errdb)
+				newuser_part2.Exec(ID)
 			}
 			return true
 		}

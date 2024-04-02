@@ -33,14 +33,16 @@ type Gestion struct {
 }
 
 type Unit struct {
-	ID        string `json:"Unit_id"`
-	Img       string `json:"Unit_img"`
-	Influence string `json:"Unit_influence"`
-	Lvl       string `json:"Unit_lvl"`
-	LvlMax    string `json:"Unit_lvlMax"`
-	Name      string `json:"Unit_name"`
-	Type      string `json:"Unit_type"`
-	Tier      string `json:"Unit_tier"`
+	ID           string `json:"Unit_id"`
+	Img          string `json:"Unit_img"`
+	Influence    string `json:"Unit_influence"`
+	Lvl          string `json:"Unit_lvl"`
+	LvlMax       string `json:"Unit_lvlMax"`
+	Name         string `json:"Unit_name"`
+	Type         string `json:"Unit_type"`
+	Tier         string `json:"Unit_tier"`
+	Maitrise     string `json:"Unit_maitrise"`
+	UserMaitrise string `json:"UserMaitrise"`
 }
 
 type ChangeUnitCaserne struct {
