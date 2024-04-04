@@ -1,29 +1,55 @@
-###################################
-#### APPLICATION SITE INTERNET ####
-###################################
+# Pour lancer l'application :
+# sudo docker build -t appligvg .
 
-FROM golang:1.21
 
-# Information sur l'application
-LABEL description="Site web LNB de gestion GvG"
+# Utiliser une image Node.js pour l'application Node.js
+FROM node:18 AS node_app
+LABEL versionBot="3.0"
+
+LABEL description="Site web de gestion GvG pour Conqueror's Blade"
 LABEL authors="OLIVIER Fabien"
 LABEL release-date="Mars 2024"
-LABEL version="1.0"
 
-# Créez le répertoire de travail
-WORKDIR /site
+# Définir le répertoire de travail pour l'application Node.js
+WORKDIR /app/bot
 
-# Ajoutez les fichiers du code source
-COPY . .
+# Copier le code source de l'application Node.js dans le conteneur
+COPY ./bot .
 
-# Compilation de l'appplication
-RUN go mod download && go build -o /sitelnb cmd/main.go
+# Installer les dépendances de l'application Node.js
+RUN npm install
+
+# Exposer le port sur lequel l'application Node.js fonctionne
 EXPOSE 53134
 
-# CMD pour lancer l'application Go
-CMD ["/sitelnb"]
+# Utiliser une image Golang pour l'application Go
+FROM golang:1.21 AS go_app
+LABEL versionSite="1.0"
 
-# lancement manuel :
-# docker build -t sitelnb .
-# docker run -d -p 53134:53134 --name site sitelnb
-# docker image ls -a
+# Définir le répertoire de travail pour l'application Go
+WORKDIR /app/go
+
+# Copier le code source de l'application Go dans le conteneur
+COPY . .
+
+# Compiler l'application Go
+RUN go build -o main ./cmd/main.go
+
+# Exécuter les deux applications simultanément avec supervisord
+FROM python:alpine
+
+# Installation de supervisord
+RUN pip install supervisor
+
+# Copier les fichiers de configuration supervisord
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Copier les applications Node.js et Go
+COPY --from=node_app /app/bot /app/bot
+COPY --from=go_app /app/go/main /app/go/main
+
+# Exposer le port de l'application Node.js (si nécessaire)
+EXPOSE 53134
+
+# Commande par défaut pour exécuter supervisord
+CMD ["/usr/local/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]

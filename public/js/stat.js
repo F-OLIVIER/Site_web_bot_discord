@@ -28,8 +28,44 @@ function containerviewGroup(data) {
 
         let subContainerStat = createHTMLElement('div', 'subContainerStat');
 
+        let ListFilter = [['sortuserbyname', 'statname'], ['sortuserbyinflu', 'statinfluence'], ['sortuserbylevel', 'statlvl'], ['sortuserbylastGvG', 'statlastgvg']];
         let filter = createHTMLElement('div', 'statfilter');
-        filter.textContent = 'filtre de trie ici';
+        // Titre
+        let titlefilter = document.createElement('div');
+        titlefilter.className = 'titlefilter';
+        titlefilter.textContent = 'Filtrer par :';
+        filter.appendChild(titlefilter);
+        let buttonFilter = document.createElement('div');
+        buttonFilter.className = 'buttonFilter';
+        let divline1 = document.createElement('div');
+        divline1.className = 'linefilter';
+        let divline2 = document.createElement('div');
+        divline2.className = 'linefilter';
+
+        // filtre par name
+        let sortuserbyname = document.createElement('button');
+        sortuserbyname.id = 'sortuserbyname';
+        sortuserbyname.textContent = "nom";
+        divline1.appendChild(sortuserbyname);
+        // filtre par influence
+        let sortuserbyinflu = document.createElement('button');
+        sortuserbyinflu.id = 'sortuserbyinflu';
+        sortuserbyinflu.textContent = "influence";
+        divline1.appendChild(sortuserbyinflu);
+        // filtre par level
+        let sortuserbylevel = document.createElement('button');
+        sortuserbylevel.id = 'sortuserbylevel';
+        sortuserbylevel.textContent = "Level";
+        divline1.appendChild(sortuserbylevel);
+        // filtre par Derniére GvG
+        let sortuserbylastGvG = document.createElement('button');
+        sortuserbylastGvG.id = 'sortuserbylastGvG';
+        sortuserbylastGvG.textContent = "derniére GvG";
+        divline2.appendChild(sortuserbylastGvG);
+
+        buttonFilter.appendChild(divline1);
+        buttonFilter.appendChild(divline2);
+        filter.appendChild(buttonFilter);
         subContainerStat.appendChild(filter);
 
         // création des en-tête
@@ -66,51 +102,89 @@ function containerviewGroup(data) {
         titledivstat.appendChild(titlelastGvGparticiped);
 
         subContainerStat.appendChild(titledivstat);
-
-        for (let i = 0; i < data.ListInscripted.length; i++) {
-            const currentUser = data.ListInscripted[i];
-
-            let divstat = createHTMLElement('div', 'divstat');
-            let connected = createHTMLElement('div', 'connected');
-            if (currentUser.ID == 1) {
-                connected.textContent = '📱';
-            } else {
-                connected.textContent = '📵';
-            }
-            divstat.appendChild(connected);
-
-            let name = createHTMLElement('div', 'statname');
-            name.textContent = currentUser.Username;
-            divstat.appendChild(name);
-
-            let classPlayer = createHTMLElement('div', 'statclass');
-            classPlayer.textContent = currentUser.GameCharacter;
-            divstat.appendChild(classPlayer);
-
-            let influenceplayer = createHTMLElement('div', 'statinfluence');
-            influenceplayer.textContent = currentUser.Influence;
-            divstat.appendChild(influenceplayer);
-
-            let lvlplayer = createHTMLElement('div', 'statlvl');
-            lvlplayer.textContent = currentUser.Lvl;
-            divstat.appendChild(lvlplayer);
-
-            let nbGvGparticiped = createHTMLElement('div', 'statnbgvg');
-            nbGvGparticiped.textContent = currentUser.NbGvGParticiped + ' / ' + currentUser.NbTotalGvG;
-            divstat.appendChild(nbGvGparticiped);
-
-            let lastGvGparticiped = createHTMLElement('div', 'statlastgvg');
-            lastGvGparticiped.textContent = currentUser.DateLastGvGParticiped;
-            divstat.appendChild(lastGvGparticiped);
-
-            subContainerStat.appendChild(divstat);
-        }
-
+        let subContainerStatForSort = createHTMLElement('div', 'subContainerStatForSort');
+        subContainerStat.appendChild(subContainerStatForSort);
+        DisplayUsers(data.ListInscripted, subContainerStatForSort);
 
         document.getElementById('Container').appendChild(subContainerStat);
 
+        createFilterEventlistener(ListFilter);
     } else {
         document.cookie = cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         window.location.href = '/';
     }
+}
+
+function DisplayUsers(data, div) {
+    for (let i = 0; i < data.length; i++) {
+        const currentUser = data[i];
+
+        let divstat = createHTMLElement('div', 'divstat');
+        let connected = createHTMLElement('div', 'connected');
+        if (currentUser.ID == 1) {
+            connected.textContent = '📱';
+        } else {
+            connected.textContent = '📵';
+        }
+        divstat.appendChild(connected);
+
+        let name = createHTMLElement('div', 'statname');
+        name.textContent = currentUser.Username;
+        divstat.appendChild(name);
+
+        let classPlayer = createHTMLElement('div', 'statclass');
+        classPlayer.textContent = currentUser.GameCharacter;
+        divstat.appendChild(classPlayer);
+
+        let influenceplayer = createHTMLElement('div', 'statinfluence');
+        influenceplayer.textContent = currentUser.Influence;
+        divstat.appendChild(influenceplayer);
+
+        let lvlplayer = createHTMLElement('div', 'statlvl');
+        lvlplayer.textContent = currentUser.Lvl;
+        divstat.appendChild(lvlplayer);
+
+        let nbGvGparticiped = createHTMLElement('div', 'statnbgvg');
+        nbGvGparticiped.textContent = currentUser.NbGvGParticiped + ' / ' + currentUser.NbTotalGvG;
+        divstat.appendChild(nbGvGparticiped);
+
+        let lastGvGparticiped = createHTMLElement('div', 'statlastgvg');
+        lastGvGparticiped.textContent = currentUser.DateLastGvGParticiped;
+        divstat.appendChild(lastGvGparticiped);
+
+        div.appendChild(divstat);
+    }
+}
+
+function createFilterEventlistener(ListFilter) {
+    ListFilter.forEach(sortButton => {
+        const button = document.getElementById(sortButton[0])
+        button.addEventListener("click", function () {
+            sortBy(sortButton[1]);
+        });
+    });
+}
+
+// Fonction de trie qui fonctionne pour tous
+function sortBy(option = '') {
+    var statsContainer = document.getElementById('subContainerStatForSort');
+    var stats = statsContainer.children;
+    // Convertir la collection d'éléments en un tableau pour pouvoir utiliser sort()
+    var statsArray = Array.from(stats);
+
+    // Trier les éléments pour le critère spécifié
+    statsArray.sort(function (a, b) {
+        var valueA = a.querySelector('.' + option).textContent.toUpperCase();
+        var valueB = b.querySelector('.' + option).textContent.toUpperCase();
+        return (valueA < valueB) ? -1 : (valueA > valueB) ? 1 : 0;
+    });
+
+    // Effacer l'ancien contenu
+    while (statsContainer.firstChild) {
+        statsContainer.removeChild(statsContainer.firstChild);
+    }
+    // Afficher le nouveau contenu
+    statsArray.forEach(function (stat) {
+        statsContainer.appendChild(stat);
+    });
 }

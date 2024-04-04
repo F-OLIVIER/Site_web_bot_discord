@@ -437,10 +437,12 @@ function createSelectUnit(numberUnit, caserne, currentUser, usernameSansEspaces,
         if (nameUnit !== unit.Unit_name) {
             let option = document.createElement('option');
             option.value = unit.Unit_name;
-            if (unit.Unit_maitrise === '1' && unit.UserMaitrise === '1') {
-                option.text = unit.Unit_name + '* (lvl ' + unit.Unit_lvl + ')';
-            } else if (unit.Unit_maitrise === '1' && unit.UserMaitrise === '2') {
-                option.text = unit.Unit_name + '*** (lvl ' + unit.Unit_lvl + ')';
+            if (unit.Unit_maitrise === '1' && unit.UserMaitrise === '1') { // Unit non maitrisé
+                option.text = unit.Unit_name + ' 🔴 (lvl ' + unit.Unit_lvl + ')';
+            } else if (unit.Unit_maitrise === '1' && unit.UserMaitrise === '1') { // maitrise en cour
+                option.text = unit.Unit_name + ' 🟡 (lvl ' + unit.Unit_lvl + ')';
+            } else if (unit.Unit_maitrise === '1' && unit.UserMaitrise === '2') { // maitrise compléte
+                option.text = unit.Unit_name + ' 🟢 (lvl ' + unit.Unit_lvl + ')';
             } else {
                 option.text = unit.Unit_name + ' (lvl ' + unit.Unit_lvl + ')';
             }
@@ -473,7 +475,7 @@ function createSelectUnit(numberUnit, caserne, currentUser, usernameSansEspaces,
         selectunit.appendChild(option);
     } else {
         defaultoptionUnit.value = "";
-        defaultoptionUnit.text = "Choissisez";
+        defaultoptionUnit.text = "Choisissez";
     }
 
     return selectunit
