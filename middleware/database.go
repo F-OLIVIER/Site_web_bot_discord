@@ -240,7 +240,7 @@ func UploadInformationsBot(r *http.Request, database *sql.DB) {
 			var formData data.AdministrateBot
 			err = json.Unmarshal([]byte(jsonData), &formData)
 			CheckErr("UploadInformationsBot: Erreur lors de la lecture des données JSON", err)
-			fmt.Println("formData : ", formData)
+			// fmt.Println("formData : ", formData)
 
 			file, header, err := r.FormFile("image")
 			if err == nil {
@@ -253,7 +253,7 @@ func UploadInformationsBot(r *http.Request, database *sql.DB) {
 				}
 			}
 
-			if formData.ChangeUnit.LvlMax != "" || formData.ChangeUnit.Influence != "" { // Update des data d'une unit
+			if formData.ChangeUnit.LvlMax != "" || formData.ChangeUnit.Influence != "" || formData.ChangeUnit.Maitrise != "" { // Update des data d'une unit
 				updateDataUnit(formData.ChangeUnit, database)
 			}
 		} else {
@@ -291,18 +291,22 @@ func updateImgUnit(dataCreateUnit data.Unit, filepath string, database *sql.DB) 
 }
 
 func updateDataUnit(dataCreateUnit data.Unit, database *sql.DB) {
-	if dataCreateUnit.Influence != "" && dataCreateUnit.LvlMax != "" {
-		stmt, err := database.Prepare(`UPDATE ListUnit SET InfuenceMax = ?, LvlMax = ? WHERE Unit = ?;`)
-		CheckErr("Update Allumage ActivateOrNotBotInDB ", err)
-		stmt.Exec(dataCreateUnit.Influence, dataCreateUnit.LvlMax, dataCreateUnit.Name)
-	} else if dataCreateUnit.Influence != "" {
+	if dataCreateUnit.Influence != "" {
 		stmt, err := database.Prepare(`UPDATE ListUnit SET InfuenceMax = ? WHERE Unit = ?;`)
-		CheckErr("Update Allumage ActivateOrNotBotInDB ", err)
+		CheckErr("2- Update updateDataUnit ", err)
 		stmt.Exec(dataCreateUnit.Influence, dataCreateUnit.Name)
-	} else if dataCreateUnit.LvlMax != "" {
+	}
+
+	if dataCreateUnit.LvlMax != "" {
 		stmt, err := database.Prepare(`UPDATE ListUnit SET LvlMax = ? WHERE Unit = ?;`)
-		CheckErr("Update Allumage ActivateOrNotBotInDB ", err)
+		CheckErr("3- Update updateDataUnit ", err)
 		stmt.Exec(dataCreateUnit.LvlMax, dataCreateUnit.Name)
+	}
+
+	if dataCreateUnit.Maitrise != "" {
+		stmt, err := database.Prepare(`UPDATE ListUnit SET Maitrise = ? WHERE Unit = ?;`)
+		CheckErr("Update Maitrise updateDataUnit ", err)
+		stmt.Exec(dataCreateUnit.Maitrise, dataCreateUnit.ID)
 	}
 }
 

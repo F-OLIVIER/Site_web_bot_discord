@@ -14,7 +14,7 @@ export function creategroup() {
             return response.json();
         })
         .then(data => {
-            // console.log('Data received (creategroup):', data);
+            console.log('Data received (creategroup):', data);
             containercreategroup(data);
         })
         .catch(error => {
@@ -430,12 +430,20 @@ function createSelectUnit(numberUnit, caserne, currentUser, usernameSansEspaces,
     selectunit.name = 'unit' + numberUnit + usernameSansEspaces;
     let defaultoptionUnit = document.createElement("option");
     selectunit.appendChild(defaultoptionUnit);
+    // *    Unité en cour de maitrise
+    // ***  Unité maitrisé
     for (let j = 0; j < caserne.length; j++) {
         const unit = caserne[j];
         if (nameUnit !== unit.Unit_name) {
             let option = document.createElement('option');
             option.value = unit.Unit_name;
-            option.text = unit.Unit_name + ' (lvl ' + unit.Unit_lvl + ')';
+            if (unit.Unit_maitrise === '1' && unit.UserMaitrise === '1') {
+                option.text = unit.Unit_name + '* (lvl ' + unit.Unit_lvl + ')';
+            } else if (unit.Unit_maitrise === '1' && unit.UserMaitrise === '2') {
+                option.text = unit.Unit_name + '*** (lvl ' + unit.Unit_lvl + ')';
+            } else {
+                option.text = unit.Unit_name + ' (lvl ' + unit.Unit_lvl + ')';
+            }
             selectunit.appendChild(option);
         } else {
             defaultoptionUnit.value = nameUnit;

@@ -18,7 +18,7 @@ export function administration() {
         })
         .then(data => {
             // Traiter les données récupérées
-            // console.log('Data received (administration):', data);
+            console.log('Data received (administration):', data);
             containerAppAdmin(data);
         })
         .catch(error => {
@@ -27,6 +27,7 @@ export function administration() {
         });
 }
 
+let checkedRadioValue_Unit_maitrise = '';
 function containerAppAdmin(data) {
     if (data.Gestion.Logged && data.Gestion.Officier) {
         communBlock(data)
@@ -111,6 +112,39 @@ function containerAppAdmin(data) {
         }
         formNewUnit.appendChild(input_Unit_type);
 
+        // Maitrise d'unité
+        let input_Unit_maitrise = createHTMLElement('fieldset', 'maitriseUnit');
+        let legend = document.createElement('legend');
+        legend.textContent = " Maîtrise d'unité ";
+        input_Unit_maitrise.appendChild(legend);
+
+        const containFieldset = [['Présente', '1'], ['Absente', '0']];
+        containFieldset.forEach(name => {
+            const divfieldset = document.createElement('div');
+
+            const radio = document.createElement('input');
+            radio.setAttribute('type', 'radio');
+            radio.setAttribute('id', name[0]);
+            radio.setAttribute('name', 'drone');
+            radio.setAttribute('value', name[1]);
+            if (name[1] === '0') {
+                radio.setAttribute('checked', 'checked');
+            }
+            divfieldset.appendChild(radio);
+
+            const label = document.createElement('label');
+            label.setAttribute('for', name[0]);
+            label.textContent = name[0];
+            divfieldset.appendChild(label);
+
+            radio.addEventListener('change', function () {
+                checkedRadioValue_Unit_maitrise = radio.value;
+            });
+
+            input_Unit_maitrise.appendChild(divfieldset);
+        });
+        formNewUnit.appendChild(input_Unit_maitrise);
+
         // Unit_img
         let input_Unit_img = createHTMLElement('input', 'imgNewUnit');
         input_Unit_img.required;
@@ -163,7 +197,7 @@ function containerAppAdmin(data) {
         // Ajouter une nouvelle classe
         let divNewclass = createHTMLElement('div', 'divNewclass');
         let titleNewclass = createHTMLElement('div', 'titleNewclass');
-        titleNewclass.textContent = 'Ajouter une nouvelle arme';
+        titleNewclass.textContent = "Ajouter une nouvelle classe d'arme";
         divNewclass.appendChild(titleNewclass);
 
         let formNewclass = document.createElement('form');
@@ -177,7 +211,7 @@ function containerAppAdmin(data) {
         formNewclass.appendChild(input_class_name);
 
         let buttonNewclass = createHTMLElement('button', 'buttonNewclass');
-        buttonNewclass.textContent = "Ajouter la classe";
+        buttonNewclass.textContent = "Ajouter la classe d'arme";
         buttonNewclass.type = 'submit';
         formNewclass.appendChild(buttonNewclass);
 
@@ -185,28 +219,28 @@ function containerAppAdmin(data) {
         subContainer.appendChild(divNewclass);
 
         // Suprimer un utilisateur
-        let divDeleteUser = createHTMLElement('div', 'divDeleteUser');
-        let titleDeleteUser = createHTMLElement('div', 'titleDeleteUser');
-        titleDeleteUser.textContent = 'Suprimer un joueur';
-        divDeleteUser.appendChild(titleDeleteUser);
-        let formDeleteUser = createHTMLElement('form', 'formDeleteUser');
-        formDeleteUser.enctype = 'multipart/form-data';
-        formDeleteUser.method = 'POST';
-        let selectDeleteUser = createHTMLElement('select', 'selectDeleteUser');
-        let defaultDeleteUser = document.createElement('option');
-        defaultDeleteUser.value = "";
-        defaultDeleteUser.text = "Choisissez";
-        selectDeleteUser.appendChild(defaultDeleteUser);
-        for (let i = 0; i < data.ListInscripted.length; i++) {
-            const currentPlayer = data.ListInscripted[i];
-            let option = document.createElement('option');
-            option.text = currentPlayer.Username;
-            option.value = currentPlayer.ID + '-' + currentPlayer.Username;
-            selectDeleteUser.appendChild(option);
-        }
-        formDeleteUser.appendChild(selectDeleteUser);
-        divDeleteUser.appendChild(formDeleteUser);
-        subContainer.appendChild(divDeleteUser);
+        // let divDeleteUser = createHTMLElement('div', 'divDeleteUser');
+        // let titleDeleteUser = createHTMLElement('div', 'titleDeleteUser');
+        // titleDeleteUser.textContent = 'Suprimer un joueur';
+        // divDeleteUser.appendChild(titleDeleteUser);
+        // let formDeleteUser = createHTMLElement('form', 'formDeleteUser');
+        // formDeleteUser.enctype = 'multipart/form-data';
+        // formDeleteUser.method = 'POST';
+        // let selectDeleteUser = createHTMLElement('select', 'selectDeleteUser');
+        // let defaultDeleteUser = document.createElement('option');
+        // defaultDeleteUser.value = "";
+        // defaultDeleteUser.text = "Choisissez";
+        // selectDeleteUser.appendChild(defaultDeleteUser);
+        // for (let i = 0; i < data.ListInscripted.length; i++) {
+        //     const currentPlayer = data.ListInscripted[i];
+        //     let option = document.createElement('option');
+        //     option.text = currentPlayer.Username;
+        //     option.value = currentPlayer.ID + '-' + currentPlayer.Username;
+        //     selectDeleteUser.appendChild(option);
+        // }
+        // formDeleteUser.appendChild(selectDeleteUser);
+        // divDeleteUser.appendChild(formDeleteUser);
+        // subContainer.appendChild(divDeleteUser);
 
         let Container = document.getElementById('Container');
         Container.innerHTML = '';
@@ -276,6 +310,38 @@ function addEventOnAllButton(listUnit, connectedUsername) {
             input_Unit_lvlMax.placeholder = 'Level max actuel : ' + unitSelected.Unit_lvlMax;
             formChangeUnit.appendChild(input_Unit_lvlMax);
 
+            // Maitrise d'unité
+            let input_Unit_maitrise = createHTMLElement('fieldset', 'changemaitriseUnit');
+            let legend = document.createElement('legend');
+            legend.textContent = " Maîtrise d'unité ";
+            input_Unit_maitrise.appendChild(legend);
+
+            const divfieldset = document.createElement('div');
+            const checkbox = document.createElement('input');
+            checkbox.setAttribute('type', 'checkbox');
+            checkbox.setAttribute('name', 'changeUnitMaitrise');
+            checkbox.setAttribute('id', 'changeUnitMaitrise');
+            let name = '';
+            if (unitSelected.Unit_maitrise === '0') {
+                name = "Ajouter à l'unité une maîtrise";
+                checkbox.setAttribute('value', '1');
+            } else {
+                name = "Supprimer à l'unité la maîtrise";
+                checkbox.setAttribute('value', '0');
+            }
+            divfieldset.appendChild(checkbox);
+
+            const label = document.createElement('label');
+            label.setAttribute('for', name);
+            label.textContent = name;
+            divfieldset.appendChild(label);
+            label.addEventListener('click', function () {
+                checkbox.checked = !checkbox.checked;
+            });
+
+            input_Unit_maitrise.appendChild(divfieldset);
+            formChangeUnit.appendChild(input_Unit_maitrise);
+
             // Unit_img
             let input_Unit_img = createHTMLElement('input', 'changeUnitimg');
             input_Unit_img.type = 'file';
@@ -314,52 +380,52 @@ function addEventOnAllButton(listUnit, connectedUsername) {
     });
 
     // Suppression d'un joueur
-    let selectDeleteUser = document.getElementById('selectDeleteUser');
-    selectDeleteUser.addEventListener('change', () => {
-        const parts = selectDeleteUser.value.split('-');
-        const playerSelectedwithoutID = parts.slice(1).join('-');
+    // let selectDeleteUser = document.getElementById('selectDeleteUser');
+    // selectDeleteUser.addEventListener('change', () => {
+    //     const parts = selectDeleteUser.value.split('-');
+    //     const playerSelectedwithoutID = parts.slice(1).join('-');
 
-        // suppression des anciens éléments si existant
-        if (document.getElementById('divInfoDeleteUser')) {
-            document.getElementById('divInfoDeleteUser').remove();
-            if (document.getElementById('buttonConfirmDeleteUser')) {
-                document.getElementById('buttonConfirmDeleteUser').remove();
-            }
-        }
+    //     // suppression des anciens éléments si existant
+    //     if (document.getElementById('divInfoDeleteUser')) {
+    //         document.getElementById('divInfoDeleteUser').remove();
+    //         if (document.getElementById('buttonConfirmDeleteUser')) {
+    //             document.getElementById('buttonConfirmDeleteUser').remove();
+    //         }
+    //     }
 
-        if (selectDeleteUser.value != "") {
-            let formDeleteUser = document.getElementById('formDeleteUser');
+    //     if (selectDeleteUser.value != "") {
+    //         let formDeleteUser = document.getElementById('formDeleteUser');
 
-            // Div d'information
-            let divInfo = document.createElement('div');
-            divInfo.id = 'divInfoDeleteUser'
-            if (playerSelectedwithoutID === connectedUsername) {
-                divInfo.textContent = 'Pour supprimer votre propre compte contactez un administrateur';
-                formDeleteUser.appendChild(divInfo)
-            } else {
-                divInfo.textContent = 'ATTENTION : vous êtes sur le point de supprimer le joueur ' + playerSelectedwithoutID;
-                formDeleteUser.appendChild(divInfo)
+    //         // Div d'information
+    //         let divInfo = document.createElement('div');
+    //         divInfo.id = 'divInfoDeleteUser'
+    //         if (playerSelectedwithoutID === connectedUsername) {
+    //             divInfo.textContent = 'Pour supprimer votre propre compte contactez un administrateur';
+    //             formDeleteUser.appendChild(divInfo)
+    //         } else {
+    //             divInfo.textContent = 'ATTENTION : vous êtes sur le point de supprimer le joueur ' + playerSelectedwithoutID;
+    //             formDeleteUser.appendChild(divInfo)
 
-                // button de confirmation de la suppression
-                let buttonDeleteUser = document.createElement('button');
-                buttonDeleteUser.id = 'buttonConfirmDeleteUser';
-                buttonDeleteUser.type = 'button';
-                buttonDeleteUser.className = 'buttonConfirmDeleteUser';
-                buttonDeleteUser.textContent = "Confirmer la supression";
-                formDeleteUser.appendChild(buttonDeleteUser);
+    //             // button de confirmation de la suppression
+    //             let buttonDeleteUser = document.createElement('button');
+    //             buttonDeleteUser.id = 'buttonConfirmDeleteUser';
+    //             buttonDeleteUser.type = 'button';
+    //             buttonDeleteUser.className = 'buttonConfirmDeleteUser';
+    //             buttonDeleteUser.textContent = "Confirmer la supression";
+    //             formDeleteUser.appendChild(buttonDeleteUser);
 
-                document.getElementById('buttonConfirmDeleteUser').addEventListener('click', (event) => {
-                    event.preventDefault();
-                    const now = new Date();
-                    if (now - timerThrottlebutton > 500) {
-                        timerThrottlebutton = now;
-                        adminitrateBot('buttonConfirmDeleteUser');
-                    }
-                });
-            }
-        }
+    //             document.getElementById('buttonConfirmDeleteUser').addEventListener('click', (event) => {
+    //                 event.preventDefault();
+    //                 const now = new Date();
+    //                 if (now - timerThrottlebutton > 500) {
+    //                     timerThrottlebutton = now;
+    //                     adminitrateBot('buttonConfirmDeleteUser');
+    //                 }
+    //             });
+    //         }
+    //     }
 
-    });
+    // });
 }
 
 // option et le name du button cliquer
@@ -387,6 +453,8 @@ async function adminitrateBot(option) {
             createUnit.Unit_lvlMax = document.getElementById('lvlMaxNewUnit').value;
             createUnit.Unit_tier = document.getElementById('tierNewUnit').value;
             createUnit.Unit_type = document.getElementById('typeNewUnit').value;
+            createUnit.Unit_maitrise = checkedRadioValue_Unit_maitrise;
+
             dataToSend.createUnit = createUnit;
             formData.append('data', JSON.stringify(dataToSend));
 
@@ -429,6 +497,12 @@ async function adminitrateBot(option) {
             changeUnit.Unit_influence = document.getElementById('changeUnitInfluence').value;
             changeUnit.Unit_lvlMax = document.getElementById('changeUnitLvlMax').value;
             // changeUnit.Unit_tier = document.getElementById('changeUnitTier').value;
+            const checkboxChangeUnitMaitrise = document.getElementById('changeUnitMaitrise');
+            if (checkboxChangeUnitMaitrise.checked) {
+                changeUnit.Unit_maitrise = checkboxChangeUnitMaitrise.value;
+            } else {
+                changeUnit.Unit_maitrise = '';
+            } 
             dataToSend.changeUnit = changeUnit;
             formData.append('data', JSON.stringify(dataToSend));
 

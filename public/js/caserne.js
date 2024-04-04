@@ -86,7 +86,7 @@ function containercaserne(data) {
                 defaultoption.text = 'level ' + Currentunit.Unit_lvl;
                 selecctlvl.style.backgroundColor = 'orange';
             } else {
-                defaultoption.text = 'Absent de la caserne';
+                defaultoption.text = 'Unité non débloqué';
                 selecctlvl.style.backgroundColor = 'red';
             }
             selecctlvl.style.borderRadius = '15px';
@@ -95,7 +95,7 @@ function containercaserne(data) {
             if (Currentunit.Unit_lvl !== "") {
                 let optionAbsent = document.createElement("option");
                 optionAbsent.value = -1;
-                optionAbsent.text = 'Absent de la caserne';
+                optionAbsent.text = 'Unité non débloqué';
                 optionAbsent.style.backgroundColor = 'red';
                 selecctlvl.appendChild(optionAbsent);
             }
@@ -115,7 +115,7 @@ function containercaserne(data) {
 
             // Ajout de la maitrise
             if (Currentunit.Unit_maitrise === '1') { // presence d'une maitrise sur l'unité
-                const listoption = [["", "Ne maitrise pas", 'red'], ["1", "Maitrise en cours", 'orange'], ["2", "Maitrise compléte", 'green']];
+                const listoption = [["", "Maîtrise non démarré", 'red'], ["1", "Maitrise en cours", 'orange'], ["2", "Maitrise compléte", 'green']];
                 let selecctMaitrise = document.createElement('select');
                 selecctMaitrise.className = 'selecctMaitriseCaserne';
                 selecctMaitrise.name = "Unit" + Currentunit.Unit_id;
