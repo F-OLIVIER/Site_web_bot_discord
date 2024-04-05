@@ -537,14 +537,26 @@ button:hover {
     width: calc(100%/4);
 }
 
+.legendMaitrise,
 .titledivuser {
     display: flex;
-    align-items: center;
     flex-direction: row;
+    align-items: center;
     background-color: #524F61;
-    margin-bottom: 10px;
-    border-radius: 15px;
     text-shadow: 1px 1px 5px rgba(0, 0, 0), 0 0 1em rgb(0, 0, 0), 0 0 0.2em rgb(0, 0, 0);
+    border-radius: 15px;
+}
+
+
+.legendMaitrise {
+    width: 100%;
+    justify-content: space-around;
+    margin-bottom: 5px;
+    padding: 5px 0px 5px 0px;
+}
+
+.titledivuser {
+    margin-bottom: 10px;
 }
 
 .group1,

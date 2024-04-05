@@ -43,6 +43,16 @@ export function containercreategroup(data) {
 
         // div de la création des groupes GvG
         let creategroup = createHTMLElement('div', 'creategroup');
+        // légende
+        const listLegend = ['🔴 Unité non maitrisé', '🟡 Unité en cour de maitrise', '🟢 Unité maitrisé']
+        let legend = createHTMLElement('div', 'legendMaitrise');
+        legend.textContent = 'Légende :';
+        for (let i = 0; i < listLegend.length; i++) {
+            let currentlegend = document.createElement('div');
+            currentlegend.textContent = listLegend[i];
+            legend.appendChild(currentlegend);
+        }
+        creategroup.appendChild(legend);
         // en-tête
         let titledivuser = entete();
         creategroup.appendChild(titledivuser);
@@ -430,19 +440,20 @@ function createSelectUnit(numberUnit, caserne, currentUser, usernameSansEspaces,
     selectunit.name = 'unit' + numberUnit + usernameSansEspaces;
     let defaultoptionUnit = document.createElement("option");
     selectunit.appendChild(defaultoptionUnit);
-    // *    Unité en cour de maitrise
-    // ***  Unité maitrisé
+    // 🔴 Unité non maitrisé
+    // 🟡 Unité en cour de maitrise
+    // 🟢 Unité maitrisé
     for (let j = 0; j < caserne.length; j++) {
         const unit = caserne[j];
         if (nameUnit !== unit.Unit_name) {
             let option = document.createElement('option');
             option.value = unit.Unit_name;
             if (unit.Unit_maitrise === '1' && unit.UserMaitrise === '1') { // Unit non maitrisé
-                option.text = unit.Unit_name + ' 🔴 (lvl ' + unit.Unit_lvl + ')';
+                option.text = unit.Unit_name + ' (lvl ' + unit.Unit_lvl + '🔴)';
             } else if (unit.Unit_maitrise === '1' && unit.UserMaitrise === '1') { // maitrise en cour
-                option.text = unit.Unit_name + ' 🟡 (lvl ' + unit.Unit_lvl + ')';
+                option.text = unit.Unit_name + ' (lvl ' + unit.Unit_lvl + '🟡)';
             } else if (unit.Unit_maitrise === '1' && unit.UserMaitrise === '2') { // maitrise compléte
-                option.text = unit.Unit_name + ' 🟢 (lvl ' + unit.Unit_lvl + ')';
+                option.text = unit.Unit_name + ' (lvl ' + unit.Unit_lvl + '🟢)';
             } else {
                 option.text = unit.Unit_name + ' (lvl ' + unit.Unit_lvl + ')';
             }

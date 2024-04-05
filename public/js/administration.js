@@ -18,7 +18,7 @@ export function administration() {
         })
         .then(data => {
             // Traiter les données récupérées
-            console.log('Data received (administration):', data);
+            // console.log('Data received (administration):', data);
             containerAppAdmin(data);
         })
         .catch(error => {
@@ -311,42 +311,37 @@ function addEventOnAllButton(listUnit, connectedUsername) {
             formChangeUnit.appendChild(input_Unit_lvlMax);
 
             // Maitrise d'unité
-            let input_Unit_maitrise = createHTMLElement('fieldset', 'changemaitriseUnit');
-            let legend = document.createElement('legend');
-            legend.textContent = " Maîtrise d'unité ";
-            input_Unit_maitrise.appendChild(legend);
-
-            const divfieldset = document.createElement('div');
-            const checkbox = document.createElement('input');
-            checkbox.setAttribute('type', 'checkbox');
-            checkbox.setAttribute('name', 'changeUnitMaitrise');
-            checkbox.setAttribute('id', 'changeUnitMaitrise');
-            let name = '';
             if (unitSelected.Unit_maitrise === '0') {
-                name = "Ajouter à l'unité une maîtrise";
+                let input_Unit_maitrise = createHTMLElement('fieldset', 'changemaitriseUnit');
+                let legend = document.createElement('legend');
+                legend.textContent = " Maîtrise d'unité ";
+                input_Unit_maitrise.appendChild(legend);
+
+                const divfieldset = document.createElement('div');
+                const checkbox = document.createElement('input');
+                checkbox.setAttribute('type', 'checkbox');
+                checkbox.setAttribute('name', 'changeUnitMaitrise');
+                checkbox.setAttribute('id', 'changeUnitMaitrise');
                 checkbox.setAttribute('value', '1');
-            } else {
-                name = "Supprimer à l'unité la maîtrise";
-                checkbox.setAttribute('value', '0');
+                divfieldset.appendChild(checkbox);
+
+                const label = document.createElement('label');
+                label.setAttribute('for', "Ajouter à l'unité une maîtrise");
+                label.textContent = "Ajouter à l'unité une maîtrise";
+                divfieldset.appendChild(label);
+                label.addEventListener('click', function () {
+                    checkbox.checked = !checkbox.checked;
+                });
+
+                input_Unit_maitrise.appendChild(divfieldset);
+                formChangeUnit.appendChild(input_Unit_maitrise);
             }
-            divfieldset.appendChild(checkbox);
-
-            const label = document.createElement('label');
-            label.setAttribute('for', name);
-            label.textContent = name;
-            divfieldset.appendChild(label);
-            label.addEventListener('click', function () {
-                checkbox.checked = !checkbox.checked;
-            });
-
-            input_Unit_maitrise.appendChild(divfieldset);
-            formChangeUnit.appendChild(input_Unit_maitrise);
 
             // Unit_img
             let input_Unit_img = createHTMLElement('input', 'changeUnitimg');
             input_Unit_img.type = 'file';
             input_Unit_img.lang = 'fr';
-            input_Unit_img.accept = '.jpg, .jpeg, .png,';
+            input_Unit_img.accept = '.jpg, .jpeg, .png';
             formChangeUnit.appendChild(input_Unit_img);
 
             // button
@@ -502,7 +497,7 @@ async function adminitrateBot(option) {
                 changeUnit.Unit_maitrise = checkboxChangeUnitMaitrise.value;
             } else {
                 changeUnit.Unit_maitrise = '';
-            } 
+            }
             dataToSend.changeUnit = changeUnit;
             formData.append('data', JSON.stringify(dataToSend));
 
