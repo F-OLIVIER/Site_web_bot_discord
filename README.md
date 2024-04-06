@@ -7,9 +7,17 @@ Le projet se décompose en 2 partie, un bot discord et un site internet, les 2 a
 **Partie 1 : le bot discord** <br>
 Le bot discord permet de gérer de façon automatisée les inscriptions des joueurs pour le jeu [Conqueror's Blade](https://conqblade.com/fr). 
 Les informations d'inscription des joueurs sont enregistré dans la base de donnée SQL, les joueurs peuvent ainsi donner la plupart des informations nécessaires à la préparation des GvG directement via discord.
+Les commandes sont enregistrées en tant que "Slash Command" discord et sont accessibles avec une description aux utilisateurs directement sur discord.
 
 Voici un exemple des informations visible est modifiable par chaque utilisateur <br>
-![Exemple d'information](./img/data.png)
+<table align= "center" width="95%">
+    <tbody>
+        <tr>
+            <td><img src="./img/listcommand.png"></td>
+            <td><img src="./img/data.png"></td>
+        </tr>   
+    </tbody>
+</table>
 
 **Partie 2 : le site internet** <br>
 débloquée en jeu. Ils peuvent également mettre à jour les informations de leur héros pour ceux qui n'apprécient pas de le faire via discord.
@@ -19,15 +27,16 @@ Voici quelque exemple de page internet <br>
 <table align= "center" width="95%">
     <tbody>
         <tr>
-            <td colspan="2"><img src="./img/home.png"></td>
+            <td><img src="./img/home.png"></td>
+            <td><img src="./img/connexion.png"></td>
         </tr>
         <tr>
-            <td><img src="./img/Connexion.png"></td>
-            <td><img src="./img/Caserne.png"></td>
+            <td><img src="./img/caserne.png"></td>
+            <td><img src="./img/charactercard.png"></td>
         </tr>
         <tr>
             <td><img src="./img/creategroup.png"></td>
-            <td><img src="./img/Administration.png"></td>
+            <td><img src="./img/administration.png"></td>
         </tr>    
     </tbody>
 </table>
@@ -38,7 +47,6 @@ _______
 **Méthode manuel :** <br>
 Pour demarrer le bot discord (se trouve dans le dossier bot)
 ```sh
-cd bot
 npm start
 ```
 Pour demarrer le site internet (se trouve dans la racine du dossier)
@@ -46,10 +54,10 @@ Pour demarrer le site internet (se trouve dans la racine du dossier)
 go run ./cmd/main.go
 ```
 
-**Méthode dockerfile :**
+**Méthode dockerfile (avec supervisord) :**
 Permet de lancer le bot discord ainsi que le site internet en même temps dans un docker 
 ```sh
-sudo docker compose up
+sudo docker build -t nameappli .
 ```
 
 

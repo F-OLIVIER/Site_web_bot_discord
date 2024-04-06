@@ -54,13 +54,13 @@ CREATE TABLE GvG(
 );
 
 -- Information de saison
-CREATE TABLE Saison( 
-    ID INTEGER PRIMARY KEY,
-    NameSaison VARCHAR(50),
-    DateDebut DATE,
-    DateFin DATE,
-    NbGvG INTEGER
-);
+-- CREATE TABLE Saison( 
+--     ID INTEGER PRIMARY KEY,
+--     NameSaison VARCHAR(50),
+--     DateDebut DATE,
+--     DateFin DATE,
+--     NbGvG INTEGER
+-- );
 
 -- liste des classes IG
 CREATE TABLE ListGameCharacter( 
