@@ -54,7 +54,7 @@ Pour demarrer le site internet (se trouve dans la racine du dossier)
 go run ./cmd/main.go
 ```
 
-**Méthode dockerfile (avec supervisord) :**
+**Méthode dockerfile (avec supervisord) :**<br>
 Permet de lancer le bot discord ainsi que le site internet en même temps dans un docker 
 ```sh
 sudo docker build -t nameappli .
