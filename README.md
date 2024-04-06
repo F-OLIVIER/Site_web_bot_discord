@@ -2,6 +2,7 @@
 
 ### Descriptif
 _______
+Le projet permet de gérer de façon automatisée les inscriptions aux Guildes versus guilde des joueurs pour le jeu [Conqueror's Blade](https://conqblade.com/fr) et la préparation des batailles en créant les groupes à l'avance avec les informations nécessaires pour optimiser les groupes.
 Le projet se décompose en 2 partie, un bot discord et un site internet, les 2 applications ont en commum une base de données SQL [sqlite](https://www.sqlite.org).
 
 **Partie 1 : le bot discord** <br>
@@ -27,8 +28,8 @@ Voici quelque exemple de page internet <br>
 <table align= "center" width="95%">
     <tbody>
         <tr>
-            <td><img src="./img/home.png"></td>
             <td><img src="./img/connexion.png"></td>
+            <td><img src="./img/home.png"></td>
         </tr>
         <tr>
             <td><img src="./img/caserne.png"></td>
@@ -68,7 +69,7 @@ Le serveur utilise la version 18 de [nodeJS](https://nodejs.org/en) est le gesti
 
 **Partie 2 : le site internet** <br>
 Le front utilise du `javascript`, `html` et `css`.<br>
-Le back utilise un serveur en `go version 1.21` ainsi que les librairie suivante :
+Le back utilise un serveur en `go version 1.21` et utilise les librairies suivante :
 - [godotenv](https://github.com/joho/godotenv)
 - [uuid](https://github.com/gofrs/uuid)
 - [go-sqlite3](https://github.com/mattn/go-sqlite3)
