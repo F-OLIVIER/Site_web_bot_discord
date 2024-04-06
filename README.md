@@ -44,6 +44,8 @@ Voici quelque exemple de page internet <br>
 
 ### Usage
 _______
+Après avoir créé la base de données à l'aide du script SQL, voici comment exécuter les applications comme suit :
+
 **Méthode manuel :** <br>
 Pour demarrer le bot discord (se trouve dans le dossier bot)
 ```sh
