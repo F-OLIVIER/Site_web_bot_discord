@@ -99,10 +99,10 @@ CREATE TABLE ListUnit(
 INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Hallebardiers',165,18,1,'Infanterie','T3','./img/unit/hallebardiers.jpg');
 INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Fils de Fenrir',175,18,0,'Infanterie','T3','./img/unit/filsFenrir.jpg');
 INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Piquiers du Wuxing',155,18,0,'Infanterie','T3','./img/unit/piquiersWuxing.jpg');
-INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Piquiers impériaux',240,24,0,'Infanterie','T4','./img/unit/piquiersImperiaux.jpg');
+INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Piquiers impériaux',240,24,1,'Infanterie','T4','./img/unit/piquiersImperiaux.jpg');
 INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Fortebraccio',235,24,0,'Infanterie','T4','./img/unit/piquiersFortebraccio.jpg');
-INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Prévôts hallebardiers',230,24,0,'Infanterie','T4','./img/unit/prevot_hallebardier.PNG');
-INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Garde du palais',235,24,1,'Infanterie','T4','./img/unit/gardesPalais.jpg');
+INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Prévôts hallebardiers',230,24,1,'Infanterie','T4','./img/unit/prevot_hallebardier.PNG');
+INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Gardes du palais',235,24,1,'Infanterie','T4','./img/unit/gardesPalais.jpg');
 INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Azaps',240,24,0,'Infanterie','T4','./img/unit/azaps.jpg');
 INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Tseregs',235,24,0,'Infanterie','T4','./img/unit/tseregs.jpg');
 INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Pillard fendeurs',240,24,0,'Infanterie','T4','./img/unit/pilardsFendeurs.jpg');	
@@ -114,8 +114,8 @@ INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VA
 INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Fidèles symmachéen',240,24,0,'Infanterie','T4','./img/unit/fidelesSymmacheens.jpg');	
 INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Mirmillons',245,24,0,'Infanterie','T4','./img/unit/mirmillons.PNG');
 INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Vigile grisonnants',200,24,0,'Infanterie','T4','./img/unit/vigilesGrisonnants.jpg');
-INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Javeliniers impériaux',240,24,0,'Infanterie','T4','./img/unit/javeliniersImperiaux.jpg');
-INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Prévôts javeliniers',230,24,0,'Infanterie','T4','./img/unit/prevotsJaveliniers.jpg');
+INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Javeliniers impériaux',240,24,1,'Infanterie','T4','./img/unit/javeliniersImperiaux.jpg');
+INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Prévôts javeliniers',230,24,1,'Infanterie','T4','./img/unit/prevotsJaveliniers.jpg');
 INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Prévôts lanciers',215,24,0,'Infanterie','T4','./img/unit/prevotsLanciers.jpg');
 INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Moines au croissant',250,24,0,'Infanterie','T4','./img/unit/moinesCroissant.jpg');
 INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Onna-bugeishas',235,24,0,'Infanterie','T4','./img/unit/onnaBugeishas.jpg');
@@ -131,7 +131,7 @@ INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VA
 INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Cornemuseurs',90,18,0,'Infanterie','T3','./img/unit/cornemuseurs.jpg');
 INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Dimachères',165,18,0,'Infanterie','T3','./img/unit/dimacheres.jpg');
 INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Écuyers',155,18,0,'Infanterie','T3','./img/unit/ecuyers.jpg');
-INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Gardes Préfectoraux',170,18,0,'Infanterie','T3','./img/unit/gardesPrefectoraux.jpg');
+INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Gardes Préfectoraux',170,18,1,'Infanterie','T3','./img/unit/gardesPrefectoraux.jpg');
 INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Gardes varègues',290,30,0,'Infanterie','T5','./img/unit/gardesVaregues.jpg');
 INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Gardes de Wuwai',225,24,0,'Infanterie','T4','./img/unit/gardesWuwei.jpg');
 INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Gonfalonniers',225,24,0,'Infanterie','T4','./img/unit/gonfalonniers.jpg');
@@ -144,10 +144,10 @@ INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VA
 INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Gardes royaux de Perceval',225,24,0,'Infanterie','T4','./img/unit/percevalJav.jpg');
 INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Piquiers du dragon noir',80,20,0,'Infanterie','T3','./img/unit/piquiersDragonNoir.jpg');
 INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Piquiers préfectoraux',165,18,0,'Infanterie','T3','./img/unit/piquiersPrefectoraux.jpg');
-INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Prévôts marteleurs',150,18,0 ,'Infanterie','T3','./img/unit/prevotsMarteleurs.jpg');
-INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Chavaliers de la Reine',295,30,0 ,'Infanterie','T5','./img/unit/queenKnight.jpg');
-INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Rétiaires',305,30,0 ,'Infanterie','T5','./img/unit/retiaires.jpg');
-INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Ronins',145,18,0 ,'Infanterie','T3','./img/unit/ronins.jpg');
+INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Prévôts marteleurs',150,18,1,'Infanterie','T3','./img/unit/prevotsMarteleurs.jpg');
+INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Chavaliers de la Reine',295,30,0,'Infanterie','T5','./img/unit/queenKnight.jpg');
+INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Rétiaires',305,30,0,'Infanterie','T5','./img/unit/retiaires.jpg');
+INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Ronins',145,18,0,'Infanterie','T3','./img/unit/ronins.jpg');
 
 -- Unité Distant
 INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Milice zykalienne',175,15,0,'Distant','T3','./img/unit/miliceZykalienne.jpg');
@@ -156,7 +156,7 @@ INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VA
 INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Schutzdieners',155,18,0,'Distant','T3','./img/unit/schutzdieners.jpg');
 INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Archers gallos',245,24,0,'Distant','T4','./img/unit/archer_gallos.PNG');
 INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Archers impériaux',255,24,0,'Distant','T4','./img/unit/archersImperiaux.jpg');
-INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Arquebusiers du Krieskrat',255,24,0,'Distant','T4','./img/unit/arquebusiersKriegsrat.jpg');
+INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Arquebusiers du Krieskrat',255,24,1,'Distant','T4','./img/unit/arquebusiersKriegsrat.jpg');
 INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Arquebusiers impériaux',255,24,0,'Distant','T4','./img/unit/arquebusiersImperiaux.jpg');
 INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Siphonaros',330,30,0,'Distant','T5','./img/unit/siphonaros.jpg');
 INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Falconetti',330,30,0,'Distant','T5','./img/unit/falconetti.PNG');
