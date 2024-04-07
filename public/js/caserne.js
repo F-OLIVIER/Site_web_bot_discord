@@ -62,9 +62,75 @@ function containercaserne(data) {
         listUnitCav.classList.add("listUnit");
         listUnitCav.style.display = 'none';
 
-        for (let i = 0; i < data.ListUnit.length; i++) {
-            const Currentunit = data.ListUnit[i];
+        // ajout des unité dans un certain ordre
+        addUnit(data, listUnitInfanterie, listUnitDistant, listUnitCav, "T5");
+        addUnit(data, listUnitInfanterie, listUnitDistant, listUnitCav, "T4");
+        addUnit(data, listUnitInfanterie, listUnitDistant, listUnitCav, "T3");
 
+        divInfanterie.appendChild(TitleDivInfanterie);
+        divInfanterie.appendChild(listUnitInfanterie)
+        caserne.appendChild(divInfanterie);
+        TitleDivInfanterie.addEventListener('click', function () {
+            if (listUnitInfanterie.style.display === 'none') {
+                listUnitInfanterie.style.display = 'flex';
+            } else {
+                listUnitInfanterie.style.display = 'none';
+            }
+        });
+
+        divDistant.appendChild(TitleDivDistant);
+        divDistant.appendChild(listUnitDistant);
+        caserne.appendChild(divDistant);
+        TitleDivDistant.addEventListener('click', function () {
+            if (listUnitDistant.style.display === 'none') {
+                listUnitDistant.style.display = 'flex';
+            } else {
+                listUnitDistant.style.display = 'none';
+            }
+        });
+
+        divCav.appendChild(TitleDivCav);
+        divCav.appendChild(listUnitCav)
+        caserne.appendChild(divCav);
+        TitleDivCav.addEventListener('click', function () {
+            if (listUnitCav.style.display === 'none') {
+                listUnitCav.style.display = 'flex';
+            } else {
+                listUnitCav.style.display = 'none';
+            }
+        });
+
+        let buttonMAJ = document.createElement('button');
+        buttonMAJ.textContent = 'Mettre à jour ma caserne';
+        buttonMAJ.id = 'MAJCaserne';
+        buttonMAJ.className = 'MAJCaserne';
+        caserne.appendChild(buttonMAJ);
+        Container.appendChild(caserne);
+
+        MAJCaserne(data.ListUnit.length);
+
+    } else {
+        document.cookie = cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        window.location.href = '/';
+    }
+}
+
+let timerThrottlebutton = 0;
+function MAJCaserne(nbunit) {
+    var boutonMAJCaserne = document.getElementById("MAJCaserne");
+    boutonMAJCaserne.addEventListener("click", function () {
+        const now = new Date();
+        if (now - timerThrottlebutton > 500) {
+            timerThrottlebutton = now;
+            sendDataMAJCaserne(nbunit);
+        }
+    });
+}
+
+function addUnit(data, listUnitInfanterie, listUnitDistant, listUnitCav, tier) {
+    for (let i = 0; i < data.ListUnit.length; i++) {
+        const Currentunit = data.ListUnit[i];
+        if (Currentunit.Unit_tier === tier) {
             let unit = document.createElement('div');
             unit.className = "unit";
             let img = document.createElement('img');
@@ -73,6 +139,9 @@ function containercaserne(data) {
             let name = document.createElement('div');
             name.textContent = Currentunit.Unit_name;
             unit.appendChild(name);
+            let info = document.createElement('div');
+            info.textContent = 'Influence : ' + Currentunit.Unit_influence + ' (' + Currentunit.Unit_tier + ')';
+            unit.appendChild(info);
             let selecctlvl = document.createElement('select');
             selecctlvl.className = 'selecctLevelCaserne';
             selecctlvl.name = "Unit" + Currentunit.Unit_id;
@@ -148,74 +217,17 @@ function containercaserne(data) {
                 unit.appendChild(selecctMaitrise);
             }
 
-            if (Currentunit.Unit_type === "Infanterie") {
+            if (Currentunit.Unit_type === 'Infanterie') {
                 listUnitInfanterie.appendChild(unit)
-            } else if (Currentunit.Unit_type === "Distant") {
+            } else if (Currentunit.Unit_type === 'Distant') {
                 listUnitDistant.appendChild(unit)
-            } else if (Currentunit.Unit_type === "Cavalerie") {
+            } else if (Currentunit.Unit_type === 'Cavalerie') {
                 listUnitCav.appendChild(unit)
             }
         }
-
-        divInfanterie.appendChild(TitleDivInfanterie);
-        divInfanterie.appendChild(listUnitInfanterie)
-        caserne.appendChild(divInfanterie);
-        TitleDivInfanterie.addEventListener('click', function () {
-            if (listUnitInfanterie.style.display === 'none') {
-                listUnitInfanterie.style.display = 'flex';
-            } else {
-                listUnitInfanterie.style.display = 'none';
-            }
-        });
-
-        divDistant.appendChild(TitleDivDistant);
-        divDistant.appendChild(listUnitDistant);
-        caserne.appendChild(divDistant);
-        TitleDivDistant.addEventListener('click', function () {
-            if (listUnitDistant.style.display === 'none') {
-                listUnitDistant.style.display = 'flex';
-            } else {
-                listUnitDistant.style.display = 'none';
-            }
-        });
-
-        divCav.appendChild(TitleDivCav);
-        divCav.appendChild(listUnitCav)
-        caserne.appendChild(divCav);
-        TitleDivCav.addEventListener('click', function () {
-            if (listUnitCav.style.display === 'none') {
-                listUnitCav.style.display = 'flex';
-            } else {
-                listUnitCav.style.display = 'none';
-            }
-        });
-
-        let buttonMAJ = document.createElement('button');
-        buttonMAJ.textContent = 'Mettre à jour ma caserne';
-        buttonMAJ.id = 'MAJCaserne';
-        buttonMAJ.className = 'MAJCaserne';
-        caserne.appendChild(buttonMAJ);
-        Container.appendChild(caserne);
-
-        MAJCaserne(data.ListUnit.length);
-
-    } else {
-        document.cookie = cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        window.location.href = '/';
     }
 }
 
-let timerThrottlebutton = 0;
-function MAJCaserne(nbunit) {
-    var boutonMAJCaserne = document.getElementById("MAJCaserne");
-    boutonMAJCaserne.addEventListener("click", function () {
-        const now = new Date();
-        if (now - timerThrottlebutton > 500) {
-            timerThrottlebutton = now;
-            sendDataMAJCaserne(nbunit);
-        }
-    });
-}
 
 function sendDataMAJCaserne(nbunit) {
     // récupération de toutes les valeurs
