@@ -1,4 +1,4 @@
-# Bot Discord & site internet associé
+# Bot Discord & site internet associé pour Conqueror's Blade
 
 ### Descriptif
 _______
