@@ -2,7 +2,7 @@
 
 ### Descriptif
 _______
-Le projet permet de gérer de façon automatisée les inscriptions aux Guildes versus guilde (GvG) des joueurs pour le jeu [Conqueror's Blade](https://conqblade.com/fr) et la préparation des batailles en créant les groupes à l'avance avec les informations nécessaires pour optimiser les groupes.<br>
+Le projet permet de gérer de façon automatisée les inscriptions aux Guildes versus Guilde (GvG) des joueurs pour le jeu [Conqueror's Blade](https://conqblade.com/fr) et la préparation des batailles en créant les groupes à l'avance avec les informations nécessaires pour optimiser les groupes.<br>
 Le projet se décompose en 2 partie, un bot discord et un site internet, les 2 applications ont en commum une base de données SQL [sqlite](https://www.sqlite.org).
 
 **Partie 1 : le bot discord** <br>
@@ -45,12 +45,13 @@ Voici quelque exemple de page internet <br>
 ### Usage
 _______
 **Avant de pouvoir exécuter le programme :**<br>
-- Crée l'application Discord sur la [plateforme de développement Discord](https://discord.com/developers/applications) 
-- Crée le fichier (variable d'environnement) `.env` dans la racine du projet. Dans ce fichier, mettez le `TOKEN` de l'application Discord ainsi que le `PORT` souhaité du site web
-- Créé le fichier (base de données) nommé `databaseGvG.db` dans le dossier `/database` (le script SQL est là pour vous permettre de générer les tables et une base d'unité)
+- Crée votre application Discord sur la [plateforme de développement Discord](https://discord.com/developers/applications) 
+- Générer le lien d'invitation de votre application Discord et ajouté votre bot à votre serveur Discord.
+- Crée le fichier (variable d'environnement) `.env` dans la racine du projet. Dans ce fichier, mettez le `TOKEN` de l'application Discord ainsi que le `PORT` souhaité pour le site web associé.
+- Créé le fichier (base de données) nommé `databaseGvG.db` dans le dossier `/database` (le script SQL est là pour vous permettre de générer les tables et une base d'unité).
 
 **Méthode de lancement manuel :** <br>
-Pour demarrer le bot discord (se trouve dans le dossier bot)
+Pour demarrer le bot discord (se trouve dans le dossier `/bot`)
 ```sh
 npm start
 ```
