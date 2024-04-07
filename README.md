@@ -76,7 +76,7 @@ Le serveur utilise la version 18 de [nodeJS](https://nodejs.org/en) est les modu
 
 **Partie 2 : le site internet** <br>
 Le front utilise du `javascript`, `html` et `css`.<br>
-Le back utilise un serveur en `go version 1.21` et utilise les librairies suivante :
+Le back utilise un serveur en `go version 1.21` et les librairies suivante :
 - [godotenv](https://github.com/joho/godotenv)
 - [uuid](https://github.com/gofrs/uuid)
 - [go-sqlite3](https://github.com/mattn/go-sqlite3)
