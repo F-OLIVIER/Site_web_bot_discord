@@ -44,9 +44,12 @@ Voici quelque exemple de page internet <br>
 
 ### Usage
 _______
-Après avoir créé la base de données à l'aide du script SQL, voici comment exécuter les applications comme suit :
+**Avant de pouvoir exécuter le programme :**<br>
+- Crée l'application Discord sur la [plateforme de développement Discord](https://discord.com/developers/applications) 
+- Crée le fichier (variable d'environnement) `.env` dans la racine du projet. Dans ce fichier, mettez le `TOKEN` de l'application Discord ainsi que le `PORT` du site web
+- Créé le fichier (base de données) nommé `databaseGvG.db` dans le dossier `database` (le script SQL est là pour vous permettre de générer les tables et une base d'unité)
 
-**Méthode manuel :** <br>
+**Méthode de lancement manuel :** <br>
 Pour demarrer le bot discord (se trouve dans le dossier bot)
 ```sh
 npm start
@@ -56,7 +59,7 @@ Pour demarrer le site internet (se trouve dans la racine du dossier)
 go run ./cmd/main.go
 ```
 
-**Méthode dockerfile (avec supervisord) :**<br>
+**Méthode de lancement dockerfile (avec supervisord) :**<br>
 Permet de lancer le bot discord ainsi que le site internet en même temps dans un docker 
 ```sh
 sudo docker build -t nameappli .
@@ -66,7 +69,10 @@ sudo docker build -t nameappli .
 ### Dépendence
 _______
 **Partie 1 : le bot discord** <br>
-Le serveur utilise la version 18 de [nodeJS](https://nodejs.org/en) est le gestionnaire de paquets [npm](https://www.npmjs.com) version 9.<br>
+Le serveur utilise la version 18 de [nodeJS](https://nodejs.org/en) est les module [npm](https://www.npmjs.com) version 9 suivant :<br>
+- [sqlite3](https://www.npmjs.com/package/sqlite3)
+- [moment-timezone](https://www.npmjs.com/package/moment-timezone)
+- [cron](https://www.npmjs.com/package/cron)
 
 **Partie 2 : le site internet** <br>
 Le front utilise du `javascript`, `html` et `css`.<br>
