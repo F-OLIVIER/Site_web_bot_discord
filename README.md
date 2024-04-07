@@ -46,7 +46,7 @@ Voici quelque exemple de page internet <br>
 _______
 **Avant de pouvoir exécuter le programme :**<br>
 - Crée l'application Discord sur la [plateforme de développement Discord](https://discord.com/developers/applications) 
-- Crée le fichier (variable d'environnement) `.env` dans la racine du projet. Dans ce fichier, mettez le `TOKEN` de l'application Discord ainsi que le `PORT` du site web
+- Crée le fichier (variable d'environnement) `.env` dans la racine du projet. Dans ce fichier, mettez le `TOKEN` de l'application Discord ainsi que le `PORT` souhaité du site web
 - Créé le fichier (base de données) nommé `databaseGvG.db` dans le dossier `database` (le script SQL est là pour vous permettre de générer les tables et une base d'unité)
 
 **Méthode de lancement manuel :** <br>
