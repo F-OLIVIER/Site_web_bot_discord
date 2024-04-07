@@ -9,7 +9,6 @@ Le projet se décompose en 2 partie, un bot discord et un site internet, les 2 a
 Le bot discord permet aux utilisateurs de s'inscrire via discord. Les informations d'inscription des joueurs sont enregistré dans la base de donnée SQL, les joueurs peuvent ainsi donner la plupart des informations nécessaires à la préparation des GvG.<br>
 Les commandes sont enregistrées en tant que "Slash Command" discord et sont accessibles avec une description aux utilisateurs directement sur discord.
 
-Voici un exemple des informations visible est modifiable par chaque utilisateur <br>
 <table align= "center" width="95%">
     <tbody>
         <tr>
@@ -25,7 +24,6 @@ Les utilisateurs peuvent indiqué la liste des unités qu'ils ont débloquée en
 
 Les officiers de la guilde ont accès à plusieurs onglets dont ne dispose pas un simple utilisateur, ils peuvent créer les groupes GvG pour la prochaine guerre de territoire, ils peuvent administrer le bot (activé ou désactivé des fonctions automatiques, ajouter de nouvelles unités, etc.), Ils accèdent également à une page de statistique des informations contenu dans la base de donnée.
 
-Voici quelque exemple de page internet <br>
 <table align= "center" width="95%">
     <tbody>
         <tr>
