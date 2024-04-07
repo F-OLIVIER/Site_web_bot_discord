@@ -52,11 +52,11 @@ _______
 - Dans le fichier `./bot/Main.js` vous devez modifier la partie `Adaptation (ligne 19 à 44)` qui permet d'adapté le code automatiquement à votre serveur Discord.
 
 **Méthode de lancement manuel :** <br>
-Pour demarrer le bot Discord (se trouve dans le dossier `/bot`)
+Pour démarrer le bot Discord (se trouve dans le dossier `/bot`)
 ```sh
 npm start
 ```
-Pour demarrer le site internet (se trouve dans la racine du dossier)
+Pour démarrer le site internet (se trouve dans la racine du dossier)
 ```sh
 go run ./cmd/main.go
 ```
