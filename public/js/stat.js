@@ -68,6 +68,16 @@ function containerviewGroup(data) {
         filter.appendChild(buttonFilter);
         subContainerStat.appendChild(filter);
 
+        const listLegendConnected = ["📱 Joueur qui s'est connecté au site internet", "📵 Joueur qui ne s'est jamais connecté au site internet"];
+        let legend = createHTMLElement('div', 'legendstat');
+        legend.textContent = "Légende : ";
+        for (let i = 0; i < listLegendConnected.length; i++) {
+            let currentlegend = document.createElement('div');
+            currentlegend.textContent = listLegendConnected[i];
+            legend.appendChild(currentlegend);
+        }
+        subContainerStat.appendChild(legend);
+
         // création des en-tête
         let titledivstat = document.createElement('div');
         titledivstat.classList.add('divTitleStat');

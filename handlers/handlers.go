@@ -400,7 +400,7 @@ func CharacterCardHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateCharacterCard(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("ENTER UpdateCharacterCard")
+	// fmt.Println("ENTER UpdateCharacterCard")
 	if tb.Request(1) {
 		// lecture du cookie
 		cookie, err1 := r.Cookie("user_token")

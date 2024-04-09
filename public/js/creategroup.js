@@ -43,15 +43,12 @@ export function containercreategroup(data) {
 
         // div de la création des groupes GvG
         let creategroup = createHTMLElement('div', 'creategroup');
+
         // légende
-        const listLegend = ['🔴 Unité non maitrisé', '🟡 Unité en cour de maitrise', '🟢 Unité maitrisé']
-        let legend = createHTMLElement('div', 'legendMaitrise');
-        legend.textContent = 'Légende :';
-        for (let i = 0; i < listLegend.length; i++) {
-            let currentlegend = document.createElement('div');
-            currentlegend.textContent = listLegend[i];
-            legend.appendChild(currentlegend);
-        }
+        const listLegend = ['🔴 Unité non maitrisé', '🟡 Unité en cour de maitrise', '🟢 Unité maitrisé'];
+        let legend = createLegend(listLegend, 'legendMaitrise');
+        legend.prepend('Légende : ');
+
         creategroup.appendChild(legend);
         // en-tête
         let titledivuser = entete();
@@ -110,8 +107,10 @@ export function containercreategroup(data) {
         // événements du boutton d'affichage des inscrits
         document.getElementById('buttonDisplayInscripted').addEventListener('click', function () {
             if (document.getElementById('divinscripted').style.display === 'none') {
+                document.getElementById('legendInscripted').style.display = 'flex';
                 document.getElementById('divinscripted').style.display = 'block';
             } else {
+                document.getElementById('legendInscripted').style.display = 'none';
                 document.getElementById('divinscripted').style.display = 'none';
             }
         });
@@ -139,6 +138,22 @@ function listInscripted(data) {
     buttonDisplayInscripted.id = 'buttonDisplayInscripted';
     buttonDisplayInscripted.textContent = 'Liste des inscrits';
     divlistInscripted.appendChild(buttonDisplayInscripted);
+
+    // légende
+    const listLegendplaced = ['✅ Joueur placé dans un groupe', '❌ Joueur NON placé dans un groupe'];
+    const listLegendConnected = ["📱 Joueur qui s'est connecté au site internet", "📵 Joueur qui ne s'est jamais connecté au site internet"];
+    let divlegend = createHTMLElement('div', 'legendInscripted');
+    divlegend.style.display = 'none';
+    let divlistlegend = createHTMLElement('div', 'divlistlegend');
+    let titlelegend = document.createElement('div');
+    titlelegend.textContent = 'Légende :';
+    divlistlegend.appendChild(titlelegend);
+    let Legendplaced = createLegend(listLegendplaced, 'legendplaced');
+    divlistlegend.appendChild(Legendplaced);
+    let Legendconnected = createLegend(listLegendConnected, 'Legendconnected');
+    divlistlegend.appendChild(Legendconnected);
+    divlegend.appendChild(divlistlegend);
+    divlistInscripted.appendChild(divlegend);
 
     let divinscripted = createHTMLElement('div', 'divinscripted');
     divinscripted.id = 'divinscripted';
@@ -207,6 +222,16 @@ function listInscripted(data) {
     }
     divlistInscripted.appendChild(divinscripted);
     return divlistInscripted
+}
+
+function createLegend(listLegend, name) {
+    let legend = createHTMLElement('div', name);
+    for (let i = 0; i < listLegend.length; i++) {
+        let currentlegend = document.createElement('div');
+        currentlegend.textContent = listLegend[i];
+        legend.appendChild(currentlegend);
+    }
+    return legend
 }
 
 function entete() {
