@@ -73,7 +73,7 @@ sudo docker build -t nameappli .
 
 ___
 ## 🔗 Dépendences
-__
+_
 **Partie 1 : le bot Discord** <br>
 Le serveur utilise la version 18 de [nodeJS](https://nodejs.org/en) est les module [npm](https://www.npmjs.com) version 9 suivant :<br>
 - [sqlite3](https://www.npmjs.com/package/sqlite3)
@@ -90,5 +90,5 @@ Le back utilise un serveur en `go version 1.21` et les librairies suivante :
 
 ___
 ## 🧑‍💻 Authors
-__
+
 + Fabien OLIVIER
