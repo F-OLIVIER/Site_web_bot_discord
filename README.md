@@ -1,7 +1,7 @@
 # Bot Discord & site internet pour Conqueror's Blade
 
-### 📝 Descriptif
 _______
+### 📝 Descriptif
 Le projet permet de gérer de façon automatisée les inscriptions aux Guildes versus Guilde (GvG) des joueurs pour le jeu [Conqueror's Blade](https://conqblade.com/fr) et la préparation des batailles en créant les groupes à l'avance avec les informations nécessaires pour optimiser les groupes.<br>
 Le projet se décompose en 2 partie, un bot [Discord](https://discord.com) et un site internet, les 2 applications ont en commum une base de données SQL.
 
@@ -42,8 +42,8 @@ Les officiers de la guilde ont accès à plusieurs onglets dont ne dispose pas u
 </table>
 
 
-### ⚙️ Installation & usage
 _______
+### ⚙️ Installation & usage
 **Avant de pouvoir exécuter le programme :**<br>
 - Crée votre application Discord sur la [plateforme de développement Discord](https://discord.com/developers/applications).
 - Générer le lien d'invitation de votre application Discord et ajouté votre bot à votre serveur Discord.
@@ -70,8 +70,8 @@ sudo docker build -t nameappli .
 ```
 
 
-### 🔗 Dépendences
 _______
+### 🔗 Dépendences
 **Partie 1 : le bot Discord** <br>
 Le serveur utilise la version 18 de [nodeJS](https://nodejs.org/en) est les module [npm](https://www.npmjs.com) version 9 suivant :<br>
 - [sqlite3](https://www.npmjs.com/package/sqlite3)
@@ -85,6 +85,7 @@ Le back utilise un serveur en `go version 1.21` et les librairies suivante :
 - [uuid](https://github.com/gofrs/uuid)
 - [go-sqlite3](https://github.com/mattn/go-sqlite3)
 
-### 🧑‍💻 Authors
+
 _______
+### 🧑‍💻 Authors
 + Fabien OLIVIER
