@@ -2,6 +2,7 @@
 
 _______
 ## 📝 Descriptif
+__
 Le projet permet de gérer de façon automatisée les inscriptions aux Guildes versus Guilde (GvG) des joueurs pour le jeu [Conqueror's Blade](https://conqblade.com/fr) et la préparation des batailles en créant les groupes à l'avance avec les informations nécessaires pour optimiser les groupes.<br>
 Le projet se décompose en 2 partie, un bot [Discord](https://discord.com) et un site internet, les 2 applications ont en commum une base de données SQL.
 
@@ -44,6 +45,7 @@ Les officiers de la guilde ont accès à plusieurs onglets dont ne dispose pas u
 
 _______
 ## ⚙️ Installation & usage
+___
 **Avant de pouvoir exécuter le programme :**<br>
 - Crée votre application Discord sur la [plateforme de développement Discord](https://discord.com/developers/applications).
 - Générer le lien d'invitation de votre application Discord et ajouté votre bot à votre serveur Discord.
