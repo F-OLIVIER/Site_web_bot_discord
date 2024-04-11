@@ -465,24 +465,40 @@ function createSelectUnit(numberUnit, caserne, currentUser, usernameSansEspaces,
     selectunit.name = 'unit' + numberUnit + usernameSansEspaces;
     let defaultoptionUnit = document.createElement("option");
     selectunit.appendChild(defaultoptionUnit);
-    // 🔴 Unité non maitrisé
-    // 🟡 Unité en cour de maitrise
-    // 🟢 Unité maitrisé
+
+    // groupe pour l'affichage des selects
+    let optgroupOther = document.createElement('optgroup');
+    optgroupOther.label = 'Option de gestion';
+    let optgroupT5 = document.createElement('optgroup');
+    optgroupT5.label = 'Unité T5';
+    let optgroupT4 = document.createElement('optgroup');
+    optgroupT4.label = 'Unité T4';
+    let optgroupT3 = document.createElement('optgroup');
+    optgroupT3.label = 'Unité T3';
+
+    // Légende : 🔴 Unité non maitrisé, 🟡 Unité en cour de maitrise, 🟢 Unité maitrisé
     for (let j = 0; j < caserne.length; j++) {
         const unit = caserne[j];
         if (nameUnit !== unit.Unit_name) {
             let option = document.createElement('option');
             option.value = unit.Unit_name;
-            if (unit.Unit_maitrise === '1' && unit.UserMaitrise === '1') { // Unit non maitrisé
+            if (unit.Unit_maitrise === '1' && unit.UserMaitrise === '1') {
                 option.text = unit.Unit_name + ' (lvl ' + unit.Unit_lvl + '🔴)';
-            } else if (unit.Unit_maitrise === '1' && unit.UserMaitrise === '1') { // maitrise en cour
+            } else if (unit.Unit_maitrise === '1' && unit.UserMaitrise === '1') {
                 option.text = unit.Unit_name + ' (lvl ' + unit.Unit_lvl + '🟡)';
-            } else if (unit.Unit_maitrise === '1' && unit.UserMaitrise === '2') { // maitrise compléte
+            } else if (unit.Unit_maitrise === '1' && unit.UserMaitrise === '2') {
                 option.text = unit.Unit_name + ' (lvl ' + unit.Unit_lvl + '🟢)';
             } else {
                 option.text = unit.Unit_name + ' (lvl ' + unit.Unit_lvl + ')';
             }
-            selectunit.appendChild(option);
+            // selectunit.appendChild(option);
+            if (unit.Unit_tier === 'T5') {
+                optgroupT5.appendChild(option)
+            } else if (unit.Unit_tier === 'T4') {
+                optgroupT4.appendChild(option)
+            } else if (unit.Unit_tier === 'T3') {
+                optgroupT3.appendChild(option)
+            }
         } else {
             defaultoptionUnit.value = nameUnit;
             defaultoptionUnit.text = nameUnit + ' (lvl ' + unit.Unit_lvl + ')';
@@ -491,6 +507,7 @@ function createSelectUnit(numberUnit, caserne, currentUser, usernameSansEspaces,
             Consulterunofficier = true;
         }
     }
+
 
     if (Consulterunofficier) {
         defaultoptionUnit.value = 'Consulter un officier';
@@ -501,18 +518,24 @@ function createSelectUnit(numberUnit, caserne, currentUser, usernameSansEspaces,
         officieroptionUnit.value = 'Consulter un officier';
         officieroptionUnit.text = 'Consulter un officier';
         officieroptionUnit.style.color = 'red';
-        selectunit.appendChild(officieroptionUnit);
+        optgroupOther.appendChild(officieroptionUnit);
     }
 
     if (nameUnit !== "" && optionUser == 1) {
         let option = document.createElement('option');
         option.value = "";
         option.text = "Suprimer l'unité";
-        selectunit.appendChild(option);
+        optgroupOther.appendChild(option);
     } else {
         defaultoptionUnit.value = "";
         defaultoptionUnit.text = "Choisissez";
     }
+
+    // test groupe
+    selectunit.appendChild(optgroupOther);
+    selectunit.appendChild(optgroupT5);
+    selectunit.appendChild(optgroupT4);
+    selectunit.appendChild(optgroupT3);
 
     return selectunit
 }
