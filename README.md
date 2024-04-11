@@ -44,7 +44,7 @@ Les officiers de la guilde ont accès à plusieurs onglets dont ne dispose pas u
 
 ___
 ## ⚙️ Installation & usage
-__
+
 **Avant de pouvoir exécuter le programme :**<br>
 - Crée votre application Discord sur la [plateforme de développement Discord](https://discord.com/developers/applications).
 - Générer le lien d'invitation de votre application Discord et ajouté votre bot à votre serveur Discord.
@@ -73,7 +73,7 @@ sudo docker build -t nameappli .
 
 ___
 ## 🔗 Dépendences
-_
+
 **Partie 1 : le bot Discord** <br>
 Le serveur utilise la version 18 de [nodeJS](https://nodejs.org/en) est les module [npm](https://www.npmjs.com) version 9 suivant :<br>
 - [sqlite3](https://www.npmjs.com/package/sqlite3)
