@@ -42,7 +42,7 @@ Les officiers de la guilde ont accès à plusieurs onglets dont ne dispose pas u
 </table>
 
 
-__
+___
 ## ⚙️ Installation & usage
 __
 **Avant de pouvoir exécuter le programme :**<br>
@@ -71,7 +71,7 @@ sudo docker build -t nameappli .
 ```
 
 
-__
+___
 ## 🔗 Dépendences
 __
 **Partie 1 : le bot Discord** <br>
@@ -88,7 +88,7 @@ Le back utilise un serveur en `go version 1.21` et les librairies suivante :
 - [go-sqlite3](https://github.com/mattn/go-sqlite3)
 
 
-__
+___
 ## 🧑‍💻 Authors
 __
 + Fabien OLIVIER
