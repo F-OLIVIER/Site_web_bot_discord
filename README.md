@@ -1,5 +1,5 @@
-___
 # Bot Discord & site internet pour Conqueror's Blade
+
 ## 📝 Descriptif
 
 Le projet permet de gérer de façon automatisée les inscriptions aux Guildes versus Guilde (GvG) des joueurs pour le jeu [Conqueror's Blade](https://conqblade.com/fr) et la préparation des batailles en créant les groupes à l'avance avec les informations nécessaires pour optimiser les groupes.<br>
