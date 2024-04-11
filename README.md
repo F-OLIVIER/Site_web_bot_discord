@@ -42,7 +42,7 @@ Les officiers de la guilde ont accès à plusieurs onglets dont ne dispose pas u
 </table>
 
 
-### ⚙️ Usage
+### ⚙️ Installation & usage
 _______
 **Avant de pouvoir exécuter le programme :**<br>
 - Crée votre application Discord sur la [plateforme de développement Discord](https://discord.com/developers/applications).
@@ -54,10 +54,12 @@ _______
 **Méthode de lancement manuel :** <br>
 Pour démarrer le bot Discord (se trouve dans le dossier `/bot`)
 ```sh
+npm install
 npm start
 ```
 Pour démarrer le site internet (se trouve dans la racine du dossier)
 ```sh
+go mod tidy
 go run ./cmd/main.go
 ```
 
@@ -68,7 +70,7 @@ sudo docker build -t nameappli .
 ```
 
 
-### 🔗 Dépendence
+### 🔗 Dépendences
 _______
 **Partie 1 : le bot Discord** <br>
 Le serveur utilise la version 18 de [nodeJS](https://nodejs.org/en) est les module [npm](https://www.npmjs.com) version 9 suivant :<br>
