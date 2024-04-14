@@ -59,11 +59,14 @@ function homeNotConnected() {
     let Container = document.getElementById('Container');
 
     let link = createHTMLElement('a', 'linkDiscord');
-    link.href = "https://discord.com/api/oauth2/authorize?client_id=1203301786254057534&response_type=token&redirect_uri=http%3A%2F%2Flocalhost%3A53134%2Fdiscord&scope=identify";
-
+    // https://discordjs.guide/oauth2/#setting-up-a-basic-web-server
+    // Link localhost
+    // link.href = "https://discord.com/oauth2/authorize?client_id=1061579347129016320&response_type=token&redirect_uri=http%3A%2F%2Flocalhost%3A53134%2Fdiscord&scope=identify";
+    // link de chez moi
+    link.href = "https://discord.com/oauth2/authorize?client_id=1061579347129016320&response_type=token&redirect_uri=http%3A%2F%2F90.70.186.22%3A53134%2Fdiscord&scope=identify";
     let discordConnect = createHTMLElement('div', 'discordConnect');
     let divlink = createHTMLElement('div', 'divlink');
-    
+
     divlink.textContent = "Cliquer pour vous connecter avec discord";
     discordConnect.appendChild(divlink)
 

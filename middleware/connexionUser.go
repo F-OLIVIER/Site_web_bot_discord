@@ -37,9 +37,17 @@ func CheckUser(w http.ResponseWriter, r *http.Request, database *sql.DB) bool {
 				Name:    "user_token",
 				Value:   uuid,
 				Expires: time.Now().Add(6 * time.Hour),
+				Domain:  "90.70.186.22",
 				Path:    "/",
-				Secure:  true,
+				// Secure:  true,
+				// HttpOnly: true,
 			}
+
+			err := cookie.Valid()
+			if err != nil {
+				fmt.Printf("invalid cookie: %v\n", err)
+			}
+
 			SessionLogger(w, r, ID, discordUser.Id, cookie, database)
 			if connectedSite == "0" {
 				newuser_part1, errdb := database.Prepare("INSERT INTO Caserne (User_ID) Values(?)")
@@ -92,6 +100,5 @@ func Logout(w http.ResponseWriter, r *http.Request, database *sql.DB) {
 	delete(Sessions, c.Value)
 	c.MaxAge = -1
 	http.SetCookie(w, c)
-	fmt.Println("Logged out successfully")
-	// http.Redirect(w, r, "/?session=disconnected", http.StatusSeeOther)
+	// fmt.Println("Logged out successfully")
 }

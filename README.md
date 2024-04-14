@@ -47,7 +47,8 @@ ___
 
 **Avant de pouvoir exécuter le programme :**<br>
 - Crée votre application Discord sur la [plateforme de développement Discord](https://discord.com/developers/applications).
-- Générer le lien d'invitation de votre application Discord et ajouté votre bot à votre serveur Discord.
+- Pour votre application : générer le lien d'invitation et ajouté votre bot à votre serveur Discord.
+- Pour votre application : ajouter le lien redirect de votre serveur puis générer le lien OAuth2 pour le scope `identify` et mettez-le dans la variable `link.href` dans le fichier `main.js`.
 - Crée le fichier (variable d'environnement) `.env` dans la racine du projet. Dans ce fichier, mettez le `TOKEN` de l'application Discord ainsi que le `PORT` souhaité pour le site web associé.
 - Créé le fichier (base de données) nommé `databaseGvG.db` dans le dossier `/database` (le script SQL est là pour vous permettre de générer les tables et une base d'unité).
 - Dans le fichier `./bot/Main.js` vous devez modifier la partie `Adaptation (ligne 19 à 44)` qui permet d'adapté le code automatiquement à votre serveur Discord.

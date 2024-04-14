@@ -1,8 +1,12 @@
-const adressAPI = 'http://localhost:53134/api/';
+// const adressAPI = 'http://localhost:53134/api/';
+const adressAPI = 'http://90.70.186.22:53134/api/';
+
 // récupération des tokens
 const fragment = new URLSearchParams(window.location.hash.slice(1));
 const [accessToken, tokenType] = [fragment.get('access_token'), fragment.get('token_type')];
 let secretsUser = `${tokenType} ${accessToken}`;
+
+// console.log('secretsUser : ', secretsUser)
 
 // récupération des data sur l'api discord
 fetch('https://discord.com/api/users/@me', {
@@ -21,7 +25,7 @@ fetch('https://discord.com/api/users/@me', {
 function checkid(id, username) {
     // récupération des information saisie deans le formulaire
     const dataToSend = { id, username };
-    console.log("dataToSend : ", dataToSend);
+    // console.log("dataToSend : ", dataToSend);
 
     fetch(adressAPI + 'discord', {
         method: 'POST',
@@ -40,7 +44,7 @@ function checkid(id, username) {
             if (typeof data === 'object') {
                 // console.log('Data received (Register):', data);
                 if (data.Redirect !== "") {
-                    window.location.href = data.Redirect;
+                    window.location.href = data.Gestion.Redirect;
                 }
             } else {
                 throw new Error('Réponse invalide du serveur (non-JSON)');
