@@ -37,7 +37,7 @@ func CheckUser(w http.ResponseWriter, r *http.Request, database *sql.DB) bool {
 				Name:    "user_token",
 				Value:   uuid,
 				Expires: time.Now().Add(6 * time.Hour),
-				Domain:  "90.70.186.22",
+				Domain:  "lnb.sytes.net",
 				Path:    "/",
 				// Secure:  true,
 				// HttpOnly: true,

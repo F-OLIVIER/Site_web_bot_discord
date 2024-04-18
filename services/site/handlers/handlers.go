@@ -14,6 +14,7 @@ import (
 )
 
 var tb = utils.NewTokenBucket(5, 5)
+var adressDB = "./database/databaseGvG.db"
 
 // Page d'accueil "/"
 func ServeHome(w http.ResponseWriter, r *http.Request) {
@@ -44,7 +45,7 @@ func DiscordApiHandler(w http.ResponseWriter, r *http.Request) {
 		var sendHTML *data.SendHTML
 		if r.Method == "POST" && r.URL.Path == "/api/discord" {
 			// ouverture database
-			database, err := sql.Open("sqlite3", "./database/databaseGvG.db")
+			database, err := sql.Open("sqlite3", adressDB)
 			utils.CheckErr("open db in homehandler", err)
 			defer database.Close()
 
@@ -87,11 +88,12 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 		var sendHTML *data.SendHTML
 		// lecture du cookie
 		cookie, err1 := r.Cookie("user_token")
-		if r.URL.Path == "/api/home" && err1 != http.ErrNoCookie {
-			database, err := sql.Open("sqlite3", "./database/databaseGvG.db")
-			utils.CheckErr("open db in homehandler", err)
-			defer database.Close()
 
+		database, err := sql.Open("sqlite3", adressDB)
+		utils.CheckErr("open db in homehandler", err)
+		defer database.Close()
+
+		if r.URL.Path == "/api/home" && err1 != http.ErrNoCookie {
 			// récupération des informations utilisateur
 			_, DiscordName, DiscordPhoto, officier := utils.UserInfo(cookie.Value, database)
 
@@ -120,7 +122,8 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 				}
 			}
 		} else { // absence de cookie
-			fmt.Println("probléme cookie")
+			// fmt.Println("probléme cookie")
+			utils.Logout(w, r, database)
 			gestion := &data.Gestion{
 				Logged:   false,
 				Redirect: "/",
@@ -148,10 +151,12 @@ func CaserneHandler(w http.ResponseWriter, r *http.Request) {
 		var sendHTML *data.SendHTML
 		// lecture du cookie
 		cookie, err1 := r.Cookie("user_token")
+
+		database, err := sql.Open("sqlite3", adressDB)
+		utils.CheckErr("open db in homehandler", err)
+		defer database.Close()
+
 		if r.URL.Path == "/api/caserne" && err1 != http.ErrNoCookie {
-			database, err := sql.Open("sqlite3", "./database/databaseGvG.db")
-			utils.CheckErr("open db in homehandler", err)
-			defer database.Close()
 
 			// récupération des informations utilisateur
 			userID, DiscordName, DiscordPhoto, officier := utils.UserInfo(cookie.Value, database)
@@ -182,6 +187,7 @@ func CaserneHandler(w http.ResponseWriter, r *http.Request) {
 				}
 			}
 		} else { // absence de cookie
+			utils.Logout(w, r, database)
 			gestion := &data.Gestion{
 				Logged:   false,
 				Redirect: "/",
@@ -209,10 +215,12 @@ func CreateGroupHandler(w http.ResponseWriter, r *http.Request) {
 		var sendHTML *data.SendHTML
 		// lecture du cookie
 		cookie, err1 := r.Cookie("user_token")
+
+		database, err := sql.Open("sqlite3", adressDB)
+		utils.CheckErr("open db in homehandler", err)
+		defer database.Close()
+
 		if r.URL.Path == "/api/creategroup" && err1 != http.ErrNoCookie {
-			database, err := sql.Open("sqlite3", "./database/databaseGvG.db")
-			utils.CheckErr("open db in homehandler", err)
-			defer database.Close()
 
 			// récupération des informations utilisateur
 			_, DiscordName, DiscordPhoto, officier := utils.UserInfo(cookie.Value, database)
@@ -245,6 +253,7 @@ func CreateGroupHandler(w http.ResponseWriter, r *http.Request) {
 				}
 			}
 		} else { // absence de cookie
+			utils.Logout(w, r, database)
 			gestion := &data.Gestion{
 				Logged:   false,
 				Redirect: "/",
@@ -271,7 +280,7 @@ func SaveGroupInDB(w http.ResponseWriter, r *http.Request) {
 		// lecture du cookie
 		cookie, err1 := r.Cookie("user_token")
 		if r.URL.Path == "/api/saveGroupInDB" && err1 != http.ErrNoCookie {
-			database, err := sql.Open("sqlite3", "./database/databaseGvG.db")
+			database, err := sql.Open("sqlite3", adressDB)
 			utils.CheckErr("open db in homehandler", err)
 			defer database.Close()
 
@@ -291,11 +300,12 @@ func MAJCaserneHandler(w http.ResponseWriter, r *http.Request) {
 		var sendHTML *data.SendHTML
 		// lecture du cookie
 		cookie, err1 := r.Cookie("user_token")
-		if r.Method == "POST" && r.URL.Path == "/api/majcaserne" && err1 != http.ErrNoCookie {
-			database, err := sql.Open("sqlite3", "./database/databaseGvG.db")
-			utils.CheckErr("open db in homehandler", err)
-			defer database.Close()
 
+		database, err := sql.Open("sqlite3", adressDB)
+		utils.CheckErr("open db in homehandler", err)
+		defer database.Close()
+
+		if r.Method == "POST" && r.URL.Path == "/api/majcaserne" && err1 != http.ErrNoCookie {
 			// récupération des informations utilisateur
 			userID, DiscordName, DiscordPhoto, officier := utils.UserInfo(cookie.Value, database)
 
@@ -326,6 +336,7 @@ func MAJCaserneHandler(w http.ResponseWriter, r *http.Request) {
 				}
 			}
 		} else { // absence de cookie
+			utils.Logout(w, r, database)
 			gestion := &data.Gestion{
 				Logged:   false,
 				Redirect: "/",
@@ -352,11 +363,12 @@ func CharacterCardHandler(w http.ResponseWriter, r *http.Request) {
 		var sendHTML *data.SendHTML
 		// lecture du cookie
 		cookie, err1 := r.Cookie("user_token")
-		if r.URL.Path == "/api/charactercard" && err1 != http.ErrNoCookie {
-			database, err := sql.Open("sqlite3", "./database/databaseGvG.db")
-			utils.CheckErr("open db in homehandler", err)
-			defer database.Close()
 
+		database, err := sql.Open("sqlite3", adressDB)
+		utils.CheckErr("open db in homehandler", err)
+		defer database.Close()
+
+		if r.URL.Path == "/api/charactercard" && err1 != http.ErrNoCookie {
 			if !utils.CheckToken(utils.Sessions, cookie) { // si cookie non valide
 				utils.Logout(w, r, database)
 				gestion := &data.Gestion{
@@ -379,6 +391,7 @@ func CharacterCardHandler(w http.ResponseWriter, r *http.Request) {
 				}
 			}
 		} else { // absence de cookie
+			utils.Logout(w, r, database)
 			gestion := &data.Gestion{
 				Logged:   false,
 				Redirect: "/",
@@ -405,7 +418,7 @@ func UpdateCharacterCard(w http.ResponseWriter, r *http.Request) {
 		// lecture du cookie
 		cookie, err1 := r.Cookie("user_token")
 		if r.URL.Path == "/api/updateCharacterCard" && err1 != http.ErrNoCookie && r.Method == "POST" {
-			database, err := sql.Open("sqlite3", "./database/databaseGvG.db")
+			database, err := sql.Open("sqlite3", adressDB)
 			utils.CheckErr("open db in homehandler", err)
 			defer database.Close()
 
@@ -425,11 +438,12 @@ func CheckAppAdmin(w http.ResponseWriter, r *http.Request) {
 		var sendHTML *data.SendHTML
 		// lecture du cookie
 		cookie, err1 := r.Cookie("user_token")
-		if r.URL.Path == "/api/CheckAppAdmin" && err1 != http.ErrNoCookie {
-			database, err := sql.Open("sqlite3", "./database/databaseGvG.db")
-			utils.CheckErr("open db in homehandler", err)
-			defer database.Close()
 
+		database, err := sql.Open("sqlite3", adressDB)
+		utils.CheckErr("open db in homehandler", err)
+		defer database.Close()
+
+		if r.URL.Path == "/api/CheckAppAdmin" && err1 != http.ErrNoCookie {
 			if !utils.CheckToken(utils.Sessions, cookie) { // si cookie non valide
 				utils.Logout(w, r, database)
 				gestion := &data.Gestion{
@@ -458,6 +472,7 @@ func CheckAppAdmin(w http.ResponseWriter, r *http.Request) {
 				}
 			}
 		} else { // absence de cookie
+			utils.Logout(w, r, database)
 			gestion := &data.Gestion{
 				Logged:   false,
 				Redirect: "/",
@@ -484,7 +499,7 @@ func UpdateAdmin(w http.ResponseWriter, r *http.Request) {
 		// lecture du cookie
 		cookie, err1 := r.Cookie("user_token")
 		if r.URL.Path == "/api/UpdateAdmin" && err1 != http.ErrNoCookie && r.Method == "POST" {
-			database, err := sql.Open("sqlite3", "./database/databaseGvG.db")
+			database, err := sql.Open("sqlite3", adressDB)
 			utils.CheckErr("open db in homehandler", err)
 			defer database.Close()
 
@@ -507,7 +522,7 @@ func AdminitrateBot(w http.ResponseWriter, r *http.Request) {
 		// lecture du cookie
 		cookie, err1 := r.Cookie("user_token")
 		if r.URL.Path == "/api/adminitrateBot" && err1 != http.ErrNoCookie && r.Method == "POST" {
-			database, err := sql.Open("sqlite3", "./database/databaseGvG.db")
+			database, err := sql.Open("sqlite3", adressDB)
 			utils.CheckErr("open db in homehandler", err)
 			defer database.Close()
 
@@ -531,11 +546,12 @@ func StatGvG(w http.ResponseWriter, r *http.Request) {
 		var sendHTML *data.SendHTML
 		// lecture du cookie
 		cookie, err1 := r.Cookie("user_token")
-		if r.URL.Path == "/api/statGvG" && err1 != http.ErrNoCookie {
-			database, err := sql.Open("sqlite3", "./database/databaseGvG.db")
-			utils.CheckErr("open db in homehandler", err)
-			defer database.Close()
 
+		database, err := sql.Open("sqlite3", adressDB)
+		utils.CheckErr("open db in homehandler", err)
+		defer database.Close()
+
+		if r.URL.Path == "/api/statGvG" && err1 != http.ErrNoCookie {
 			if !utils.CheckToken(utils.Sessions, cookie) { // si cookie non valide
 				utils.Logout(w, r, database)
 				gestion := &data.Gestion{
@@ -562,6 +578,7 @@ func StatGvG(w http.ResponseWriter, r *http.Request) {
 				}
 			}
 		} else { // absence de cookie
+			utils.Logout(w, r, database)
 			gestion := &data.Gestion{
 				Logged:   false,
 				Redirect: "/",

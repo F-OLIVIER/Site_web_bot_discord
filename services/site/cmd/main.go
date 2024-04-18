@@ -1,25 +1,17 @@
 package main
 
 import (
+	data "botgvg/database"
 	handlers "botgvg/handlers"
 	"flag"
 	"fmt"
-	"log"
 	"net/http"
-	"os"
-
-	"github.com/joho/godotenv"
 )
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
-	port := os.Getenv("PORT")
-
+	port := "8080"
 	// Initialisation de la database
-	// data.Createdb()
+	data.Createdb()
 
 	flag.Parse()
 	// home non connecté
@@ -45,7 +37,8 @@ func main() {
 	http.Handle("/js/", http.StripPrefix("/js/", http.FileServer(http.Dir("./public/js/"))))
 	http.Handle("/img/", http.StripPrefix("/img/", http.FileServer(http.Dir("./public/images/"))))
 
-	// mise en écoute du serveur
 	fmt.Println("Server started on port " + port + "\nhttp://localhost:" + port)
+
+	// Mise en écoute du serveur HTTP
 	http.ListenAndServe(":"+port, nil)
 }

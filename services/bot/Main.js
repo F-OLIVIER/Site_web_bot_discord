@@ -1,0 +1,373 @@
+// Fichier annexe
+import { client, Messagegvg, privatemp, Messageprivatemp, MessageInsufficientAuthority, Booleanusermp, EmbedData, EmbedGuide } from './Constant.js';
+import { slashvisite, visit1, modalvisitelvlAndInflu, visit2, visit3, slashvisitenotpossible } from './guide.js';
+import { createCommands, slashClass, slashInflu, slashLevel, slashResetmsggvg } from './slashcommand.js';
+import { cronCheckpresence, cronResetMsgReaction } from "./Cronjob.js"
+import { botOn, unregisteredList, isOfficier, deleteUser } from './database.js';
+import { PlayerCreateOrUpdate, createuser, isMember } from './FuncData.js';
+import { addReaction, removeReaction } from './Reaction.js';
+import { cmdnb, cmdlist } from "./CommandBot.js";
+
+// Module nodejs et npm
+import { } from 'dotenv/config';
+import { CronJob } from 'cron';
+export const adressdb = '../site/database/databaseGvG.db';
+
+// --------------------------------------
+// ------------- Adaptation -------------
+// --------------------------------------
+
+export const ServerID = '674215425546125323';
+export const siteInternet = "https://lnb.sytes.net";
+// Lists des utilisateurs discord admin du bot (pour les commandes administrateur)
+export const ListAdmin = ["179655652153491456"]; // coincoin
+// Liste des utilisateurs discord autorisé a utilisé la commande /mp
+export const Listusermp = ["179655652153491456", "489520129705771029", "256509244277391360", "154670779236220928", "274945457707286528", "438019087457583124", "828641205881012294", "166151581325066240", "328164062712299522", "166151485154000896", "1081374865501724732"];
+// coincoin, akyol, master, rafu, Allyta, Berchoun, OGM, fish, RC, Crashow, Maeecko
+
+// id des chan (utilisateur, message reaction, message rappel, chan officier)
+const TODOBotChan = '674275684364845057';
+const TODOBotrappel = '674275684364845057';
+const TODOBotChanOfficier = '715893349931810898';
+export const TODOBotReaction = '1111983569900929024';
+// Chan et utilisateur à cité dans le message privée
+const TODOchangvg = '674275684364845057';
+const TODOutilisateurofficier = '179655652153491456'; // coincoin
+// Utilisateur qui reçois en message privée les sauvegardes automatique de la BDD
+const TODOusermpgetsaveBDD = '179655652153491456'; // coincoin
+// Catégorie des channels à checker pour les presences pendant la gvg
+const idCategorie = '674215425990459413';
+// Role a ping dans le message d'inscription GvG
+const idrole = '951159160190427137';
+// export const nameRoleOfficier = "Officier";
+export const idRoleOfficier = '736886582489120768';
+// export const nameRoleUser = "Barbouse-Conqueror";
+export const idRoleUser = '1223899873196113991';
+
+
+// -----------------------------------------------------------
+// ---------------------- Coeur du code ----------------------
+// -----------------------------------------------------------
+
+client.login(process.env.TOKEN);
+client.on('error', (error) => { console.error('\nUne erreur est survenue :\n', error); });
+// client.on('debug', (message) => { console.debug('\nMessage de débogage :\n', message); });
+client.on('warn', (warning) => { console.warn('\nAvertissement :\n', warning); });
+
+// --------------------------------------------------------------
+// ----------------------- Activation bot -----------------------
+// --------------------------------------------------------------
+
+// definition des variables
+let BotChan;
+let BotChanOfficier;
+
+// definition des chan utilisé par le bot
+client.on('ready', async () => {
+  console.log(`╭──────────────────────────────────────────────╮
+│        Bot starting up, please wait ...      │
+│──────────────────────────────────────────────│
+│ • Create command discord in process          │`);
+  await createCommands();
+  console.log('│ • Create db user in process                  │');
+  await createuser();
+
+  // Création des channels
+  BotChan = client.channels.cache.get(TODOBotChan);
+  BotChanOfficier = client.channels.cache.get(TODOBotChanOfficier);
+  const BotReaction = client.channels.cache.get(TODOBotReaction);
+  const Botrappel = client.channels.cache.get(TODOBotrappel);
+  console.log('│ • Initializing automatic function            │');
+  TaskHandle(BotChan, BotReaction, TODOBotReaction, Botrappel, TODOBotrappel, idrole, TODOusermpgetsaveBDD);
+
+  console.log(`│──────────────────────────────────────────────│
+│              Start-up completed              │
+│                 Bot ready !                  │
+╰──────────────────────────────────────────────╯\n`);
+});
+// ---------------------------------------------------------------------------------------------------------------
+// --------------------------------------------  Liste des événements --------------------------------------------
+// -------------------------- ATTENTION: pour utiliser ceci, il faut adapter les intents -------------------------
+// ---------------------------------------------------------------------------------------------------------------
+// ready :              le bot est connecté et prêt à interagir avec Discord.
+// message :            un message est envoyé dans un canal textuel que le bot peut voir.
+// messageDelete :      un message est supprimé dans un canal textuel.
+// messageUpdate :      un message est modifié dans un canal textuel.
+// guildMemberAdd :     un utilisateur rejoint le serveur.
+// guildMemberRemove :  un utilisateur quitte le serveur.
+// voiceStateUpdate :   l'état vocal d'un utilisateur change (par exemple, il rejoint un salon vocal, le quitte, ou mute son microphone).
+// guildCreate :        le bot rejoint un nouveau serveur.
+// guildDelete :        le bot quitte un serveur.
+// guildUpdate :        les données d'un serveur (comme son nom ou son icône) sont mises à jour.
+// channelCreate :      un nouveau canal est créé sur le serveur.
+// channelDelete :      un canal est supprimé du serveur.
+// channelUpdate :      les données d'un canal (comme son nom ou ses permissions) sont mises à jour.
+// roleCreate :         un nouveau rôle est créé sur le serveur.
+// roleDelete :         un rôle est supprimé du serveur.
+// roleUpdate :         les données d'un rôle (comme son nom ou ses permissions) sont mises à jour.
+// presenceUpdate :     l'état de présence d'un utilisateur (en ligne, inactif, etc.) est mis à jour.
+// typingStart :        un utilisateur commence à taper dans un canal textuel.
+// typingStop :         un utilisateur arrête de taper dans un canal textuel.
+// warn :               lorsqu'un avertissement est émis par le client.
+// error :              lorsqu'une erreur se produit dans le client.
+// rateLimit :          le bot est soumis à un taux limité par Discord.
+// ----------------------------------------------------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+// ----------------------- User leave discord ------------------------
+// -------------------------------------------------------------------
+client.on('guildMemberRemove', async (member) => {
+  if (member.user.bot) return;
+  console.log(`${member.user.username} a quitté le serveur.`);
+  deleteUser(member.user.id)
+});
+
+// -------------------------------------------------------------------
+// ---------------- User connected chan discord ----------------------
+// -------------------------------------------------------------------
+client.on('voiceStateUpdate', async (oldState, newState) => {
+  if (newState.member.user.bot) return;
+  if (newState.channel) {
+    await PlayerCreateOrUpdate(newState.member.user.id);
+  }
+});
+
+// --------------------------------------------------------------
+// -------------------- Add message reaction --------------------
+// --------------------------------------------------------------
+client.on("messageReactionAdd", async (reaction, user) => {
+  if (user.bot) return;
+  if (!await isMember(user.id)) return;
+
+  if (reaction.message.channel.id == TODOBotReaction && botOn(reaction.message.id)) {
+    await PlayerCreateOrUpdate(user.id);
+    // Ajout de la réaction
+    await addReaction(reaction, user);
+  }
+});
+
+// --------------------------------------------------------------
+// ------------------ Delete message reaction -------------------
+// --------------------------------------------------------------
+client.on("messageReactionRemove", async (reaction, user) => {
+  if (user.bot) return;
+  if (!await isMember(user.id)) return;
+
+  if (reaction.message.channel.id == TODOBotReaction && botOn(reaction.message.id)) {
+    await PlayerCreateOrUpdate(user.id);
+    // Retrait de la réaction
+    await removeReaction(reaction, user);
+  }
+});
+
+// --------------------------------------------------------------
+// ---------------------- Message command -----------------------
+// --------------------------------------------------------------
+client.on('messageCreate', async message => {
+  if (message.author.bot) return;
+  var MC = message.content.toLowerCase();
+  var AuthorID = message.author.id;
+  await PlayerCreateOrUpdate(AuthorID);
+  if (!await isMember(AuthorID)) return;
+
+  // Fonction de test
+  // if (MC.startsWith("/test")){
+  //     message.delete();
+  // }
+
+  // Définition des canaux ou le bot réagis : canal utilisateur GvG et canal Officier
+  if (message.channel.id == TODOBotChan || message.channel.id == TODOBotChanOfficier) {
+    if (message.author.bot) return; // Ignore les messages provenant d'autres bots
+
+    // Rappel d'inscription GvG en mp
+    if (MC.startsWith("/mp")) {
+      if (Booleanusermp(AuthorID) == true) {
+        if (MC.substring(3, MC.length) > 0) {
+          var userpourmp = MC.substring(3, MC.length).trim();
+          var privatemessage = await client.users.fetch(userpourmp);
+          var changvg = TODOchangvg;
+          var utilisateurofficier = TODOutilisateurofficier;
+          privatemp(privatemessage, changvg, utilisateurofficier);
+          Messageprivatemp(AuthorID, BotChanOfficier, userpourmp);
+          message.delete();
+        }
+      }
+      else {
+        MessageInsufficientAuthority(AuthorID, BotChan);
+      }
+    }
+  }
+});
+
+// --------------------------------------------------------------
+// -------------------- Interaction command ---------------------
+// --------------------------------------------------------------
+client.on('interactionCreate', async (interaction) => {
+  if (interaction.user.bot) return;
+  interaction.ephemeral = true;
+
+  // -----------------------
+  // ---- Visite guidée ----
+  // -----------------------
+  if (interaction.isModalSubmit()) {
+    if (interaction.customId === 'modalvisite') {
+      return visit2(interaction);
+    }
+  }
+
+  // L'interaction est de type composant d'un message
+  if (interaction.isMessageComponent()) {
+    if (interaction.customId === 'visite_start') {
+      return visit1(interaction);
+    }
+
+    if (interaction.customId === 'visite_modal') {
+      modalvisitelvlAndInflu(interaction);
+    }
+
+    if (interaction.customId === 'visite_class') {
+      return visit3(interaction);
+    }
+  }
+
+  // -----------------------------
+  // ---- Command utilisateur ----
+  // -----------------------------
+  if (!interaction.isCommand()) return;
+  await PlayerCreateOrUpdate(interaction.user.id);
+
+  // interaction changement de level du héros, Command /visite_guidée
+  if (interaction.commandName === "visite_guidée") {
+    if (await isMember(interaction.user.id)) {
+      return await slashvisite(interaction);
+    } else {
+      return await slashvisitenotpossible(interaction);
+    }
+  }
+
+  // Les intéraction suivante sont réservé aux membre
+  if (!await isMember(interaction.user.id)) return;
+
+  // interaction qui retourne l'embed data de l'utilisateur, Command /data
+  if (interaction.commandName === "data") {
+    interaction.reply({
+      embeds: [await EmbedData(interaction)],
+      ephemeral: true,
+    });
+    return true;
+  }
+
+  // interaction qui retourne l'embed guide de l'utilisateur, Command /data
+  if (interaction.commandName === "guide") {
+    interaction.reply({
+      embeds: [await EmbedGuide()],
+      ephemeral: true,
+    });
+    return true;
+  }
+
+  // interaction changement de level du héros, Command /lvl
+  if (interaction.commandName === "level") {
+    return await slashLevel(interaction);
+  }
+
+  // interaction changement de l'influence du héros, Command /influ
+  if (interaction.commandName === "influence") {
+    return await slashInflu(interaction);
+  }
+
+  // interaction changement de classe, Command /class
+  if (interaction.commandName === "classe") {
+    return await slashClass(interaction);
+  }
+
+  // interaction qui donne l'adresse du site internet associé au bot
+  if (interaction.commandName === "site") {
+    interaction.reply({
+      content: "Voici le lien du site internet associé au bot :\n<" + siteInternet + ">",
+      ephemeral: true,
+    });
+    return true;
+  }
+
+  // --------------------------
+  // ---- Command Officier ----
+  // --------------------------
+  if (interaction.commandName === "officier_nombre_inscript") {
+    if (isOfficier(interaction.user.id)) {
+      cmdnb(interaction.user.id, BotChanOfficier);
+      interaction.reply({
+        content: "Le nombre de joueur inscrit ou non à la prochaine GvG a été posté dans le canal <#" + TODOBotChanOfficier + ">",
+        ephemeral: true,
+      });
+    } else {
+      interaction.reply({
+        content: "Vous n'avez pas les autorisations nécéssaire pour réaliser cet action",
+        ephemeral: true,
+      });
+    }
+    return true;
+  }
+
+  if (interaction.commandName === "officier_liste_inscrits") {
+    if (isOfficier(interaction.user.id)) {
+      cmdlist(interaction.user.id, BotChanOfficier);
+      interaction.reply({
+        content: "La liste des joueurs inscrit à la prochaine GvG a été posté dans le canal <#" + TODOBotChanOfficier + ">",
+        ephemeral: true,
+      });
+    } else {
+      interaction.reply({
+        content: "Vous n'avez pas les autorisations nécéssaire pour réaliser cet action",
+        ephemeral: true,
+      });
+    }
+    return true;
+  }
+
+  if (interaction.commandName === "officier_liste_non_inscrits") {
+    if (isOfficier(interaction.user.id)) {
+      const unregisteredlist = await unregisteredList();
+      Messagegvg(interaction.user.id, BotChanOfficier, unregisteredlist);
+      interaction.reply({
+        content: "La liste des joueurs non inscrit à la prochaine GvG a été posté dans le canal <#" + TODOBotChanOfficier + ">",
+        ephemeral: true,
+      });
+    } else {
+      interaction.reply({
+        content: "Vous n'avez pas les autorisations nécéssaire pour réaliser cet action",
+        ephemeral: true,
+      });
+    }
+    return true;
+  }
+
+  // ------------------------------
+  // ---- Command admin du bot ----
+  // ------------------------------
+  if (interaction.commandName === "admin_raidreset") {
+    return await slashRaidReset(interaction);
+  }
+
+  if (interaction.commandName === "admin_resetmsggvg") {
+    return await slashResetmsggvg(interaction);
+  }
+});
+
+// --------------------------------------------------------------
+// --------------------- Automatic function ---------------------
+// --------------------------------------------------------------
+function TaskHandle(BotReaction, TODOBotReaction, idrole) {
+  // Fonction automatique de check des presences discord pendant la GvG
+  let checkPresence = new CronJob('0 */1 20 * * 2,6', function () {
+    cronCheckpresence(idCategorie);
+  }, null, true, 'Europe/Paris');
+  checkPresence.start();
+
+  // fonction de changement automatique du message de réaction à 21h mardi et samedi
+  let resetmsgreact = new CronJob('0 0 21 * * 2,6', function () {
+    cronResetMsgReaction(BotReaction, TODOBotReaction, idrole);
+  }, null, true, 'Europe/Paris');
+  resetmsgreact.start();
+}
+

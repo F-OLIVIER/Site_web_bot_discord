@@ -245,11 +245,11 @@ func UploadInformationsBot(r *http.Request, database *sql.DB) {
 			file, header, err := r.FormFile("image")
 			if err == nil {
 				defer file.Close()
-				UploadPicture(file, header, "./img/unit/"+header.Filename)
+				UploadPicture(file, header, "./site/img/unit/"+header.Filename)
 				if formData.CreateUnit.Name != "" { // création d'une unité
-					createNewUnit(formData.CreateUnit, "./img/unit/"+header.Filename, database)
+					createNewUnit(formData.CreateUnit, "./site/img/unit/"+header.Filename, database)
 				} else if formData.ChangeUnit.Name != "" { // Update de l'image d'une unit
-					updateImgUnit(formData.ChangeUnit, "./img/unit/"+header.Filename, database)
+					updateImgUnit(formData.ChangeUnit, "./site/img/unit/"+header.Filename, database)
 				}
 			}
 

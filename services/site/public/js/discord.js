@@ -1,5 +1,5 @@
 // const adressAPI = 'http://localhost:53134/api/';
-const adressAPI = 'http://90.70.186.22:53134/api/';
+const adressAPI = 'http://lnb.sytes.net:8080/api/';
 
 // récupération des tokens
 const fragment = new URLSearchParams(window.location.hash.slice(1));
