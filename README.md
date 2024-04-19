@@ -53,29 +53,29 @@ ___
 - Dans le fichier `./services/bot/config.js` vous devez modifier les variable pour adapté le code automatiquement à votre serveur Discord.
 
 **Méthode de lancement avec screen :** <br>
-Les lancement sur le serveur ce font via [Screen](https://doc.ubuntu-fr.org/screen)
+Les lancement sur le serveur ce font via [Screen](https://doc.ubuntu-fr.org/screen)</br>
 Installer le avec :
 ```sh
 sudo apt install screen
 ```
-Pour démarrer le bot Discord (se trouve dans le dossier `/bot`)
+Pour démarrer le bot Discord (se trouve dans le dossier `./services/bot`)
 ```sh
-screen -R bot
+screen -R bot_discord
 cd ./services/bot
 npm install
 npm start
-# Pour detacher la console screen, faite `CTRL+A` puis `D`
+# Pour detacher la console, faite `CTRL + A` puis `D`
 ```
 
-Pour démarrer le site internet (se trouve dans la racine du dossier)
+Pour démarrer le site internet (se trouve dans le dossier `./services/site`)
 ```sh
-screen -R site
+screen -R site_internet
 cd ./services/site
 go run ./cmd/main.go
-# Pour detacher la console screen, faite `CTRL+A` puis `D`
+# Pour detacher la console, faite `CTRL + A` puis `D`
 ```
 
-Pour monitoré voici les commande de base de screen
+Pour monitorer, voici les commandes de base de Screen
 ```sh
 # Afficher les screens en cours
 screen -ls
