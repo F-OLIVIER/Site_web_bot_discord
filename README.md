@@ -55,13 +55,13 @@ ___
     - `./services/site/internal/config.go`
     - `./services/site/js/config.js`
 
-**Méthode de lancement avec screen :** <br>
-Les lancements sur un serveur ce font via [Screen](https://doc.ubuntu-fr.org/screen)</br>
+**Méthode d'éxécution :** <br>
+Une méthode d'éxécutions possible sur un serveur ce fais via [Screen](https://doc.ubuntu-fr.org/screen)</br>
 Installer le avec :
 ```sh
 sudo apt install screen
 ```
-Lors du premier lancement, le site internet doit être exécuté en premier, car c'est lui qui crée la base de donnée, ensuite le bot discord peut être exécuté, lors de son lancement, il va compléter la base de donnée avec l'ensemble des utilisateurs déjà présent sur le discord.
+Lors du premier lancement, le site internet doit être exécuté en premier, car c'est lui qui crée la base de donnée. Ensuite le bot discord peut être exécuté, lors de son lancement, il va compléter la base de donnée avec les utilisateurs déjà présent sur le discord.
 
 Pour démarrer le site internet (qui se trouve dans le dossier `./services/site`)
 ```sh
