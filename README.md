@@ -48,26 +48,22 @@ ___
 **Avant de pouvoir exécuter le programme :**<br>
 - Crée votre application Discord sur la [plateforme de développement Discord](https://discord.com/developers/applications).
 - Pour votre application : générer le lien d'invitation et ajouté votre bot à votre serveur Discord.
-- Pour votre application : ajouter le lien redirect de votre serveur puis générer le lien OAuth2 pour le scope `identify` et mettez-le dans la variable `LINK_DISCORD` dans le fichier `/services/site/js/config.js`, mettez y également l'adresse de votre site internet dans la variable `adressAPI`.
+- Pour votre application : ajouter le lien redirect de votre serveur puis générer le lien OAuth2 pour le scope `identify` et mettez-le dans la variable `LINK_DISCORD` puis modofier le `response_type=code` en `response_type=token` dans le fichier `./services/site/js/config.js`, mettez y également l'adresse de votre site internet dans la variable `adressAPI`.
 - Crée le fichier (variable d'environnement) `.env` pour le bot discord, dossier `./services/bot`. Dans ce fichier, mettez le `TOKEN` de l'application Discord.
-- Dans le fichier `./services/bot/config.js` et `./services/site/internal/config.go` vous devez modifier les variables pour adapter le code automatiquement à votre serveur Discord.
+- Vous devez modifier les variables globale dans les fichiers de config pour adapter le code à votre serveur Discord. Voici les emplacements des fichiers config :</br>
+    - `./services/bot/config.js`
+    - `./services/site/internal/config.go`
+    - `./services/site/js/config.js`
 
 **Méthode de lancement avec screen :** <br>
-Les lancement sur le serveur ce font via [Screen](https://doc.ubuntu-fr.org/screen)</br>
+Les lancements sur un serveur ce font via [Screen](https://doc.ubuntu-fr.org/screen)</br>
 Installer le avec :
 ```sh
 sudo apt install screen
 ```
-Pour démarrer le bot Discord (se trouve dans le dossier `./services/bot`)
-```sh
-screen -R bot_discord
-cd ./services/bot
-npm install
-npm start
-# Pour detacher la console, faite `[CTRL]+[a]` suivi de `[d]`
-```
+Lors du premier lancement, le site internet doit être exécuté en premier, car c'est lui qui crée la base de donnée, ensuite le bot discord peut être exécuté, lors de son lancement, il va compléter la base de donnée avec l'ensemble des utilisateurs déjà présent sur le discord.
 
-Pour démarrer le site internet (se trouve dans le dossier `./services/site`)
+Pour démarrer le site internet (qui se trouve dans le dossier `./services/site`)
 ```sh
 screen -R site_internet
 cd ./services/site
@@ -77,7 +73,16 @@ go build ./cmd/main.go
 # Pour detacher la console, faite `[CTRL]+[a]` suivi de `[d]`
 ```
 
-Pour monitorer, voici les commandes de base de Screen
+Pour démarrer le bot Discord (qui se trouve dans le dossier `./services/bot`)
+```sh
+screen -R bot_discord
+cd ./services/bot
+npm install
+npm start
+# Pour detacher la console, faite `[CTRL]+[a]` suivi de `[d]`
+```
+
+Pour monitorer, voici les commandes de base de `Screen`
 ```sh
 # Afficher les screens en cours
 screen -ls
