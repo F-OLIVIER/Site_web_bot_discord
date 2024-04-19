@@ -1,4 +1,4 @@
-package DB
+package data
 
 import (
 	"database/sql"
@@ -7,11 +7,11 @@ import (
 )
 
 func Createdb() {
-	database, err := sql.Open("sqlite3", "./database/databaseGvG.db")
+	database, err := sql.Open("sqlite3", "../database/databaseGvG.db")
 	CheckErr(err, "1- Err open db in Createdb")
 
 	// create table
-	scriptSQL, err := os.ReadFile("./database/script.sql")
+	scriptSQL, err := os.ReadFile("../database/script.sql")
 	CheckErr(err, "2- open file script.sql")
 	_, err = database.Exec(string(scriptSQL))
 	CheckErr(err, "2- Err open db in Createdb")

@@ -1,7 +1,6 @@
 package main
 
 import (
-	DB "botgvg/database"
 	handlers "botgvg/handlers"
 	data "botgvg/internal"
 	"flag"
@@ -11,7 +10,7 @@ import (
 
 func main() {
 	// Initialisation de la database
-	DB.Createdb()
+	data.Createdb()
 
 	flag.Parse()
 	// home non connecté
