@@ -1,14 +1,9 @@
-// const adressAPI = 'http://localhost:8080/api/';
-// const adressAPI = 'http://lnb.sytes.net:8080/api/';
-
-import { adressAPI } from "../../config";
+import { adressAPI } from "./config.js";
 
 // récupération des tokens
 const fragment = new URLSearchParams(window.location.hash.slice(1));
 const [accessToken, tokenType] = [fragment.get('access_token'), fragment.get('token_type')];
 let secretsUser = `${tokenType} ${accessToken}`;
-
-// console.log('secretsUser : ', secretsUser)
 
 // récupération des data sur l'api discord
 fetch('https://discord.com/api/users/@me', {

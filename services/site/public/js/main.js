@@ -6,8 +6,7 @@ import { administration } from "./administration.js";
 import { viewgroup } from "./viewGroup.js";
 import { stat } from "./stat.js";
 import { createHTMLElement } from "./useful.js";
-import { LINK_DISCORD } from "../../config.js";
-export const cookieName = "user_token";
+import { LINK_DISCORD, cookieName } from "./config.js";
 
 let path = window.location.pathname;
 switch (path) {
@@ -60,13 +59,7 @@ function homeNotConnected() {
     let Container = document.getElementById('Container');
 
     let link = createHTMLElement('a', 'linkDiscord');
-    // https://discordjs.guide/oauth2/#setting-up-a-basic-web-server
-    // Link localhost
     link.href = LINK_DISCORD;
-    // link de chez moi
-    // link.href = "https://discord.com/oauth2/authorize?client_id=1061579347129016320&response_type=token&redirect_uri=http%3A%2F%2F90.70.186.22%3A53134%2Fdiscord&scope=identify";
-    // link.href = "https://discord.com/oauth2/authorize?client_id=1061579347129016320&response_type=token&redirect_uri=http%3A%2F%2Flnb.sytes.net%3A8080%2Fdiscord&scope=identify";
-    // link.href = "https://discord.com/oauth2/authorize?client_id=1061579347129016320&response_type=token&redirect_uri=https%3A%2F%2Flnb.sytes.net%3A8080%2Fdiscord&scope=identify";
 
     let discordConnect = createHTMLElement('div', 'discordConnect');
     let divlink = createHTMLElement('div', 'divlink');

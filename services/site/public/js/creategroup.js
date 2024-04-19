@@ -1,5 +1,4 @@
-import { adressAPI } from "../../config.js";
-import { cookieName } from "./main.js";
+import { adressAPI, cookieName } from "./config.js";
 import { communBlock, createHTMLElement } from "./useful.js";
 
 export function creategroup() {

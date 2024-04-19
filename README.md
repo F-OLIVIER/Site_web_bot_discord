@@ -48,7 +48,7 @@ ___
 **Avant de pouvoir exécuter le programme :**<br>
 - Crée votre application Discord sur la [plateforme de développement Discord](https://discord.com/developers/applications).
 - Pour votre application : générer le lien d'invitation et ajouté votre bot à votre serveur Discord.
-- Pour votre application : ajouter le lien redirect de votre serveur puis générer le lien OAuth2 pour le scope `identify` et mettez-le dans la variable `LINK_DISCORD` dans le fichier `/services/site/config.js`, mettez y également l'adresse de votre site internet dans la variable `adressAPI`.
+- Pour votre application : ajouter le lien redirect de votre serveur puis générer le lien OAuth2 pour le scope `identify` et mettez-le dans la variable `LINK_DISCORD` dans le fichier `/services/site/js/config.js`, mettez y également l'adresse de votre site internet dans la variable `adressAPI`.
 - Crée le fichier (variable d'environnement) `.env` pour le bot discord, dossier `./services/bot`. Dans ce fichier, mettez le `TOKEN` de l'application Discord.
 - Dans le fichier `./services/bot/config.js` vous devez modifier les variable pour adapté le code automatiquement à votre serveur Discord.
 
@@ -64,15 +64,17 @@ screen -R bot_discord
 cd ./services/bot
 npm install
 npm start
-# Pour detacher la console, faite `CTRL + A` puis `D`
+# Pour detacher la console, faite `[CTRL]+[a]` suivi de `[d]`
 ```
 
 Pour démarrer le site internet (se trouve dans le dossier `./services/site`)
 ```sh
 screen -R site_internet
 cd ./services/site
-go run ./cmd/main.go
-# Pour detacher la console, faite `CTRL + A` puis `D`
+go mod tidy
+go build ./cmd/main.go
+./main
+# Pour detacher la console, faite `[CTRL]+[a]` suivi de `[d]`
 ```
 
 Pour monitorer, voici les commandes de base de Screen

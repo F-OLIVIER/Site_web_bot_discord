@@ -1,10 +1,5 @@
-import { adressAPI } from "../../config.js";
-import { cookieName } from "./main.js";
+import { adressAPI, cookieName } from "./config.js";
 import { communBlock, createHTMLElement } from "./useful.js";
-
-// export const adressAPI = 'http://localhost:8080/api/';
-// export const adressAPI = 'http://90.70.186.22:53134/api/';
-// export const adressAPI = 'http://lnb.sytes.net:8080/api/';
 
 export function home() {
   if (!document.cookie.split(";").some((item) => item.trim().startsWith(cookieName + "="))) {
