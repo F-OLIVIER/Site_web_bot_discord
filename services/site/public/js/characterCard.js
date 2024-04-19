@@ -5,7 +5,6 @@ export function characterCard() {
     if (!document.cookie.split(";").some((item) => item.trim().startsWith(cookieName + "="))) {
         window.location.href = '/';
     }
-    console.log('ENTER caserne JS')
     // Si le cookie est present, fetch des données. Le back fera une vérification de la validité du cookie
     fetch(adressAPI + 'charactercard')
         .then(response => {
@@ -19,7 +18,7 @@ export function characterCard() {
         })
         .then(data => {
             // Traiter les données récupérées
-            // console.log('Data received (characterCard):', data);
+            console.log('Data received (characterCard):', data);
             containerCharacterCard(data);
         })
         .catch(error => {
@@ -112,7 +111,7 @@ function containerCharacterCard(data) {
         infoGvG.appendChild(titleinfoGvG);
         let etatInscripted = document.createElement('div');
         let listButton = createHTMLElement('div', 'listButton');
-        if (data.UserInfo.EtatInscription === 0) {
+        if (data.UserInfo.EtatInscription === 0 || data.UserInfo.EtatInscription === -1) {
             etatInscripted.textContent = "⁉️ Vous n'éte pas inscrit pour la prochaine GvG";
             // button present
             let buttonPresent = createHTMLElement('button', 'inscriptedPresent');

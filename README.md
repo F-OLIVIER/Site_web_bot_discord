@@ -84,17 +84,17 @@ npm start
 
 Pour monitorer, voici les commandes de base de `Screen`
 ```sh
-# Afficher les screens en cours
+# Afficher les consoles Screen en cours
 screen -ls
 
-# Allez sur la console detacher du nom `name`
+# Allez sur la console Screen detacher du nom `name`
 screen -r name
 
-# détruire la console du nom `name`
+# détruire la console Screen du nom `name`
 screen -S name -X kill
 ```
 **Sécurisation du site internet :** <br>
-Il est possible de sécurisé (passé en https) le site internet avec [Caddy](https://caddyserver.com/docs/automatic-https)<br>
+Il est possible de sécuriser (passer en HTTPS) le site internet avec [Caddy](https://caddyserver.com/docs/automatic-https)<br>
 Voici la procédure pour [intaller Caddy](https://caddyserver.com/docs/install)
 ```sh
 screen -R caddy
