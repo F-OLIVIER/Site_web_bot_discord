@@ -50,7 +50,7 @@ ___
 - Pour votre application : générer le lien d'invitation et ajouté votre bot à votre serveur Discord.
 - Pour votre application : ajouter le lien redirect de votre serveur puis générer le lien OAuth2 pour le scope `identify` et mettez-le dans la variable `LINK_DISCORD` puis modofier le `response_type=code` en `response_type=token` dans le fichier `./services/site/js/config.js`, mettez y également l'adresse de votre site internet dans la variable `adressAPI`.
 - Crée le fichier (variable d'environnement) `.env` pour le bot discord, dossier `./services/bot`. Dans ce fichier, mettez le `TOKEN` de l'application Discord.
-- Vous devez modifier les variables globale dans les fichiers de config pour adapter le code à votre serveur Discord. Voici les emplacements des fichiers config :</br>
+- Vous devez modifier les variables globale dans les fichiers `config` pour adapter le code à votre serveur Discord. Voici les emplacements des fichiers config :</br>
     - `./services/bot/config.js`
     - `./services/site/internal/config.go`
     - `./services/site/js/config.js`
