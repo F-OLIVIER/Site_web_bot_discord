@@ -1,4 +1,4 @@
-import { adressAPI } from "./home.js";
+import { adressAPI } from "../../config.js";
 import { cookieName } from "./main.js";
 import { communBlock, createHTMLElement } from "./useful.js";
 
@@ -109,7 +109,7 @@ function containerviewGroup(data) {
                     // Unité du joueur
                     let divlistUnit = createHTMLElement('div', 'viewdivlistUnit');
                     let unit1 = createHTMLElement('div', 'unit1');
-                    unit1.textContent = currentPlayer.Unit1;   
+                    unit1.textContent = currentPlayer.Unit1;
                     if (currentPlayer.Unit1 === "Consulter un officier") {
                         unit1.classList.add('consultOff');
                     }

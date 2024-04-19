@@ -1,7 +1,7 @@
 // fichier annexe
 import { Client, GatewayIntentBits, Partials } from 'discord.js';
 import { userInfo, classPlay } from './database.js';
-import { ListAdmin, Listusermp } from './Main.js';
+import { ListAdmin, Listusermp } from './config.js';
 
 // Clients Discord
 export const client = new

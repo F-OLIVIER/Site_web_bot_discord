@@ -48,29 +48,44 @@ ___
 **Avant de pouvoir exécuter le programme :**<br>
 - Crée votre application Discord sur la [plateforme de développement Discord](https://discord.com/developers/applications).
 - Pour votre application : générer le lien d'invitation et ajouté votre bot à votre serveur Discord.
-- Pour votre application : ajouter le lien redirect de votre serveur puis générer le lien OAuth2 pour le scope `identify` et mettez-le dans la variable `link.href` dans le fichier `main.js`.
-- Crée le fichier (variable d'environnement) `.env` dans la racine du projet. Dans ce fichier, mettez le `TOKEN` de l'application Discord ainsi que le `PORT` souhaité pour le site web associé.
-- Créé le fichier (base de données) nommé `databaseGvG.db` dans le dossier `/database` (le script SQL est là pour vous permettre de générer les tables et une base d'unité).
-- Dans le fichier `./bot/Main.js` vous devez modifier la partie `Adaptation (ligne 19 à 44)` qui permet d'adapté le code automatiquement à votre serveur Discord.
+- Pour votre application : ajouter le lien redirect de votre serveur puis générer le lien OAuth2 pour le scope `identify` et mettez-le dans la variable `LINK_DISCORD` dans le fichier `/services/site/config.js`, mettez y également l'adresse de votre site internet dans la variable `adressAPI`.
+- Crée le fichier (variable d'environnement) `.env` pour le bot discord, dossier `./services/bot`. Dans ce fichier, mettez le `TOKEN` de l'application Discord.
+- Dans le fichier `./services/bot/config.js` vous devez modifier les variable pour adapté le code automatiquement à votre serveur Discord.
 
-**Méthode de lancement manuel :** <br>
+**Méthode de lancement avec screen :** <br>
+Les lancement sur le serveur ce font via [Screen](https://doc.ubuntu-fr.org/screen)
+Installer le avec :
+```sh
+sudo apt install screen
+```
 Pour démarrer le bot Discord (se trouve dans le dossier `/bot`)
 ```sh
+screen -R bot
+cd ./services/bot
 npm install
 npm start
+# Pour detacher la console screen, faite `CTRL+A` puis `D`
 ```
+
 Pour démarrer le site internet (se trouve dans la racine du dossier)
 ```sh
-go mod tidy
+screen -R site
+cd ./services/site
 go run ./cmd/main.go
+# Pour detacher la console screen, faite `CTRL+A` puis `D`
 ```
 
-**Méthode de lancement dockerfile (avec supervisord) :**<br>
-Permet de lancer le bot Discord ainsi que le site internet en même temps dans un docker 
+Pour monitoré voici les commande de base de screen
 ```sh
-sudo docker build -t nameappli .
-```
+# Afficher les screens en cours
+screen -ls
 
+# Allez sur la console detacher du nom `name`
+screen -r name
+
+# détruire la console du nom `name`
+screen -S name -X kill
+```
 
 ___
 ## 🔗 Dépendences

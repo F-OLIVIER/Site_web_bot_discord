@@ -1,4 +1,4 @@
-import { adressAPI } from "./home.js";
+import { adressAPI } from "../../config.js";
 import { cookieName } from "./main.js";
 import { communBlock, createHTMLElement } from "./useful.js";
 

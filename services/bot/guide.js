@@ -2,7 +2,7 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, StringSelectMenuBuilder, TextInputBuilder, TextInputStyle } from "discord.js";
 import { updateInflu, updateLvl, updateclass } from "./database.js";
 import { cmdclass } from "./CommandBot.js";
-import { TODOBotReaction, siteInternet } from "./Main.js";
+import { TODOBotReaction, siteInternet } from "./config.js";
 
 export async function slashvisitenotpossible(interaction) {
     const text = `Bonjour brave héros **${interaction.user.username}**,

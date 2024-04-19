@@ -1,7 +1,7 @@
 // fichier annexe
 import { CreateOrUpdateUser } from './database.js';
 import { client } from './Constant.js';
-import { ServerID, idRoleOfficier, idRoleUser } from './Main.js';
+import { ServerID, idRoleOfficier, idRoleUser } from './config.js';
 
 export async function createuser() {
   const serv = client.guilds.cache.get(ServerID);

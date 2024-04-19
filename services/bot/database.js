@@ -1,6 +1,6 @@
 // module nodejs et npm
 import sqlite3 from 'sqlite3';
-import { adressdb } from './Main.js';
+import { adressdb } from './config.js';
 
 export async function CreateOrUpdateUser(data) {
     const db = new sqlite3.Database(adressdb);
