@@ -93,6 +93,14 @@ screen -r name
 # détruire la console du nom `name`
 screen -S name -X kill
 ```
+**Sécurisation du site internet :** <br>
+Il est possible de sécurisé (passé en https) le site internet avec [Caddy](https://caddyserver.com/docs/automatic-https)<br>
+Voici la procédure pour [intaller Caddy](https://caddyserver.com/docs/install)
+```sh
+screen -R caddy
+caddy
+# Pour detacher la console, faite `[CTRL]+[a]` suivi de `[d]`
+```
 
 ___
 ## 🔗 Dépendences
