@@ -50,7 +50,7 @@ ___
 - Pour votre application : générer le lien d'invitation et ajouté votre bot à votre serveur Discord.
 - Pour votre application : ajouter le lien redirect de votre serveur puis générer le lien OAuth2 pour le scope `identify` et mettez-le dans la variable `LINK_DISCORD` dans le fichier `/services/site/js/config.js`, mettez y également l'adresse de votre site internet dans la variable `adressAPI`.
 - Crée le fichier (variable d'environnement) `.env` pour le bot discord, dossier `./services/bot`. Dans ce fichier, mettez le `TOKEN` de l'application Discord.
-- Dans le fichier `./services/bot/config.js` vous devez modifier les variable pour adapté le code automatiquement à votre serveur Discord.
+- Dans le fichier `./services/bot/config.js` et `./services/site/internal/config.go` vous devez modifier les variables pour adapter le code automatiquement à votre serveur Discord.
 
 **Méthode de lancement avec screen :** <br>
 Les lancement sur le serveur ce font via [Screen](https://doc.ubuntu-fr.org/screen)</br>

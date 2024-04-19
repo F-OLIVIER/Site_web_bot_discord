@@ -1,7 +1,9 @@
-export const adressdb = '../site/database/databaseGvG.db';
+export const adressdb = '../database/databaseGvG.db';
 export const ServerID = '674215425546125323';
-export const siteInternet = "https://lnb.sytes.net";
-// Lists des utilisateurs discord admin du bot (pour les commandes administrateur)
+export const siteInternet = "http://lnb.sytes.net";
+// export const siteInternet = "https://lnb.sytes.net";
+
+// Liste des utilisateurs discord admin du bot (pour les commandes administrateur)
 export const ListAdmin = ["179655652153491456"]; // coincoin
 // Liste des utilisateurs discord autorisé a utilisé la commande /mp
 export const Listusermp = ["179655652153491456", "489520129705771029", "256509244277391360", "154670779236220928", "274945457707286528", "438019087457583124", "828641205881012294", "166151581325066240", "328164062712299522", "166151485154000896", "1081374865501724732"];

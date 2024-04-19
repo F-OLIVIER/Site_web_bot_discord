@@ -14,7 +14,6 @@ import (
 )
 
 var tb = utils.NewTokenBucket(5, 5)
-var adressDB = "./database/databaseGvG.db"
 
 // Page d'accueil "/"
 func ServeHome(w http.ResponseWriter, r *http.Request) {
@@ -45,7 +44,7 @@ func DiscordApiHandler(w http.ResponseWriter, r *http.Request) {
 		var sendHTML *data.SendHTML
 		if r.Method == "POST" && r.URL.Path == "/api/discord" {
 			// ouverture database
-			database, err := sql.Open("sqlite3", adressDB)
+			database, err := sql.Open("sqlite3", data.ADRESS_DB)
 			utils.CheckErr("open db in homehandler", err)
 			defer database.Close()
 
@@ -89,7 +88,7 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 		// lecture du cookie
 		cookie, err1 := r.Cookie("user_token")
 
-		database, err := sql.Open("sqlite3", adressDB)
+		database, err := sql.Open("sqlite3", data.ADRESS_DB)
 		utils.CheckErr("open db in homehandler", err)
 		defer database.Close()
 
@@ -152,7 +151,7 @@ func CaserneHandler(w http.ResponseWriter, r *http.Request) {
 		// lecture du cookie
 		cookie, err1 := r.Cookie("user_token")
 
-		database, err := sql.Open("sqlite3", adressDB)
+		database, err := sql.Open("sqlite3", data.ADRESS_DB)
 		utils.CheckErr("open db in homehandler", err)
 		defer database.Close()
 
@@ -216,7 +215,7 @@ func CreateGroupHandler(w http.ResponseWriter, r *http.Request) {
 		// lecture du cookie
 		cookie, err1 := r.Cookie("user_token")
 
-		database, err := sql.Open("sqlite3", adressDB)
+		database, err := sql.Open("sqlite3", data.ADRESS_DB)
 		utils.CheckErr("open db in homehandler", err)
 		defer database.Close()
 
@@ -280,7 +279,7 @@ func SaveGroupInDB(w http.ResponseWriter, r *http.Request) {
 		// lecture du cookie
 		cookie, err1 := r.Cookie("user_token")
 		if r.URL.Path == "/api/saveGroupInDB" && err1 != http.ErrNoCookie {
-			database, err := sql.Open("sqlite3", adressDB)
+			database, err := sql.Open("sqlite3", data.ADRESS_DB)
 			utils.CheckErr("open db in homehandler", err)
 			defer database.Close()
 
@@ -301,7 +300,7 @@ func MAJCaserneHandler(w http.ResponseWriter, r *http.Request) {
 		// lecture du cookie
 		cookie, err1 := r.Cookie("user_token")
 
-		database, err := sql.Open("sqlite3", adressDB)
+		database, err := sql.Open("sqlite3", data.ADRESS_DB)
 		utils.CheckErr("open db in homehandler", err)
 		defer database.Close()
 
@@ -364,7 +363,7 @@ func CharacterCardHandler(w http.ResponseWriter, r *http.Request) {
 		// lecture du cookie
 		cookie, err1 := r.Cookie("user_token")
 
-		database, err := sql.Open("sqlite3", adressDB)
+		database, err := sql.Open("sqlite3", data.ADRESS_DB)
 		utils.CheckErr("open db in homehandler", err)
 		defer database.Close()
 
@@ -418,7 +417,7 @@ func UpdateCharacterCard(w http.ResponseWriter, r *http.Request) {
 		// lecture du cookie
 		cookie, err1 := r.Cookie("user_token")
 		if r.URL.Path == "/api/updateCharacterCard" && err1 != http.ErrNoCookie && r.Method == "POST" {
-			database, err := sql.Open("sqlite3", adressDB)
+			database, err := sql.Open("sqlite3", data.ADRESS_DB)
 			utils.CheckErr("open db in homehandler", err)
 			defer database.Close()
 
@@ -439,7 +438,7 @@ func CheckAppAdmin(w http.ResponseWriter, r *http.Request) {
 		// lecture du cookie
 		cookie, err1 := r.Cookie("user_token")
 
-		database, err := sql.Open("sqlite3", adressDB)
+		database, err := sql.Open("sqlite3", data.ADRESS_DB)
 		utils.CheckErr("open db in homehandler", err)
 		defer database.Close()
 
@@ -499,7 +498,7 @@ func UpdateAdmin(w http.ResponseWriter, r *http.Request) {
 		// lecture du cookie
 		cookie, err1 := r.Cookie("user_token")
 		if r.URL.Path == "/api/UpdateAdmin" && err1 != http.ErrNoCookie && r.Method == "POST" {
-			database, err := sql.Open("sqlite3", adressDB)
+			database, err := sql.Open("sqlite3", data.ADRESS_DB)
 			utils.CheckErr("open db in homehandler", err)
 			defer database.Close()
 
@@ -522,7 +521,7 @@ func AdminitrateBot(w http.ResponseWriter, r *http.Request) {
 		// lecture du cookie
 		cookie, err1 := r.Cookie("user_token")
 		if r.URL.Path == "/api/adminitrateBot" && err1 != http.ErrNoCookie && r.Method == "POST" {
-			database, err := sql.Open("sqlite3", adressDB)
+			database, err := sql.Open("sqlite3", data.ADRESS_DB)
 			utils.CheckErr("open db in homehandler", err)
 			defer database.Close()
 
@@ -547,7 +546,7 @@ func StatGvG(w http.ResponseWriter, r *http.Request) {
 		// lecture du cookie
 		cookie, err1 := r.Cookie("user_token")
 
-		database, err := sql.Open("sqlite3", adressDB)
+		database, err := sql.Open("sqlite3", data.ADRESS_DB)
 		utils.CheckErr("open db in homehandler", err)
 		defer database.Close()
 

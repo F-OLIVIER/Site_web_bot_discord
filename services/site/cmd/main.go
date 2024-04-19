@@ -1,18 +1,17 @@
 package main
 
 import (
-	data "botgvg/database"
+	DB "botgvg/database"
 	handlers "botgvg/handlers"
+	data "botgvg/internal"
 	"flag"
 	"fmt"
 	"net/http"
 )
 
 func main() {
-	// port := "443"
-	port := "8080"
 	// Initialisation de la database
-	data.Createdb()
+	DB.Createdb()
 
 	flag.Parse()
 	// home non connecté
@@ -38,8 +37,8 @@ func main() {
 	http.Handle("/js/", http.StripPrefix("/js/", http.FileServer(http.Dir("./public/js/"))))
 	http.Handle("/img/", http.StripPrefix("/img/", http.FileServer(http.Dir("./public/images/"))))
 
-	fmt.Println("Server started on port " + port + "\nhttp://localhost:" + port)
+	fmt.Println("Server started on port " + data.PORT + "\nhttp://localhost:" + data.PORT)
 
 	// Mise en écoute du serveur HTTP
-	http.ListenAndServe(":"+port, nil)
+	http.ListenAndServe(":"+data.PORT, nil)
 }
