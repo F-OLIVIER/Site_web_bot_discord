@@ -101,7 +101,6 @@ screen -R caddy
 caddy
 # Pour detacher la console, faite `[CTRL]+[a]` suivi de `[d]`
 ```
-
 ___
 ## 🔗 Dépendences
 
