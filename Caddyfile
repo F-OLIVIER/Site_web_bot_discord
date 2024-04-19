@@ -1,5 +1,1 @@
-:8000 {
-	file_server /static/*
-	reverse_proxy /api/* site:8080
-	reverse_proxy /* bot:80
-}
+sitelnb.syste.net:8080
