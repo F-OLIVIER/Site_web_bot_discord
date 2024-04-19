@@ -58,13 +58,15 @@ switch (path) {
 function homeNotConnected() {
     let Container = document.getElementById('Container');
 
+    let containerHomeNotConnected = createHTMLElement('div', 'containerHomeNotConnected');
+
     let link = createHTMLElement('a', 'linkDiscord');
     link.href = LINK_DISCORD;
 
     let discordConnect = createHTMLElement('div', 'discordConnect');
     let divlink = createHTMLElement('div', 'divlink');
 
-    divlink.textContent = "Cliquer pour vous connecter avec discord";
+    divlink.textContent = "Cliquez sur cette image pour vous connecter avec Discord";
     discordConnect.appendChild(divlink)
 
     let divimg = document.createElement('div');
@@ -74,5 +76,26 @@ function homeNotConnected() {
     discordConnect.appendChild(divimg);
 
     link.appendChild(discordConnect);
-    Container.appendChild(link);
+    containerHomeNotConnected.appendChild(link);
+
+    let divinfo = document.createElement('div');
+    divinfo.className = "divinfonotconnected";
+    let title =  document.createElement('p');
+    title.textContent = "ℹ️ Vous serez redirigés vers cette page dans les cas suivants";
+    divinfo.appendChild(title);
+    let cas1 =  document.createElement('li');
+    cas1.textContent = "Utilisateur non présent sur le discord associé à ce site internet";
+    divinfo.appendChild(cas1);
+    let cas2 =  document.createElement('li');
+    cas2.textContent = "Utilisateur non autorisé (rôle discord non attribué)";
+    divinfo.appendChild(cas2);
+    let cas3 =  document.createElement('li');
+    cas3.textContent = "Erreur de connexion";
+    divinfo.appendChild(cas3);
+
+
+
+    containerHomeNotConnected.appendChild(divinfo);
+
+    Container.appendChild(containerHomeNotConnected);
 }
