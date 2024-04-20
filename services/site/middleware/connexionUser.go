@@ -93,9 +93,9 @@ func Logout(w http.ResponseWriter, r *http.Request, database *sql.DB) {
 	if err == http.ErrNoCookie {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 	}
-	CheckErr("logout : ", err)
+	CheckErr("1- logout : ", err)
 	stmt, err := database.Prepare("UPDATE Users SET uuid = NULL WHERE uuid = ?")
-	CheckErr("logout :", err)
+	CheckErr("2- logout :", err)
 	stmt.Exec(c.Value)
 	delete(Sessions, c.Value)
 

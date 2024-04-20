@@ -53,7 +53,6 @@ function DisconnectedButton() {
             .catch(error => {
                 console.error('Data recovery error:', error);
             });
-
             window.location.href = '/';
         }
     }
