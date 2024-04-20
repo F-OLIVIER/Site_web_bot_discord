@@ -66,19 +66,14 @@ Lors du premier lancement, le site internet doit être exécuté en premier, car
 Pour démarrer le site internet (qui se trouve dans le dossier `./services/site`)
 ```sh
 screen -R site_internet
-cd ./services/site
-go mod tidy
-go build ./cmd/main.go
-./main
+sh ./launch_site.sh
 # Pour detacher la console, faite `[CTRL]+[a]` suivi de `[d]`
 ```
 
 Pour démarrer le bot Discord (qui se trouve dans le dossier `./services/bot`)
 ```sh
 screen -R bot_discord
-cd ./services/bot
-npm install
-npm start
+sh ./launch_bot.sh
 # Pour detacher la console, faite `[CTRL]+[a]` suivi de `[d]`
 ```
 

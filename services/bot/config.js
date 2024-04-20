@@ -1,7 +1,7 @@
 export const adressdb = '../database/databaseGvG.db';
 export const ServerID = '674215425546125323';
-export const siteInternet = "http://lnb.sytes.net";
-// export const siteInternet = "https://lnb.sytes.net";
+export const siteInternet = "http://lnb.sytes.net:8080";
+// export const siteInternet = "https://lnb.sytes.net:443";
 
 // Liste des utilisateurs discord admin du bot (pour les commandes administrateur)
 export const ListAdmin = ["179655652153491456"]; // coincoin

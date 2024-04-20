@@ -1,7 +1,9 @@
+// Fichier annexe
+import { adressdb } from './config.js';
+
 // module nodejs et npm
 import moment from 'moment-timezone';
 import sqlite3 from 'sqlite3';
-import { adressdb } from './config.js';
 
 export function Resetsc() {
   const db = new sqlite3.Database(adressdb);

@@ -1,11 +1,11 @@
 // Fichier annexe
+import { TODOBotChan, TODOBotChanOfficier, TODOBotReaction, TODOBotrappel, TODOusermpgetsaveBDD, TODOchangvg, TODOutilisateurofficier, idrole, idCategorie, siteInternet } from './config.js';
 import { client, Messagegvg, privatemp, Messageprivatemp, MessageInsufficientAuthority, Booleanusermp, EmbedData, EmbedGuide } from './Constant.js';
 import { slashvisite, visit1, modalvisitelvlAndInflu, visit2, visit3, slashvisitenotpossible } from './guide.js';
 import { createCommands, slashClass, slashInflu, slashLevel, slashResetmsggvg } from './slashcommand.js';
-import { TODOBotChan, TODOBotChanOfficier, TODOBotReaction, TODOBotrappel, TODOusermpgetsaveBDD, idrole } from './config.js';
-import { cronCheckpresence, cronResetMsgReaction } from "./Cronjob.js"
 import { botOn, unregisteredList, isOfficier, deleteUser } from './database.js';
 import { PlayerCreateOrUpdate, createuser, isMember } from './FuncData.js';
+import { cronCheckpresence, cronResetMsgReaction } from "./Cronjob.js"
 import { addReaction, removeReaction } from './Reaction.js';
 import { cmdnb, cmdlist } from "./CommandBot.js";
 

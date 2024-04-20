@@ -1,18 +1,15 @@
 # ouvrir une console avec un nom
 
-screen -R site
-cd ./services/site
-go run ./cmd/main.go
+screen -S site
+sh ./launch_site.sh
 # CTRL + A puis d pour detacher
 
-screen -R bot
-cd ./services/bot
-npm install
-npm start
+screen -S bot
+sh ./launch_bot.sh
 # CTRL + A puis d pour detacher
 
 # https://caddyserver.com/docs/install
-screen -R caddy
+screen -S caddy
 caddy
 # CTRL + A puis d pour detacher
 
