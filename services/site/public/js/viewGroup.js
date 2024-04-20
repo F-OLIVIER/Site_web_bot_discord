@@ -142,9 +142,13 @@ function containerviewGroup(data) {
         containerGroupe.appendChild(viewgroup);
 
         // bouton pour télécharger l'image des groupes
+        let scripthead = document.createElement('script');
+        scripthead.src = "https://files.codepedia.info/files/uploads/iScripts/html2canvas.js";
+        document.getElementById('head').appendChild(scripthead);
         let script = document.createElement('script');
         script.src = "https://html2canvas.hertzen.com/dist/html2canvas.js";
         container.appendChild(script);
+
         let buttonDownloadGroup = createHTMLElement('div', 'buttonDownloadGroup');
         buttonDownloadGroup.textContent = "Télécharger l'image des groupes";
         containerGroupe.appendChild(buttonDownloadGroup);

@@ -98,7 +98,15 @@ func Logout(w http.ResponseWriter, r *http.Request, database *sql.DB) {
 	CheckErr("logout :", err)
 	stmt.Exec(c.Value)
 	delete(Sessions, c.Value)
-	c.MaxAge = -1
-	http.SetCookie(w, c)
+
+	cookie := &http.Cookie{
+		Name:    "user_token",
+		Value:   "",
+		Expires: time.Unix(0, 0),
+		MaxAge:  -1,
+		Domain:  data.SITE_DOMAIN,
+		Path:    "/",
+	}
+	http.SetCookie(w, cookie)
 	// fmt.Println("Logged out successfully")
 }

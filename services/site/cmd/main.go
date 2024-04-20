@@ -30,6 +30,7 @@ func main() {
 	http.HandleFunc("/api/UpdateAdmin", handlers.UpdateAdmin)
 	http.HandleFunc("/api/adminitrateBot", handlers.AdminitrateBot)
 	http.HandleFunc("/api/statGvG", handlers.StatGvG)
+	http.HandleFunc("/api/logout", handlers.LogoutHandler)
 
 	// Appel des fichiers annexes
 	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("./public/css/"))))

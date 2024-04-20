@@ -71,7 +71,9 @@ function homeNotConnected() {
 
     let divimg = document.createElement('div');
     let imgDiscord = document.createElement('img');
-    imgDiscord.src = "img/Logo_Discord.png";
+    imgDiscord.className = 'imgDiscord';
+    imgDiscord.src = "img/Logo_Discord.webp";
+    imgDiscord.alt = "logo discord";
     divimg.appendChild(imgDiscord);
     discordConnect.appendChild(divimg);
 

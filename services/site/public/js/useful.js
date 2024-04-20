@@ -1,3 +1,5 @@
+import { adressAPI } from "./config.js";
+
 export function communBlock(data) {
     let userConected = document.getElementById('user');
     let divimguserConected = document.createElement('div');
@@ -47,7 +49,11 @@ function DisconnectedButton() {
         const now = new Date();
         if (now - timerThrottlebutton > 500) {
             timerThrottlebutton = now;
-            document.cookie = "user_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            fetch(adressAPI + 'logout')
+            .catch(error => {
+                console.error('Data recovery error:', error);
+            });
+
             window.location.href = '/';
         }
     }

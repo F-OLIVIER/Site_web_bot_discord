@@ -134,6 +134,7 @@ function addUnit(data, listUnitInfanterie, listUnitDistant, listUnitCav, tier) {
             unit.className = "unit";
             let img = document.createElement('img');
             img.src = Currentunit.Unit_img;
+            img.alt = Currentunit.Unit_name;
             unit.appendChild(img);
             let name = document.createElement('div');
             name.textContent = Currentunit.Unit_name;
