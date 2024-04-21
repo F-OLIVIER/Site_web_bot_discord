@@ -18,7 +18,7 @@ func main() {
 	// page de transition de connexion
 	http.HandleFunc("/discord", handlers.DiscordHandler)
 	http.HandleFunc("/api/discord", handlers.DiscordApiHandler)
-	// page utilisateur connecté
+	// page utilisateur connecté/autorisé
 	http.HandleFunc("/api/home", handlers.HomeHandler)
 	http.HandleFunc("/api/charactercard", handlers.CharacterCardHandler)
 	http.HandleFunc("/api/updateCharacterCard", handlers.UpdateCharacterCard)
@@ -37,7 +37,7 @@ func main() {
 	http.Handle("/js/", http.StripPrefix("/js/", http.FileServer(http.Dir("./public/js/"))))
 	http.Handle("/img/", http.StripPrefix("/img/", http.FileServer(http.Dir("./public/images/"))))
 
-	fmt.Println("Server started on port " + data.PORT + "\nhttp://localhost:" + data.PORT)
+	fmt.Println("Server started on port " + data.PORT + "\nLocal adress :     http://localhost:" + data.PORT + "\nExternal address : http://" + data.SITE_DOMAIN + ":" + data.PORT)
 
 	// Mise en écoute du serveur HTTP
 	http.ListenAndServe(":"+data.PORT, nil)

@@ -1,5 +1,5 @@
 // Fichier annexe
-import { TODOBotChan, TODOBotChanOfficier, TODOBotReaction, TODOBotrappel, TODOusermpgetsaveBDD, TODOchangvg, TODOutilisateurofficier, idrole, idCategorie, siteInternet } from './config.js';
+import { TODOBotChan, TODOBotChanOfficier, TODOBotReaction, TODOBotrappel, TODOusermpgetsaveBDD, TODOchangvg, TODOutilisateurofficier, idrole, idCategorie, siteInternet, idRoleUser, idRoleOfficier } from './config.js';
 import { client, Messagegvg, privatemp, Messageprivatemp, MessageInsufficientAuthority, Booleanusermp, EmbedData, EmbedGuide } from './Constant.js';
 import { slashvisite, visit1, modalvisitelvlAndInflu, visit2, visit3, slashvisitenotpossible } from './guide.js';
 import { createCommands, slashClass, slashInflu, slashLevel, slashResetmsggvg } from './slashcommand.js';
@@ -23,8 +23,8 @@ client.on('warn', (warning) => { console.warn('\nAvertissement :\n', warning); }
 // --------------------------------------------------------------
 
 // definition des variables
-let BotChan;
-let BotChanOfficier;
+export let BotChan;
+export let BotChanOfficier;
 
 // definition des chan utilisé par le bot
 client.on('ready', async () => {
@@ -49,6 +49,7 @@ client.on('ready', async () => {
 │                 Bot ready !                  │
 ╰──────────────────────────────────────────────╯\n`);
 });
+
 // ---------------------------------------------------------------------------------------------------------------
 // --------------------------------------------  Liste des événements --------------------------------------------
 // -------------------------- ATTENTION: pour utiliser ceci, il faut adapter les intents -------------------------
@@ -82,8 +83,8 @@ client.on('ready', async () => {
 // -------------------------------------------------------------------
 client.on('guildMemberRemove', async (member) => {
   if (member.user.bot) return;
-  console.log(`${member.user.username} a quitté le serveur.`);
-  deleteUser(member.user.id)
+  // console.log(`${member.user.username} a quitté le serveur.`);
+  deleteUser(member, BotChanOfficier)
 });
 
 // -------------------------------------------------------------------
@@ -93,6 +94,39 @@ client.on('voiceStateUpdate', async (oldState, newState) => {
   if (newState.member.user.bot) return;
   if (newState.channel) {
     await PlayerCreateOrUpdate(newState.member.user.id);
+  }
+});
+
+// -------------------------------------------------------------------
+// ---------------- User connected chan discord ----------------------
+// -------------------------------------------------------------------
+client.on('guildMemberUpdate', async (oldMember, newMember) => {
+  if (newMember.user.bot) return;
+
+  // Roles
+  const oldRoles = oldMember.roles.cache,
+    newRoles = newMember.roles.cache;
+  // Has Role user ?
+  const oldHasuser = oldRoles.has(idRoleUser),
+    newHasuser = newRoles.has(idRoleUser);
+  // Check if removed or added
+  if (oldHasuser && !newHasuser) {
+    // console.log('Role user has been removed');
+    deleteUser(newMember, BotChanOfficier)
+  } else if (!oldHasuser && newHasuser) {
+    // console.log('Role user has been added');
+    await PlayerCreateOrUpdate(newMember.user.id);
+  }
+
+  // Has Role officier ?
+  const oldHasofficier = oldRoles.has(idRoleOfficier),
+    newHasofficier = newRoles.has(idRoleOfficier);
+  if (oldHasofficier && !newHasofficier) {
+    // console.log('Role officier has been removed');
+    await PlayerCreateOrUpdate(newMember.user.id);
+  } else if (!oldHasofficier && newHasofficier) {
+    // console.log('Role officier has been added');
+    await PlayerCreateOrUpdate(newMember.user.id);
   }
 });
 
@@ -152,12 +186,12 @@ client.on('messageCreate', async message => {
           var changvg = TODOchangvg;
           var utilisateurofficier = TODOutilisateurofficier;
           privatemp(privatemessage, changvg, utilisateurofficier);
-          Messageprivatemp(AuthorID, BotChanOfficier, userpourmp);
+          Messageprivatemp(AuthorID, userpourmp);
           message.delete();
         }
       }
       else {
-        MessageInsufficientAuthority(AuthorID, BotChan);
+        MessageInsufficientAuthority(AuthorID);
       }
     }
   }
@@ -259,7 +293,7 @@ client.on('interactionCreate', async (interaction) => {
   // --------------------------
   if (interaction.commandName === "officier_nombre_inscript") {
     if (isOfficier(interaction.user.id)) {
-      cmdnb(interaction.user.id, BotChanOfficier);
+      cmdnb(interaction.user.id);
       interaction.reply({
         content: "Le nombre de joueur inscrit ou non à la prochaine GvG a été posté dans le canal <#" + TODOBotChanOfficier + ">",
         ephemeral: true,
@@ -275,7 +309,7 @@ client.on('interactionCreate', async (interaction) => {
 
   if (interaction.commandName === "officier_liste_inscrits") {
     if (isOfficier(interaction.user.id)) {
-      cmdlist(interaction.user.id, BotChanOfficier);
+      cmdlist(interaction.user.id);
       interaction.reply({
         content: "La liste des joueurs inscrit à la prochaine GvG a été posté dans le canal <#" + TODOBotChanOfficier + ">",
         ephemeral: true,
@@ -292,7 +326,7 @@ client.on('interactionCreate', async (interaction) => {
   if (interaction.commandName === "officier_liste_non_inscrits") {
     if (isOfficier(interaction.user.id)) {
       const unregisteredlist = await unregisteredList();
-      Messagegvg(interaction.user.id, BotChanOfficier, unregisteredlist);
+      Messagegvg(interaction.user.id, unregisteredlist);
       interaction.reply({
         content: "La liste des joueurs non inscrit à la prochaine GvG a été posté dans le canal <#" + TODOBotChanOfficier + ">",
         ephemeral: true,

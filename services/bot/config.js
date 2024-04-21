@@ -23,7 +23,7 @@ export const TODOusermpgetsaveBDD = '179655652153491456'; // coincoin
 export const idCategorie = '674215425990459413';
 // Role a ping dans le message d'inscription GvG
 export const idrole = '951159160190427137';
-// export const nameRoleOfficier = "Officier";
-export const idRoleOfficier = '736886582489120768';
 // export const nameRoleUser = "Barbouse-Conqueror";
 export const idRoleUser = '1223899873196113991';
+// export const nameRoleOfficier = "Officier";
+export const idRoleOfficier = '736886582489120768';

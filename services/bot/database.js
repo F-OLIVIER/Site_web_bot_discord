@@ -1,4 +1,5 @@
 // Fichier annexe
+import { NewUser, UserLeaveDiscord } from './Constant.js';
 import { adressdb } from './config.js';
 
 // module nodejs et npm
@@ -19,6 +20,7 @@ export async function CreateOrUpdateUser(data) {
                     }
                 });
             } else {
+                NewUser(data.DiscordID)
                 // Utilisateur inexistant, effectuer l'insertion
                 const insertQuery = `INSERT INTO Users (DiscordID, DiscordName, DiscordBaseName, DiscordRole, DiscordPhoto, GameCharacter_ID, Lvl, EtatInscription, NbEmojiInscription, TrustIndicator, Influence, MNDR, NbGvGParticiped, NbTotalGvG, DateLastGvGParticiped) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
                 db.run(insertQuery, [data.DiscordID, data.DiscordName, data.DiscordBaseName, data.DiscordRole, data.DiscordPhoto, 0, 0, -1, 0, 0, 700, 0, 0, 0, "jamais / never"], function (err) {
@@ -212,13 +214,14 @@ export function updateInflu(AuthorID, influ) {
     db.close();
 }
 
-export function deleteUser(AuthorID) {
+export function deleteUser(member, BotChanOfficier) {
     const db = new sqlite3.Database(adressdb);
     const sql = "SELECT ID, DiscordName FROM Users WHERE DiscordID = ?";
 
-    db.get(sql, [AuthorID], (err, row) => {
+    db.get(sql, [member.user.id], (err, row) => {
         if (!err && row) {
-            console.error("Utilisateur ", row.DiscordName, " supprimer, id : ", AuthorID);
+            // console.error("Utilisateur ", row.DiscordName, " supprimer, id : ", member.user.id);
+            UserLeaveDiscord(BotChanOfficier, member.user.displayName, member.user.username)
 
             const userID = row.ID;
             const listQuery = [
@@ -234,7 +237,7 @@ export function deleteUser(AuthorID) {
                 });
             });
         } else if (err) {
-            console.error('Error delete ', AuthorID, ' user :\n', err.message);
+            console.error('Error delete ', member.user.id, ' user :\n', err.message);
         }
         db.close();
     });

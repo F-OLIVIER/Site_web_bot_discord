@@ -2,6 +2,7 @@
 import { Client, GatewayIntentBits, Partials } from 'discord.js';
 import { userInfo, classPlay } from './database.js';
 import { ListAdmin, Listusermp } from './config.js';
+import { BotChan, BotChanOfficier } from './Main.js';
 
 // Clients Discord
 export const client = new
@@ -52,7 +53,7 @@ export function Booleanusermp(DiscordPlayerID) {
   return usermp;
 }
 
-export function MessageInsufficientAuthority(AuthorID, BotChan) {
+export function MessageInsufficientAuthority(AuthorID) {
   BotChan.send({
     content: "<@" + AuthorID + "> \n",
     files: ["https://i.servimg.com/u/f43/15/76/70/95/admin10.png"],
@@ -61,19 +62,27 @@ export function MessageInsufficientAuthority(AuthorID, BotChan) {
 }
 
 // Message chan officier
-export function Messagegvg(AuthorID, BotChanOfficier, listnoninscrit) {
+export function NewUser(AuthorID) {
+  BotChan.send("Bienvenue dans notre maison <@" + AuthorID + ">\nJe te propose de te faire une visite guidée des fonctionnalités utilisé dans notre maison pour l'organisation des GvG.\n Pour cela, il te suffit de taler \"/visite_guidée\" dans un canal de ce discord");
+}
+
+export function UserLeaveDiscord(name, nickname) {
+  BotChanOfficier.send(name + " (" + nickname + ") abandonne le combat, il/elle viens de quitter le discord.\nGrrrr, je vais encore faire plein de rature sur le registre !!!!");
+}
+
+export function Messagegvg(AuthorID, listnoninscrit) {
   BotChanOfficier.send("<@" + AuthorID + ">\nJoueur n'ayant pas indiqué leurs présence pour la prochaine GvG :\n" + listnoninscrit);
 }
 
-export function Messagenb(AuthorID, BotChanOfficier, nb_inscrit, nb_present, nb_retard, nb_absent) {
+export function Messagenb(AuthorID, nb_inscrit, nb_present, nb_retard, nb_absent) {
   BotChanOfficier.send("<@" + AuthorID + ">\nVoici les statistiques d'inscription pour la prochaine GvG : \n Nombre de joueur **inscrit** : " + nb_inscrit + " \n Nombre de joueur **present** : " + nb_present + "\n Nombre de joueur **absent** : " + nb_absent);
 }
 
-export function Messagelist(AuthorID, BotChanOfficier, list_present, list_retard, list_absent) {
+export function Messagelist(AuthorID, list_present, list_retard, list_absent) {
   BotChanOfficier.send("<@" + AuthorID + ">\nVoici les listes pour la prochaine GvG : \n\n__Liste des joueurs **presents**__ : \n" + list_present + "\n\n__Liste des joueurs **absent**__ :\n" + list_absent);
 }
 
-export function Messageprivatemp(AuthorID, BotChanOfficier, userpourmp) {
+export function Messageprivatemp(AuthorID, userpourmp) {
   BotChanOfficier.send("<@" + AuthorID + ">\nLe message de rappel d'incription à la prochaine GvG à bien été envoyé en mp à : <@" + userpourmp + ">");
 }
 // Private message de rappel

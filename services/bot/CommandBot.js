@@ -9,7 +9,7 @@ import { } from 'dotenv/config';
 import sqlite3 from 'sqlite3';
 
 // Commande nb
-export async function cmdnb(AuthorID, BotChanOfficier) {
+export async function cmdnb(AuthorID) {
   const db = new sqlite3.Database('../database/databaseGvG.db');
   const requestQueries = [
     `SELECT COUNT(*) AS NumberOfResponses FROM Users WHERE EtatInscription = 1;`,
@@ -33,7 +33,7 @@ export async function cmdnb(AuthorID, BotChanOfficier) {
     );
 
     const nb_inscrit = responseCounts[0] + responseCounts[1] + responseCounts[2];
-    Messagenb(AuthorID, BotChanOfficier, nb_inscrit, responseCounts[0], responseCounts[1], responseCounts[2]);
+    Messagenb(AuthorID, nb_inscrit, responseCounts[0], responseCounts[1], responseCounts[2]);
   } catch (err) {
     console.error(err);
   } finally {
@@ -42,7 +42,7 @@ export async function cmdnb(AuthorID, BotChanOfficier) {
 }
 
 // command list
-export async function cmdlist(AuthorID, BotChanOfficier) {
+export async function cmdlist(AuthorID) {
   const db = new sqlite3.Database('../database/databaseGvG.db');
   const requestQueries = [
     `SELECT DiscordID FROM Users WHERE EtatInscription = 1;`,
@@ -112,7 +112,7 @@ export async function cmdlist(AuthorID, BotChanOfficier) {
       }
     }
   }
-  Messagelist(AuthorID, BotChanOfficier, list_present, list_retard, list_absent);
+  Messagelist(AuthorID, list_present, list_retard, list_absent);
 }
 
 export async function cmdclass() {
