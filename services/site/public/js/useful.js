@@ -8,10 +8,10 @@ export function communBlock(data) {
     divimguserConected.className = 'userImg';
     divimguserConected.appendChild(imguserConected)
     userConected.appendChild(divimguserConected);
-    
+
     let disconnect = document.getElementById('disconnect');
     let Username = document.createElement('div');
-    Username.className = 'Username';
+    Username.className = 'UsernameBandeau';
     Username.textContent = 'Connecté en tant que ' + data.UserInfo.Username;
     disconnect.appendChild(Username);
 
@@ -49,11 +49,7 @@ function DisconnectedButton() {
         const now = new Date();
         if (now - timerThrottlebutton > 500) {
             timerThrottlebutton = now;
-            fetch(adressAPI + 'logout')
-            .catch(error => {
-                console.error('Data recovery error:', error);
-            });
-            window.location.href = '/';
+            fetchlogout();
         }
     }
     DisconnectedButton.addEventListener('click', DisconnectedButtonClick);
@@ -64,4 +60,12 @@ export function createHTMLElement(type, name) {
     div.id = name;
     div.className = name;
     return div
+}
+
+export function fetchlogout() {
+    fetch(adressAPI + 'logout')
+        .catch(error => {
+            console.error('Data recovery error:', error);
+        });
+    window.location.href = '/';
 }

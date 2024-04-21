@@ -1,5 +1,5 @@
 import { adressAPI, cookieName } from "./config.js";
-import { communBlock, createHTMLElement } from "./useful.js";
+import { communBlock, createHTMLElement, fetchlogout } from "./useful.js";
 
 export function characterCard() {
     if (!document.cookie.split(";").some((item) => item.trim().startsWith(cookieName + "="))) {
@@ -17,8 +17,7 @@ export function characterCard() {
             return response.json();
         })
         .then(data => {
-            // Traiter les données récupérées
-            console.log('Data received (characterCard):', data);
+            // console.log('Data received (characterCard):', data);
             containerCharacterCard(data);
         })
         .catch(error => {
@@ -163,8 +162,7 @@ function containerCharacterCard(data) {
         }
 
     } else {
-        document.cookie = cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        window.location.href = '/';
+        fetchlogout();
     }
 }
 

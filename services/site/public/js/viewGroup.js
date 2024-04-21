@@ -131,8 +131,12 @@ function containerviewGroup(data) {
                         unit4.classList.add('consultOff');
                     }
                     divlistUnit.appendChild(unit4);
-                    divuser.appendChild(divlistUnit);
-                    divGroup.appendChild(divuser);
+
+                    // ne pas afficher les lignes vide
+                    if (currentPlayer.Username != "") {
+                        divuser.appendChild(divlistUnit);
+                        divGroup.appendChild(divuser);
+                    }
                 }
                 viewgroup.appendChild(divGroup);
             }

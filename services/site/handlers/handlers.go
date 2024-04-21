@@ -17,7 +17,7 @@ var tb = utils.NewTokenBucket(5, 5)
 
 // Page d'accueil "/"
 func ServeHome(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Cache-Control", "public, max-age=31536000")
+	// w.Header().Set("Cache-Control", "public, max-age=31536000")
 	if tb.Request(1) {
 		ts, err := template.ParseFiles("./index.html")
 		if err != nil {
@@ -30,10 +30,13 @@ func ServeHome(w http.ResponseWriter, r *http.Request) {
 // Handler de deconnexion
 func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 	if tb.Request(1) {
-		database, err := sql.Open("sqlite3", data.ADRESS_DB)
-		utils.CheckErr("open db in homehandler", err)
-		defer database.Close()
-		utils.Logout(w, r, database)
+		_, err := r.Cookie("user_token")
+		if err != http.ErrNoCookie {
+			database, err := sql.Open("sqlite3", data.ADRESS_DB)
+			utils.CheckErr("open db in homehandler", err)
+			defer database.Close()
+			utils.Logout(w, r, database)
+		}
 	}
 }
 
@@ -157,7 +160,7 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 // page "/caserne" (utilisateur connecté)
 func CaserneHandler(w http.ResponseWriter, r *http.Request) {
 	// fmt.Println("ENTER CaserneHandler")
-	w.Header().Set("Cache-Control", "max-age=31536000")
+	// w.Header().Set("Cache-Control", "max-age=31536000")
 	if tb.Request(1) {
 		var sendHTML *data.SendHTML
 		// lecture du cookie

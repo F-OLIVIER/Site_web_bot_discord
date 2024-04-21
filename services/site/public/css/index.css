@@ -76,7 +76,7 @@ button:hover {
     z-index: 1;
 }
 
-.Username {
+.UsernameBandeau {
     font-size: 25px;
     vertical-align: middle;
     text-shadow: 1px 1px 5px rgba(0, 0, 0), 0 0 1em rgb(0, 0, 0), 0 0 0.2em rgb(0, 0, 0);
@@ -488,6 +488,11 @@ button:hover {
     overflow: hidden;
 }
 
+.namegroup {
+    font-size: 30px;
+    color: black;
+    text-shadow: 1px 1px 5px rgb(255, 255, 255), 0 0 1em rgb(255, 255, 255), 0 0 0.2em rgb(255, 255, 255);
+}
 .divuser,
 .divuserviewgroup {
     width: 100%;

@@ -63,7 +63,7 @@ export function MessageInsufficientAuthority(AuthorID) {
 
 // Message chan officier
 export function NewUser(AuthorID) {
-  BotChan.send("Bienvenue dans notre maison <@" + AuthorID + ">\nJe te propose de te faire une visite guidée des fonctionnalités utilisé dans notre maison pour l'organisation des GvG.\n Pour cela, il te suffit de taler \"/visite_guidée\" dans un canal de ce discord");
+  BotChan.send("Bienvenue dans notre maison <@" + AuthorID + ">\nJe te propose de te faire une visite guidée des fonctionnalités utilisé dans notre maison pour l'organisation des GvG.\n Pour cela, il te suffit de taper \"/visite_guidée\" dans un canal de ce discord");
 }
 
 export function UserLeaveDiscord(name, nickname) {

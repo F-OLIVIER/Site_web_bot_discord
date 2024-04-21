@@ -1,5 +1,5 @@
 import { adressAPI, cookieName } from "./config.js";
-import { communBlock, createHTMLElement } from "./useful.js";
+import { communBlock, createHTMLElement, fetchlogout } from "./useful.js";
 
 export function creategroup() {
     if (!document.cookie.split(";").some((item) => item.trim().startsWith(cookieName + "="))) {
@@ -13,7 +13,7 @@ export function creategroup() {
             return response.json();
         })
         .then(data => {
-            console.log('Data received (creategroup):', data);
+            // console.log('Data received (creategroup):', data);
             containercreategroup(data);
         })
         .catch(error => {
@@ -22,7 +22,8 @@ export function creategroup() {
 }
 
 let groupNumber = 1;
-export function containercreategroup(data) {
+let listUserSelect = [];
+export async function containercreategroup(data) {
     if (data.Gestion.Logged && data.Gestion.Officier) {
         communBlock(data);
 
@@ -50,8 +51,7 @@ export function containercreategroup(data) {
 
         creategroup.appendChild(legend);
         // en-tête
-        let titledivuser = entete();
-        creategroup.appendChild(titledivuser);
+        creategroup.appendChild(entete());
         // div de création des groupes
         divcreategroup.appendChild(creategroup);
         containerGroupe.appendChild(divcreategroup);
@@ -69,9 +69,10 @@ export function containercreategroup(data) {
 
             for (let i = 0; i < groupNumberMax; i++) {
                 const currentGroupe = usersInGroup(data.GroupGvG);
-                createExistGroupe(data, currentGroupe);
+                await createExistGroupe(data, currentGroupe);
                 groupNumber += 1;
             }
+            MAJlistUserSelect();
         }
 
         // Boutton pour ajouter un groupe (5 joueurs)
@@ -79,7 +80,7 @@ export function containercreategroup(data) {
         buttonAddGroup.textContent = 'Ajouter un groupe';
         divcreategroup.appendChild(buttonAddGroup);
         buttonAddGroup.addEventListener('click', function () {
-            createOneGroupe(data)
+            createOneGroupe(data);
             groupNumber += 1;
         });
 
@@ -88,17 +89,17 @@ export function containercreategroup(data) {
         buttonSaveGroup.textContent = 'Sauvegarder les groupes';
         divcreategroup.appendChild(buttonSaveGroup);
         buttonSaveGroup.addEventListener('click', function () {
-            saveGroup();
-            window.location.href = '/creategroup';
+            const redirect = saveGroup('/creategroup');
+            window.location.href = redirect;
         });
 
         // Boutton pour voir les groupes de façon non modifiable
         if (data.GroupGvG != null) {
             let buttonViewGroup = createHTMLElement('div', 'buttonViewGroup');
-            buttonViewGroup.textContent = 'Voir de façon propres les groupes déjà crée';
+            buttonViewGroup.textContent = 'Prévisualisations des groupes';
             containerGroupe.appendChild(buttonViewGroup);
             buttonViewGroup.addEventListener('click', function () {
-                // saveGroup();
+                // const redirect = saveGroup('/viewGroup');
                 window.location.href = '/viewGroup';
             });
         }
@@ -124,11 +125,17 @@ export function containercreategroup(data) {
         });
 
     } else {
-        document.cookie = cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        window.location.href = '/';
+        fetchlogout();
     }
 }
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// --------------------------------------------------------
+// ------------- Partie "Liste des Inscrits ---------------
+// --------------------------------------------------------
 function listInscripted(data) {
     let divlistInscripted = createHTMLElement('div', 'listInscripted');
 
@@ -223,50 +230,10 @@ function listInscripted(data) {
     return divlistInscripted
 }
 
-function createLegend(listLegend, name) {
-    let legend = createHTMLElement('div', name);
-    for (let i = 0; i < listLegend.length; i++) {
-        let currentlegend = document.createElement('div');
-        currentlegend.textContent = listLegend[i];
-        legend.appendChild(currentlegend);
-    }
-    return legend
-}
-
-function entete() {
-    let titledivuser = document.createElement('div');
-    titledivuser.classList.add('titledivuser');
-    titledivuser.classList.add('divuser');
-
-    let titlename = createHTMLElement('div', 'titlename');
-    titlename.textContent = 'pseudo';
-    titledivuser.appendChild(titlename);
-
-    let titleinfluence = createHTMLElement('div', 'titleinfluence');
-    titleinfluence.innerHTML = 'influence <br> unités / joueur';
-    titledivuser.appendChild(titleinfluence);
-
-    let divnameunit = createHTMLElement('div', 'divnameunit');
-
-    let titleunit1 = document.createElement('div');
-    titleunit1.textContent = 'unité 1';
-    divnameunit.appendChild(titleunit1);
-
-    let titleunit2 = document.createElement('div');
-    titleunit2.textContent = 'unité 2';
-    divnameunit.appendChild(titleunit2);
-
-    let titleunit3 = document.createElement('div');
-    titleunit3.textContent = 'unité 3';
-    divnameunit.appendChild(titleunit3);
-
-    let titleunit4 = document.createElement('div');
-    titleunit4.textContent = 'unité 4';
-    divnameunit.appendChild(titleunit4);
-    titledivuser.appendChild(divnameunit);
-
-    return titledivuser
-}
+// --------------------------------------------------------
+// ----------- Partie "Création des groupes" --------------
+// --------------------------------------------------------
+// ***************** Option "exist group" *****************
 
 async function createExistGroupe(data, userIngroup) {
     const creategroup = document.getElementById('creategroup');
@@ -274,6 +241,7 @@ async function createExistGroupe(data, userIngroup) {
     let divGroup = document.createElement('div');
     divGroup.classList.add('divgroup');
     divGroup.classList.add(groupName);
+    divGroup.appendChild(namegroup(groupNumber));
 
     for (let i = 0; i < 5; i++) {
         let currentUser = {
@@ -388,6 +356,8 @@ async function createExistGroupe(data, userIngroup) {
             let userSelected = name.value;
 
             if (name.value === "") {
+                MAJlistUserSelect();
+
                 if (selectunit1 != undefined) {
                     selectunit1.style.visibility = 'hidden';
                     selectunit1.value = "";
@@ -407,26 +377,27 @@ async function createExistGroupe(data, userIngroup) {
                 influenceUnit.textContent = "";
                 influenceplayer.textContent = "";
             } else {
+                listUserSelect.push(userSelected);
+                optionSelectUsername();
+
                 if (selectunit1 != undefined) {
                     selectunit1.style.visibility = 'visible';
                 }
 
-                let infoUserSelected = {};
                 for (let j = 0; j < data.ListInscripted.length; j++) {
                     let userInscripted = data.ListInscripted[j];
-                    if (userInscripted.id === userSelected.id) {
-                        infoUserSelected = userInscripted;
+                    if (userInscripted.Username === userSelected) {
+                        const usernameSansEspaces = userInscripted.Username.replace(/\s/g, '');
+                        influenceUnit.id = 'influUnit' + usernameSansEspaces;
+                        influenceUnit.textContent = 0;
+                        influenceplayer.id = 'influPlayer' + usernameSansEspaces;
+                        influenceplayer.textContent = '/ ' + userInscripted.Influence;
                         break;
                     }
                 }
-                let usernameSansEspaces = infoUserSelected.Username.replace(/\s/g, '');
-                influenceUnit.id = 'influUnit' + usernameSansEspaces;
-                influenceUnit.textContent = 0;
-                influenceplayer.id = 'influPlayer' + usernameSansEspaces;
-                influenceplayer.textContent = '/ ' + infoUserSelected.Influence;
             }
         });
-        divGroup.appendChild(divuser)
+        divGroup.appendChild(divuser);
     }
 
     creategroup.appendChild(divGroup);
@@ -476,37 +447,47 @@ function createSelectUnit(numberUnit, caserne, currentUser, usernameSansEspaces,
     optgroupT3.label = 'Unité T3';
 
     // Légende : 🔴 Unité non maitrisé, 🟡 Unité en cour de maitrise, 🟢 Unité maitrisé
-    for (let j = 0; j < caserne.length; j++) {
-        const unit = caserne[j];
-        if (nameUnit !== unit.Unit_name) {
-            let option = document.createElement('option');
-            option.value = unit.Unit_name;
-            if (unit.Unit_maitrise === '1' && unit.UserMaitrise === '1') {
-                option.text = unit.Unit_name + ' (lvl ' + unit.Unit_lvl + '🔴)';
-            } else if (unit.Unit_maitrise === '1' && unit.UserMaitrise === '1') {
-                option.text = unit.Unit_name + ' (lvl ' + unit.Unit_lvl + '🟡)';
-            } else if (unit.Unit_maitrise === '1' && unit.UserMaitrise === '2') {
-                option.text = unit.Unit_name + ' (lvl ' + unit.Unit_lvl + '🟢)';
+    if (caserne !== null && caserne.length !== undefined) {
+        for (let j = 0; j < caserne.length; j++) {
+            const unit = caserne[j];
+            if (nameUnit !== unit.Unit_name) {
+                let option = document.createElement('option');
+                option.value = unit.Unit_name;
+                if (unit.Unit_maitrise === '1' && unit.UserMaitrise === '') {
+                    option.text = unit.Unit_name + ' (lvl ' + unit.Unit_lvl + '🔴)';
+                } else if (unit.Unit_maitrise === '1' && unit.UserMaitrise === '1') {
+                    option.text = unit.Unit_name + ' (lvl ' + unit.Unit_lvl + '🟡)';
+                } else if (unit.Unit_maitrise === '1' && unit.UserMaitrise === '2') {
+                    option.text = unit.Unit_name + ' (lvl ' + unit.Unit_lvl + '🟢)';
+                } else {
+                    option.text = unit.Unit_name + ' (lvl ' + unit.Unit_lvl + ')';
+                }
+                // selectunit.appendChild(option);
+                if (unit.Unit_tier === 'T5') {
+                    optgroupT5.appendChild(option)
+                } else if (unit.Unit_tier === 'T4') {
+                    optgroupT4.appendChild(option)
+                } else if (unit.Unit_tier === 'T3') {
+                    optgroupT3.appendChild(option)
+                }
             } else {
-                option.text = unit.Unit_name + ' (lvl ' + unit.Unit_lvl + ')';
+                defaultoptionUnit.value = nameUnit;
+                // defaultoptionUnit.text = nameUnit + ' (lvl ' + unit.Unit_lvl + ')';
+                if (unit.Unit_maitrise === '1' && unit.UserMaitrise === '') {
+                    defaultoptionUnit.text = nameUnit + ' (lvl ' + unit.Unit_lvl + '🔴)';
+                } else if (unit.Unit_maitrise === '1' && unit.UserMaitrise === '1') {
+                    defaultoptionUnit.text = nameUnit + ' (lvl ' + unit.Unit_lvl + '🟡)';
+                } else if (unit.Unit_maitrise === '1' && unit.UserMaitrise === '2') {
+                    defaultoptionUnit.text = nameUnit + ' (lvl ' + unit.Unit_lvl + '🟢)';
+                } else {
+                    defaultoptionUnit.text = nameUnit + ' (lvl ' + unit.Unit_lvl + ')';
+                }
             }
-            // selectunit.appendChild(option);
-            if (unit.Unit_tier === 'T5') {
-                optgroupT5.appendChild(option)
-            } else if (unit.Unit_tier === 'T4') {
-                optgroupT4.appendChild(option)
-            } else if (unit.Unit_tier === 'T3') {
-                optgroupT3.appendChild(option)
+            if (nameUnit === 'Consulter un officier') {
+                Consulterunofficier = true;
             }
-        } else {
-            defaultoptionUnit.value = nameUnit;
-            defaultoptionUnit.text = nameUnit + ' (lvl ' + unit.Unit_lvl + ')';
-        }
-        if (nameUnit === 'Consulter un officier') {
-            Consulterunofficier = true;
         }
     }
-
 
     if (Consulterunofficier) {
         defaultoptionUnit.value = 'Consulter un officier';
@@ -537,6 +518,243 @@ function createSelectUnit(numberUnit, caserne, currentUser, usernameSansEspaces,
     selectunit.appendChild(optgroupT3);
 
     return selectunit
+}
+
+// *************** Option "not exist group" ***************
+async function createOneGroupe(data) {
+    const creategroup = document.getElementById('creategroup');
+    const groupName = 'group' + groupNumber;
+    let divGroup = document.createElement('div');
+    divGroup.classList.add('divgroup');
+    divGroup.classList.add(groupName);
+    divGroup.appendChild(namegroup(groupNumber));
+
+    for (let i = 0; i < 5; i++) {
+        let divuser = document.createElement('div');
+        divuser.classList.add('divuser');
+
+        let inputHidden = document.createElement('input');
+        inputHidden.value = groupName;
+        inputHidden.hidden = true;
+        divuser.appendChild(inputHidden);
+
+        let name = createHTMLElement('select', 'username');
+        let defaultoption = document.createElement("option");
+        defaultoption.value = "";
+        defaultoption.text = "Choisissez";
+        name.appendChild(defaultoption);
+        if (data.ListInscripted != null) {
+            for (let j = 0; j < data.ListInscripted.length; j++) {
+                const userInscripted = data.ListInscripted[j];
+                let option = document.createElement("option");
+                option.value = userInscripted.Username;
+                option.text = userInscripted.Username;
+                name.appendChild(option);
+            }
+        }
+        divuser.appendChild(name);
+
+        let influenceUnit = createHTMLElement('div', 'influenceUnit');
+        divuser.appendChild(influenceUnit);
+        let influenceplayer = createHTMLElement('div', 'influenceplayer');
+        divuser.appendChild(influenceplayer);
+        let unit1 = createHTMLElement('div', 'unit1');
+        divuser.appendChild(unit1);
+        let unit2 = createHTMLElement('div', 'unit2');
+        divuser.appendChild(unit2);
+        let unit3 = createHTMLElement('div', 'unit3');
+        divuser.appendChild(unit3);
+        let unit4 = createHTMLElement('div', 'unit4');
+        divuser.appendChild(unit4);
+
+        createNewline(name, data, influenceplayer, influenceUnit, unit1, unit2, unit3, unit4);
+        divGroup.appendChild(divuser)
+    }
+    creategroup.appendChild(divGroup)
+}
+
+// --------------------------------------------------------
+// ------------------- Fonction annexe --------------------
+// --------------------------------------------------------
+function createLegend(listLegend, name) {
+    let legend = createHTMLElement('div', name);
+    for (let i = 0; i < listLegend.length; i++) {
+        let currentlegend = document.createElement('div');
+        currentlegend.textContent = listLegend[i];
+        legend.appendChild(currentlegend);
+    }
+    return legend
+}
+
+function entete() {
+    let titledivuser = document.createElement('div');
+    titledivuser.classList.add('titledivuser');
+    titledivuser.classList.add('divuser');
+
+    let titlename = createHTMLElement('div', 'titlename');
+    titlename.textContent = 'pseudo';
+    titledivuser.appendChild(titlename);
+
+    let titleinfluence = createHTMLElement('div', 'titleinfluence');
+    titleinfluence.innerHTML = 'influence <br> unités / joueur';
+    titledivuser.appendChild(titleinfluence);
+
+    let divnameunit = createHTMLElement('div', 'divnameunit');
+
+    let titleunit1 = document.createElement('div');
+    titleunit1.textContent = 'unité 1';
+    divnameunit.appendChild(titleunit1);
+
+    let titleunit2 = document.createElement('div');
+    titleunit2.textContent = 'unité 2';
+    divnameunit.appendChild(titleunit2);
+
+    let titleunit3 = document.createElement('div');
+    titleunit3.textContent = 'unité 3';
+    divnameunit.appendChild(titleunit3);
+
+    let titleunit4 = document.createElement('div');
+    titleunit4.textContent = 'unité 4';
+    divnameunit.appendChild(titleunit4);
+    titledivuser.appendChild(divnameunit);
+
+    return titledivuser
+}
+
+function namegroup(groupNumber) {
+    let nameUserGroup = createHTMLElement('div', 'namegroup' + groupNumber);
+    nameUserGroup.classList.add('namegroup');
+    nameUserGroup.textContent = 'Groupe n°' + groupNumber;
+    return nameUserGroup
+}
+
+// --------------------------------------------------------
+// ----------------- Fonction fetch back ------------------
+// --------------------------------------------------------
+async function saveGroup(redirect) {
+    const creategroup = document.getElementById('creategroup');
+    const divuserElements = creategroup.querySelectorAll('.divuser');
+
+    let dataToSend = [];
+    divuserElements.forEach((divuserElement) => {
+        let divuserObject = {};
+
+        const inputElement = divuserElement.querySelector('input');
+        const inputValue = inputElement ? inputElement.value : '';
+        divuserObject['inputValue'] = inputValue;
+
+        const selectElements = divuserElement.querySelectorAll('select');
+        const selectValues = Array.from(selectElements).map(select => select.value);
+        divuserObject['selectValues'] = selectValues;
+
+        dataToSend.push(divuserObject);
+    });
+
+    if (dataToSend.length !== 0) {
+        await fetch(adressAPI + 'saveGroupInDB', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ dataToSend }),
+        })
+            .catch(error => {
+                console.error('Erreur lors de la récupération des données:', error);
+            });
+    }
+    return redirect
+}
+
+// --------------------------------------------------------
+// ------------ Fonction create eventlistener -------------
+// --------------------------------------------------------
+function createNewline(divName, data, influenceplayer, influenceUnit, unit1, unit2, unit3, unit4) {
+    let selectunit1;
+    let selectunit2;
+    let selectunit3;
+    let selectunit4;
+
+    divName.addEventListener('change', function () {
+        const userSelected = divName.value;
+        if (divName.value === "") {
+            MAJlistUserSelect();
+
+            if (selectunit1 != undefined) {
+                selectunit1.style.visibility = 'hidden';
+                selectunit1.value = "";
+                if (selectunit2 != undefined) {
+                    selectunit2.style.visibility = 'hidden';
+                    selectunit2.value = "";
+                    if (selectunit3 != undefined) {
+                        selectunit3.style.visibility = 'hidden';
+                        selectunit3.value = "";
+                        if (selectunit4 != undefined) {
+                            selectunit4.style.visibility = 'hidden';
+                            selectunit4.value = "";
+                        }
+                    }
+                }
+            }
+            influenceUnit.textContent = "";
+            influenceplayer.textContent = "";
+        } else {
+            listUserSelect.push(userSelected);
+            optionSelectUsername();
+
+            for (let j = 0; j < data.ListInscripted.length; j++) {
+                let userInscripted = data.ListInscripted[j];
+                if (userInscripted.Username === userSelected) {
+
+                    let usernameSansEspaces = userInscripted.Username.replace(/\s/g, '');
+                    // affiche dans la liste des joueurs inscrit que le joueur est placé
+                    document.getElementById('player_' + usernameSansEspaces).textContent = '✅';
+
+                    // Unité 1
+                    if (selectunit1 === undefined) {
+                        selectunit1 = createSelectUnit(1, userInscripted.UserCaserne, userInscripted, usernameSansEspaces)
+                        unit1.replaceWith(selectunit1);
+                    }
+                    // Unité 2
+                    if (selectunit2 === undefined) {
+                        selectunit2 = createSelectUnit(2, userInscripted.UserCaserne, userInscripted, usernameSansEspaces)
+                        unit2.replaceWith(selectunit2);
+                    }
+                    // Unité 3
+                    if (selectunit3 === undefined) {
+                        selectunit3 = createSelectUnit(3, userInscripted.UserCaserne, userInscripted, usernameSansEspaces)
+                        unit3.replaceWith(selectunit3);
+                    }
+                    // Unité 4
+                    if (selectunit4 === undefined) {
+                        selectunit4 = createSelectUnit(4, userInscripted.UserCaserne, userInscripted, usernameSansEspaces)
+                        unit4.replaceWith(selectunit4);
+                    }
+
+                    if (userSelected !== "") {
+                        selectunit1.value = "";
+                        selectunit1.style.visibility = 'visible';
+                        influenceUnit.id = 'influUnit' + usernameSansEspaces;
+                        influenceUnit.textContent = 0;
+                        influenceplayer.id = 'influPlayer' + usernameSansEspaces;
+                        influenceplayer.textContent = '/ ' + userInscripted.Influence;
+                        createEventSelectUnit(divName, influenceplayer, influenceUnit, selectunit1, selectunit2, selectunit3, selectunit4, userInscripted, usernameSansEspaces)
+                    } else {
+                        influenceplayer.textContent = "";
+                        influenceUnit.textContent = "";
+                        selectunit1.value = "";
+                        selectunit1.style.visibility = 'hidden';
+                    }
+                    selectunit2.value = "";
+                    selectunit2.style.visibility = 'hidden';
+                    selectunit3.value = "";
+                    selectunit3.style.visibility = 'hidden';
+                    selectunit4.value = "";
+                    selectunit4.style.visibility = 'hidden';
+                    break;
+                }
+            }
+        }
+    });
 }
 
 function createEventSelectUnit(divName, influenceplayer, influenceUnit, selectunit1, selectunit2, selectunit3, selectunit4, infoUser, usernameSansEspaces) {
@@ -620,122 +838,9 @@ function createEventSelectUnit(divName, influenceplayer, influenceUnit, selectun
     });
 }
 
-async function createOneGroupe(data) {
-    const creategroup = document.getElementById('creategroup');
-    const groupName = 'group' + groupNumber;
-    let divGroup = document.createElement('div');
-    divGroup.classList.add('divgroup');
-    divGroup.classList.add(groupName);
-
-    for (let i = 0; i < 5; i++) {
-        let divuser = document.createElement('div');
-        divuser.classList.add('divuser');
-
-        let inputHidden = document.createElement('input');
-        inputHidden.value = groupName;
-        inputHidden.hidden = true;
-        divuser.appendChild(inputHidden);
-
-        let name = createHTMLElement('select', 'username');
-        let defaultoption = document.createElement("option");
-        defaultoption.value = "";
-        defaultoption.text = "Choisissez";
-        name.appendChild(defaultoption);
-        if (data.ListInscripted != null) {
-            for (let j = 0; j < data.ListInscripted.length; j++) {
-                const userInscripted = data.ListInscripted[j];
-                let option = document.createElement("option");
-                option.value = userInscripted.Username;
-                option.text = userInscripted.Username;
-                name.appendChild(option);
-            }
-        }
-        divuser.appendChild(name);
-
-        let influenceUnit = createHTMLElement('div', 'influenceUnit');
-        divuser.appendChild(influenceUnit);
-        let influenceplayer = createHTMLElement('div', 'influenceplayer');
-        divuser.appendChild(influenceplayer);
-        let unit1 = createHTMLElement('div', 'unit1');
-        divuser.appendChild(unit1);
-        let unit2 = createHTMLElement('div', 'unit2');
-        divuser.appendChild(unit2);
-        let unit3 = createHTMLElement('div', 'unit3');
-        divuser.appendChild(unit3);
-        let unit4 = createHTMLElement('div', 'unit4');
-        divuser.appendChild(unit4);
-
-        createNewline(name, data, influenceplayer, influenceUnit, unit1, unit2, unit3, unit4);
-        divGroup.appendChild(divuser)
-    }
-    creategroup.appendChild(divGroup)
-}
-
-function createNewline(divName, data, influenceplayer, influenceUnit, unit1, unit2, unit3, unit4) {
-    let selectunit1;
-    let selectunit2;
-    let selectunit3;
-    let selectunit4;
-
-    divName.addEventListener('change', function () {
-        const userSelected = divName.value;
-
-        let infoUserSelected = {};
-        for (let j = 0; j < data.ListInscripted.length; j++) {
-            let userInscripted = data.ListInscripted[j];
-            if (userInscripted.id === userSelected.id) {
-                infoUserSelected = userInscripted;
-                break;
-            }
-        }
-        let usernameSansEspaces = infoUserSelected.Username.replace(/\s/g, '');
-        // affiche dans la liste des joueurs inscrit que le joueur est placé
-        document.getElementById('player_' + usernameSansEspaces).textContent = '✅';
-
-        // Unité 1
-        if (selectunit1 === undefined) {
-            selectunit1 = createSelectUnit(1, infoUserSelected.UserCaserne, infoUserSelected, usernameSansEspaces)
-            unit1.replaceWith(selectunit1);
-        }
-        // Unité 2
-        if (selectunit2 === undefined) {
-            selectunit2 = createSelectUnit(2, infoUserSelected.UserCaserne, infoUserSelected, usernameSansEspaces)
-            unit2.replaceWith(selectunit2);
-        }
-        // Unité 3
-        if (selectunit3 === undefined) {
-            selectunit3 = createSelectUnit(3, infoUserSelected.UserCaserne, infoUserSelected, usernameSansEspaces)
-            unit3.replaceWith(selectunit3);
-        }
-        // Unité 4
-        if (selectunit4 === undefined) {
-            selectunit4 = createSelectUnit(4, infoUserSelected.UserCaserne, infoUserSelected, usernameSansEspaces)
-            unit4.replaceWith(selectunit4);
-        }
-
-        if (userSelected !== "") {
-            selectunit1.value = "";
-            selectunit1.style.visibility = 'visible';
-            influenceUnit.id = 'influUnit' + usernameSansEspaces;
-            influenceUnit.textContent = 0;
-            influenceplayer.id = 'influPlayer' + usernameSansEspaces;
-            influenceplayer.textContent = '/ ' + infoUserSelected.Influence;
-            createEventSelectUnit(divName, influenceplayer, influenceUnit, selectunit1, selectunit2, selectunit3, selectunit4, infoUserSelected, usernameSansEspaces)
-        } else {
-            influenceplayer.textContent = "";
-            influenceUnit.textContent = "";
-            selectunit1.value = "";
-            selectunit1.style.visibility = 'hidden';
-        }
-        selectunit2.value = "";
-        selectunit2.style.visibility = 'hidden';
-        selectunit3.value = "";
-        selectunit3.style.visibility = 'hidden';
-        selectunit4.value = "";
-        selectunit4.style.visibility = 'hidden';
-    });
-}
-
+// --------------------------------------------------------
+// -------- Fonction annexe, gestion eventlistener --------
+// --------------------------------------------------------
 function changeInfluUnit(UserCaserne, username) {
     let unitValues = [];
     for (let i = 1; i <= 4; i++) {
@@ -745,10 +850,12 @@ function changeInfluUnit(UserCaserne, username) {
     }
 
     let newValue = 0;
-    for (let j = 0; j < UserCaserne.length; j++) {
-        const unit = UserCaserne[j];
-        if (unitValues.includes(unit.Unit_name)) {
-            newValue += parseInt(unit.Unit_influence, 10);
+    if (UserCaserne !== null && UserCaserne.length !== undefined) {
+        for (let j = 0; j < UserCaserne.length; j++) {
+            const unit = UserCaserne[j];
+            if (unitValues.includes(unit.Unit_name)) {
+                newValue += parseInt(unit.Unit_influence, 10);
+            }
         }
     }
     let divInfluenceUnit = document.getElementById('influUnit' + username);
@@ -762,39 +869,6 @@ function changeInfluUnit(UserCaserne, username) {
     }
 }
 
-function saveGroup() {
-    const creategroup = document.getElementById('creategroup');
-    const divuserElements = creategroup.querySelectorAll('.divuser');
-
-    let dataToSend = [];
-    divuserElements.forEach((divuserElement) => {
-        let divuserObject = {};
-
-        const inputElement = divuserElement.querySelector('input');
-        const inputValue = inputElement ? inputElement.value : '';
-        divuserObject['inputValue'] = inputValue;
-
-        const selectElements = divuserElement.querySelectorAll('select');
-        const selectValues = Array.from(selectElements).map(select => select.value);
-        divuserObject['selectValues'] = selectValues;
-
-        dataToSend.push(divuserObject);
-    });
-
-    if (dataToSend.length !== 0) {
-        fetch(adressAPI + 'saveGroupInDB', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ dataToSend }),
-        })
-            .catch(error => {
-                console.error('Erreur lors de la récupération des données:', error);
-            });
-    }
-}
-
 function usersInGroup(listGroupGvG) {
     let usersInGroup = [];
     for (let i = 0; i < listGroupGvG.length; i++) {
@@ -804,4 +878,31 @@ function usersInGroup(listGroupGvG) {
         }
     }
     return usersInGroup
+}
+
+function MAJlistUserSelect() {
+    let divs = document.querySelectorAll('.username');
+    listUserSelect = [];
+    divs.forEach(div => {
+        div.querySelectorAll('option').forEach(option => {
+            if (option.selected && option.value !== "") {
+                listUserSelect.push(option.value);
+            }
+        });
+    });
+    console.log('listUserSelect : ', listUserSelect);
+    optionSelectUsername();
+}
+
+function optionSelectUsername() {
+    let divs = document.querySelectorAll('.username');
+    divs.forEach(div => {
+        div.querySelectorAll('option').forEach(option => {
+            if (listUserSelect.includes(option.value)) {
+                option.style.display = 'none';
+            } else {
+                option.style.display = '';
+            }
+        });
+    });
 }

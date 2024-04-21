@@ -1,5 +1,5 @@
 import { adressAPI, cookieName } from "./config.js";
-import { communBlock, createHTMLElement } from "./useful.js";
+import { communBlock, createHTMLElement, fetchlogout } from "./useful.js";
 
 export function administration() {
     if (!document.cookie.split(";").some((item) => item.trim().startsWith(cookieName + "="))) {
@@ -16,7 +16,6 @@ export function administration() {
             return response.json();
         })
         .then(data => {
-            // Traiter les données récupérées
             // console.log('Data received (administration):', data);
             containerAppAdmin(data);
         })
@@ -248,8 +247,7 @@ function containerAppAdmin(data) {
         addEventOnAllButton(data.ListUnit, data.UserInfo.Username);
 
     } else {
-        document.cookie = cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        window.location.href = '/';
+        fetchlogout();
     }
 }
 

@@ -1,5 +1,5 @@
 import { adressAPI, cookieName } from "./config.js";
-import { communBlock, createHTMLElement } from "./useful.js";
+import { communBlock, createHTMLElement, fetchlogout } from "./useful.js";
 
 export function caserne() {
     if (!document.cookie.split(";").some((item) => item.trim().startsWith(cookieName + "="))) {
@@ -17,8 +17,7 @@ export function caserne() {
             return response.json();
         })
         .then(data => {
-            // Traiter les données récupérées
-            console.log('Data received (caserne):', data);
+            // console.log('Data received (caserne):', data);
             containercaserne(data);
         })
         .catch(error => {
@@ -109,8 +108,7 @@ function containercaserne(data) {
         MAJCaserne(data.ListUnit.length);
 
     } else {
-        document.cookie = cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        window.location.href = '/';
+        fetchlogout();
     }
 }
 
