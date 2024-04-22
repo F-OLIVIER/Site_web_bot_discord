@@ -88,6 +88,19 @@ function containerviewGroup(data) {
                 divGroup.classList.add('divViewGroup');
                 divGroup.classList.add(groupName);
 
+                // Nom du groupe
+                const divnameUserGroup = createHTMLElement('div', 'divnamegroup' + groupNumber);
+                divnameUserGroup.classList.add('divnamegroup');
+
+                const nameUserGroup = createHTMLElement('div', 'namegroup' + groupNumber);
+                nameUserGroup.classList.add('namegroup');
+                if (data.NameGroupGvG[groupNumber]) {
+                    nameUserGroup.textContent = 'Groupe ' + data.NameGroupGvG[groupNumber];
+                } else {
+                    nameUserGroup.textContent = 'Groupe n°' + groupNumber;
+                }
+                divGroup.appendChild(nameUserGroup);
+
                 for (let j = 0; j < currentGroupe.length; j++) {
                     const currentPlayer = currentGroupe[j];
 

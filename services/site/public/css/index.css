@@ -222,6 +222,7 @@ button:hover {
     background-color: rgba(0, 0, 0, 0.3);
     border-radius: 25px;
 }
+
 .divinfonotconnected p {
     text-align: center;
 }
@@ -488,11 +489,29 @@ button:hover {
     overflow: hidden;
 }
 
+.divnamegroup {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
 .namegroup {
     font-size: 30px;
     color: black;
     text-shadow: 1px 1px 5px rgb(255, 255, 255), 0 0 1em rgb(255, 255, 255), 0 0 0.2em rgb(255, 255, 255);
 }
+
+.divnamegroup input {
+    margin: 15px 5px 5px 15px;
+    vertical-align: middle;
+    font-size: 16px;
+    text-align: center;
+    justify-content: center;
+    border: 2px solid rgb(0, 0, 0);
+    border-radius: 15px;
+}
+
 .divuser,
 .divuserviewgroup {
     width: 100%;

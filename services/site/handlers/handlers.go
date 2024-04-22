@@ -264,6 +264,7 @@ func CreateGroupHandler(w http.ResponseWriter, r *http.Request) {
 					UserInfo:       *userInfo,
 					ListInscripted: utils.ListInscriptedUsers(database),
 					GroupGvG:       utils.GroupGvG(database),
+					NameGroupGvG:   utils.NameGroupGvG(database),
 				}
 			}
 		} else { // absence de cookie

@@ -3,30 +3,26 @@
 -- 2: .databases
 -- 3: .quit
 -- run query
-
 -- Information de fonctionnement pour le bot discord
-CREATE TABLE IF NOT EXISTS GestionBot( 
+CREATE TABLE IF NOT EXISTS GestionBot (
     ID INTEGER PRIMARY KEY,
     Allumage INTEGER, -- 0 on, 1 off
     IDMessageGvG VARCHAR(50)
 );
 
 -- Fiche personnage IG
-CREATE TABLE IF NOT EXISTS Users( 
+CREATE TABLE IF NOT EXISTS Users (
     ID INTEGER PRIMARY KEY,
-    uuid INTEGER , 
+    uuid INTEGER,
     ConnectedSite INTEGER DEFAULT 0,
-
     DiscordID VARCHAR(50) NOT NULL,
     DiscordName VARCHAR(50) NOT NULL,
     DiscordBaseName VARCHAR(50) NOT NULL,
     DiscordRole VARCHAR(50),
     DiscordPhoto TEXT,
-
     GameCharacter_ID INTEGER DEFAULT 0,
     Lvl INTEGER,
     Influence INTEGER DEFAULT 700,
-
     EtatInscription INTEGER,
     NbEmojiInscription INTEGER,
     TrustIndicator INTEGER,
@@ -34,20 +30,18 @@ CREATE TABLE IF NOT EXISTS Users(
     NbGvGParticiped INTEGER, -- anciennement Assiduity
     NbTotalGvG INTEGER,
     DateLastGvGParticiped TEXT,
-    
-    FOREIGN KEY(GameCharacter_ID) REFERENCES ListGameCharacter(ID)
+    FOREIGN KEY (GameCharacter_ID) REFERENCES ListGameCharacter (ID)
 );
 
 -- Liste des GVG (pour les Stats)
-CREATE TABLE IF NOT EXISTS GvG( 
+CREATE TABLE IF NOT EXISTS GvG (
     ID INTEGER PRIMARY KEY,
     User_ID INTEGER,
     -- Saison_ID INTEGER,
-    DateGvG DATE, 
+    DateGvG DATE,
     Registered INTEGER, -- 0 non, 1 oui
     Participed INTEGER, -- présence discord : 0 non, 1 oui
-
-    FOREIGN KEY(User_ID) REFERENCES Users(ID)
+    FOREIGN KEY (User_ID) REFERENCES Users (ID)
     -- FOREIGN KEY(Saison_ID) REFERENCES Saison(ID)
 );
 
@@ -59,15 +53,14 @@ CREATE TABLE IF NOT EXISTS GvG(
 --     DateFin DATE,
 --     NbGvG INTEGER
 -- );
-
 -- liste des classes IG
-CREATE TABLE IF NOT EXISTS ListGameCharacter( 
+CREATE TABLE IF NOT EXISTS ListGameCharacter (
     ID INTEGER PRIMARY KEY,
     ClasseFR VARCHAR(50),
     ClasseEN VARCHAR(50) DEFAULT ""
 );
 
-CREATE TABLE IF NOT EXISTS ListUnit(
+CREATE TABLE IF NOT EXISTS ListUnit (
     ID INTEGER PRIMARY KEY,
     Unit VARCHAR(50),
     InfuenceMax INTEGER,
@@ -79,7 +72,7 @@ CREATE TABLE IF NOT EXISTS ListUnit(
 );
 
 -- exemple Unit1 (Hallebardiers) = "18" // -1: n'a pas l'unité sinon le lvl de l'unit
-CREATE TABLE IF NOT EXISTS Caserne( 
+CREATE TABLE IF NOT EXISTS Caserne (
     ID INTEGER PRIMARY KEY,
     User_ID INTEGER not NULL,
     Unit1 INTEGER DEFAULT "",
@@ -181,25 +174,28 @@ CREATE TABLE IF NOT EXISTS Caserne(
     Unit97 INTEGER DEFAULT "",
     Unit98 INTEGER DEFAULT "",
     Unit99 INTEGER DEFAULT "",
-
-    FOREIGN KEY(User_ID) REFERENCES Users(ID)
+    FOREIGN KEY (User_ID) REFERENCES Users (ID)
 );
 
-CREATE TABLE IF NOT EXISTS GroupGvG( 
+CREATE TABLE IF NOT EXISTS GroupGvG (
     ID INTEGER PRIMARY KEY,
     User_ID INTEGER,
-
     GroupNumber INTEGER,
     Unit1 TEXT,
     Unit2 TEXT,
     Unit3 TEXT,
     Unit4 TEXT,
+    FOREIGN KEY (User_ID) REFERENCES Users (ID)
+);
 
-    FOREIGN KEY(User_ID) REFERENCES Users(ID)
+CREATE TABLE IF NOT EXISTS NameGroupGvG (
+    ID INTEGER PRIMARY KEY,
+    GroupNumber INTEGER,
+    NameGroup VARCHAR(150)
 );
 
 -- exemple Unit1 (Hallebardiers) // 0: ne maitrise pas, 1: maitrise en cour, 2: maitrise compléte
-CREATE TABLE IF NOT EXISTS CaserneMaitrise( 
+CREATE TABLE IF NOT EXISTS CaserneMaitrise (
     ID INTEGER PRIMARY KEY,
     User_ID INTEGER not NULL,
     Unit1 INTEGER DEFAULT "",
@@ -301,7 +297,5 @@ CREATE TABLE IF NOT EXISTS CaserneMaitrise(
     Unit97 INTEGER DEFAULT "",
     Unit98 INTEGER DEFAULT "",
     Unit99 INTEGER DEFAULT "",
-
-    FOREIGN KEY(User_ID) REFERENCES Users(ID)
+    FOREIGN KEY (User_ID) REFERENCES Users (ID)
 );
-

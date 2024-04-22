@@ -13,7 +13,7 @@ export function creategroup() {
             return response.json();
         })
         .then(data => {
-            // console.log('Data received (creategroup):', data);
+            console.log('Data received (creategroup):', data);
             containercreategroup(data);
         })
         .catch(error => {
@@ -28,25 +28,25 @@ export async function containercreategroup(data) {
         communBlock(data);
 
         let Container = document.getElementById('Container');
-        let containerGroupe = createHTMLElement('div', 'containerGroupe');
+        let containerGroupe = await createHTMLElement('div', 'containerGroupe');
 
         // affichage de la liste des inscrits
-        let divlistInscripted = listInscripted(data.ListInscripted);
+        let divlistInscripted = await listInscripted(data.ListInscripted);
         containerGroupe.appendChild(divlistInscripted);
-        let divcreategroup = createHTMLElement('div', 'divcreategroup');
+        let divcreategroup = await createHTMLElement('div', 'divcreategroup');
         divcreategroup.style.display = 'none';
 
         // Boutton pour afficher l'encart de création des groupes
-        let buttonDisplaycreategroup = createHTMLElement('div', 'buttonDisplaycreategroup');
+        let buttonDisplaycreategroup = await createHTMLElement('div', 'buttonDisplaycreategroup');
         buttonDisplaycreategroup.textContent = 'Création des groupes GvG';
         containerGroupe.appendChild(buttonDisplaycreategroup);
 
         // div de la création des groupes GvG
-        let creategroup = createHTMLElement('div', 'creategroup');
+        let creategroup = await createHTMLElement('div', 'creategroup');
 
         // légende
         const listLegend = ['🔴 Unité non maitrisé', '🟡 Unité en cour de maitrise', '🟢 Unité maitrisé'];
-        let legend = createLegend(listLegend, 'legendMaitrise');
+        let legend = await createLegend(listLegend, 'legendMaitrise');
         legend.prepend('Légende : ');
 
         creategroup.appendChild(legend);
@@ -76,7 +76,7 @@ export async function containercreategroup(data) {
         }
 
         // Boutton pour ajouter un groupe (5 joueurs)
-        let buttonAddGroup = createHTMLElement('div', 'buttonAddGroup');
+        let buttonAddGroup = await createHTMLElement('div', 'buttonAddGroup');
         buttonAddGroup.textContent = 'Ajouter un groupe';
         divcreategroup.appendChild(buttonAddGroup);
         buttonAddGroup.addEventListener('click', function () {
@@ -85,21 +85,21 @@ export async function containercreategroup(data) {
         });
 
         // Boutton pour ajouter un groupe (5 joueurs)
-        let buttonSaveGroup = createHTMLElement('div', 'buttonSaveGroup');
+        let buttonSaveGroup = await createHTMLElement('div', 'buttonSaveGroup');
         buttonSaveGroup.textContent = 'Sauvegarder les groupes';
         divcreategroup.appendChild(buttonSaveGroup);
         buttonSaveGroup.addEventListener('click', function () {
-            const redirect = saveGroup('/creategroup');
-            window.location.href = redirect;
+            saveGroup();
+            window.location.href = '/creategroup';
         });
 
         // Boutton pour voir les groupes de façon non modifiable
         if (data.GroupGvG != null) {
-            let buttonViewGroup = createHTMLElement('div', 'buttonViewGroup');
+            let buttonViewGroup = await createHTMLElement('div', 'buttonViewGroup');
             buttonViewGroup.textContent = 'Prévisualisations des groupes';
             containerGroupe.appendChild(buttonViewGroup);
             buttonViewGroup.addEventListener('click', function () {
-                // const redirect = saveGroup('/viewGroup');
+                // saveGroup();
                 window.location.href = '/viewGroup';
             });
         }
@@ -129,18 +129,14 @@ export async function containercreategroup(data) {
     }
 }
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 // --------------------------------------------------------
 // ------------- Partie "Liste des Inscrits ---------------
 // --------------------------------------------------------
-function listInscripted(data) {
-    let divlistInscripted = createHTMLElement('div', 'listInscripted');
+async function listInscripted(data) {
+    let divlistInscripted = await createHTMLElement('div', 'listInscripted');
 
     // Boutton pour afficher la liste des inscrits
-    let buttonDisplayInscripted = createHTMLElement('div', 'buttonDisplayInscripted');
+    let buttonDisplayInscripted = await createHTMLElement('div', 'buttonDisplayInscripted');
     buttonDisplayInscripted.id = 'buttonDisplayInscripted';
     buttonDisplayInscripted.textContent = 'Liste des inscrits';
     divlistInscripted.appendChild(buttonDisplayInscripted);
@@ -148,20 +144,20 @@ function listInscripted(data) {
     // légende
     const listLegendplaced = ['✅ Joueur placé dans un groupe', '❌ Joueur NON placé dans un groupe'];
     const listLegendConnected = ["📱 Joueur qui s'est connecté au site internet", "📵 Joueur qui ne s'est jamais connecté au site internet"];
-    let divlegend = createHTMLElement('div', 'legendInscripted');
+    let divlegend = await createHTMLElement('div', 'legendInscripted');
     divlegend.style.display = 'none';
-    let divlistlegend = createHTMLElement('div', 'divlistlegend');
+    let divlistlegend = await createHTMLElement('div', 'divlistlegend');
     let titlelegend = document.createElement('div');
     titlelegend.textContent = 'Légende :';
     divlistlegend.appendChild(titlelegend);
-    let Legendplaced = createLegend(listLegendplaced, 'legendplaced');
+    let Legendplaced = await createLegend(listLegendplaced, 'legendplaced');
     divlistlegend.appendChild(Legendplaced);
-    let Legendconnected = createLegend(listLegendConnected, 'Legendconnected');
+    let Legendconnected = await createLegend(listLegendConnected, 'Legendconnected');
     divlistlegend.appendChild(Legendconnected);
     divlegend.appendChild(divlistlegend);
     divlistInscripted.appendChild(divlegend);
 
-    let divinscripted = createHTMLElement('div', 'divinscripted');
+    let divinscripted = await createHTMLElement('div', 'divinscripted');
     divinscripted.id = 'divinscripted';
     divinscripted.style.display = 'none';
 
@@ -170,21 +166,21 @@ function listInscripted(data) {
     titledivuser.classList.add('inscriptedtitledivuser');
     titledivuser.classList.add('inscripted');
 
-    let titledivplace = createHTMLElement('div', 'divplace');
+    let titledivplace = await createHTMLElement('div', 'divplace');
     titledivuser.appendChild(titledivplace);
 
-    let titledivconnected = createHTMLElement('div', 'divconnected');
+    let titledivconnected = await createHTMLElement('div', 'divconnected');
     titledivuser.appendChild(titledivconnected);
 
-    let titlename = createHTMLElement('div', 'inscriptedname');
+    let titlename = await createHTMLElement('div', 'inscriptedname');
     titlename.textContent = 'pseudo';
     titledivuser.appendChild(titlename);
 
-    let titleinfluence = createHTMLElement('div', 'inscriptedinfluence');
+    let titleinfluence = await createHTMLElement('div', 'inscriptedinfluence');
     titleinfluence.innerHTML = 'influence joueur';
     titledivuser.appendChild(titleinfluence);
 
-    let titleclass = createHTMLElement('div', 'inscriptedclass');
+    let titleclass = await createHTMLElement('div', 'inscriptedclass');
     titleclass.innerHTML = "classe d'arme";
     titledivuser.appendChild(titleclass);
     divinscripted.appendChild(titledivuser)
@@ -195,16 +191,16 @@ function listInscripted(data) {
         for (let i = 0; i < data.length; i++) {
             const player = data[i];
 
-            let divuser = createHTMLElement('div', 'inscripted');
+            let divuser = await createHTMLElement('div', 'inscripted');
 
             // indique si l'utilisateur est placé dans un groupe ✅ ❌
-            let divplace = createHTMLElement('div', 'divplace');
+            let divplace = await createHTMLElement('div', 'divplace');
             divplace.id = 'player_' + player.Username.replace(/\s/g, '');
             divplace.textContent = '❌';
             divuser.appendChild(divplace);
 
             // indique si l'utilisateur c'est connecté au site internet 📱 📵
-            let divconnected = createHTMLElement('div', 'divconnected');
+            let divconnected = await createHTMLElement('div', 'divconnected');
             if (player.ConnectedSite === "1") {
                 divconnected.textContent = '📱';
             } else {
@@ -212,15 +208,15 @@ function listInscripted(data) {
             }
             divuser.appendChild(divconnected);
 
-            let name = createHTMLElement('div', 'inscriptedname');
+            let name = await createHTMLElement('div', 'inscriptedname');
             name.textContent = player.Username;
             divuser.appendChild(name);
 
-            let influence = createHTMLElement('div', 'inscriptedinfluence');
+            let influence = await createHTMLElement('div', 'inscriptedinfluence');
             influence.innerHTML = player.Influence;
             divuser.appendChild(influence);
 
-            let classPlayer = createHTMLElement('div', 'inscriptedclass');
+            let classPlayer = await createHTMLElement('div', 'inscriptedclass');
             classPlayer.innerHTML = player.GameCharacter;
             divuser.appendChild(classPlayer);
             divinscripted.appendChild(divuser)
@@ -241,7 +237,7 @@ async function createExistGroupe(data, userIngroup) {
     let divGroup = document.createElement('div');
     divGroup.classList.add('divgroup');
     divGroup.classList.add(groupName);
-    divGroup.appendChild(namegroup(groupNumber));
+    divGroup.appendChild(namegroup(data, groupNumber));
 
     for (let i = 0; i < 5; i++) {
         let currentUser = {
@@ -264,7 +260,7 @@ async function createExistGroupe(data, userIngroup) {
             document.getElementById('player_' + userIngroup[i].Username.replace(/\s/g, '')).textContent = '✅';
         }
 
-        let divuser = createHTMLElement('div', 'divuser');
+        let divuser = await createHTMLElement('div', 'divuser');
 
         let inputHidden = document.createElement('input');
         inputHidden.value = groupName;
@@ -300,20 +296,20 @@ async function createExistGroupe(data, userIngroup) {
         }
         divuser.appendChild(name);
 
-        let influenceUnit = createHTMLElement('div', 'influenceUnit');
+        let influenceUnit = await createHTMLElement('div', 'influenceUnit');
         divuser.appendChild(influenceUnit);
-        let influenceplayer = createHTMLElement('div', 'influenceplayer');
+        let influenceplayer = await createHTMLElement('div', 'influenceplayer');
         divuser.appendChild(influenceplayer);
-        let unit1 = createHTMLElement('div', 'unit1');
+        let unit1 = await createHTMLElement('div', 'unit1');
         divuser.appendChild(unit1);
         let selectunit1;
-        let unit2 = createHTMLElement('div', 'unit2');
+        let unit2 = await createHTMLElement('div', 'unit2');
         divuser.appendChild(unit2);
         let selectunit2;
-        let unit3 = createHTMLElement('div', 'unit3');
+        let unit3 = await createHTMLElement('div', 'unit3');
         divuser.appendChild(unit3);
         let selectunit3;
-        let unit4 = createHTMLElement('div', 'unit4');
+        let unit4 = await createHTMLElement('div', 'unit4');
         divuser.appendChild(unit4);
         let selectunit4;
 
@@ -333,16 +329,16 @@ async function createExistGroupe(data, userIngroup) {
             influenceplayer.textContent = '/ ' + infoUsersave.Influence;
 
             // Unité 1
-            selectunit1 = createSelectUnit(1, infoUsersave.UserCaserne, currentUser, usernameSansEspaces, 1)
+            selectunit1 = await createSelectUnit(1, infoUsersave.UserCaserne, currentUser, usernameSansEspaces, 1)
             unit1.replaceWith(selectunit1);
             // Unité 2
-            selectunit2 = createSelectUnit(2, infoUsersave.UserCaserne, currentUser, usernameSansEspaces, 1)
+            selectunit2 = await createSelectUnit(2, infoUsersave.UserCaserne, currentUser, usernameSansEspaces, 1)
             unit2.replaceWith(selectunit2);
             // Unité 3
-            selectunit3 = createSelectUnit(3, infoUsersave.UserCaserne, currentUser, usernameSansEspaces, 1)
+            selectunit3 = await createSelectUnit(3, infoUsersave.UserCaserne, currentUser, usernameSansEspaces, 1)
             unit3.replaceWith(selectunit3);
             // Unité 4
-            selectunit4 = createSelectUnit(4, infoUsersave.UserCaserne, currentUser, usernameSansEspaces, 1)
+            selectunit4 = await createSelectUnit(4, infoUsersave.UserCaserne, currentUser, usernameSansEspaces, 1)
             unit4.replaceWith(selectunit4);
 
             createEventSelectUnit(name, influenceplayer, influenceUnit, selectunit1, selectunit2, selectunit3, selectunit4, infoUsersave, usernameSansEspaces)
@@ -355,30 +351,40 @@ async function createExistGroupe(data, userIngroup) {
         name.addEventListener('change', function () {
             let userSelected = name.value;
 
-            if (name.value === "") {
-                MAJlistUserSelect();
+            MAJlistUserSelect();
 
-                if (selectunit1 != undefined) {
-                    selectunit1.style.visibility = 'hidden';
-                    selectunit1.value = "";
-                    if (selectunit2 != undefined) {
-                        selectunit2.style.visibility = 'hidden';
-                        selectunit2.value = "";
-                        if (selectunit3 != undefined) {
-                            selectunit3.style.visibility = 'hidden';
-                            selectunit3.value = "";
-                            if (selectunit4 != undefined) {
-                                selectunit4.style.visibility = 'hidden';
-                                selectunit4.value = "";
-                            }
+            if (selectunit1 != undefined) {
+                selectunit1.style.visibility = 'hidden';
+                selectunit1.value = "";
+                selectunit1.innerHTML = "";
+                selectunit1.innerHTML = "";
+                if (selectunit2 != undefined) {
+                    selectunit2.style.visibility = 'hidden';
+                    selectunit2.value = "";
+                    selectunit2.innerHTML = "";
+                    if (selectunit3 != undefined) {
+                        selectunit3.style.visibility = 'hidden';
+                        selectunit3.value = "";
+                        selectunit3.innerHTML = "";
+                        if (selectunit4 != undefined) {
+                            selectunit4.style.visibility = 'hidden';
+                            selectunit4.value = "";
+                            selectunit4.innerHTML = "";
                         }
                     }
                 }
-                influenceUnit.textContent = "";
-                influenceplayer.textContent = "";
-            } else {
+            }
+            influenceUnit.textContent = "";
+            influenceplayer.textContent = "";
+
+            if (userSelected !== "") {
+                // mise à jour des options des selects
                 listUserSelect.push(userSelected);
                 optionSelectUsername();
+
+                // mise à jour des balises select avec les nouvelles unités
+                updateSelectUnit(data, selectunit1, selectunit2, selectunit3, selectunit4, userSelected);
+
 
                 if (selectunit1 != undefined) {
                     selectunit1.style.visibility = 'visible';
@@ -420,7 +426,7 @@ async function createExistGroupe(data, userIngroup) {
 // optionUser 1 = utilisateur deja present dans la sauvegarde
 function createSelectUnit(numberUnit, caserne, currentUser, usernameSansEspaces, optionUser) {
     let nameUnit = "";
-    let Consulterunofficier = false;
+    // let Consulterunofficier = false;
     if (numberUnit === 1) {
         nameUnit = currentUser.Unit1
     } else if (numberUnit === 2) {
@@ -433,6 +439,13 @@ function createSelectUnit(numberUnit, caserne, currentUser, usernameSansEspaces,
 
     let selectunit = createHTMLElement('select', 'unit' + numberUnit + usernameSansEspaces);
     selectunit.name = 'unit' + numberUnit + usernameSansEspaces;
+    insertSelectUnit(selectunit, caserne, nameUnit, optionUser);
+
+    return selectunit
+}
+
+async function insertSelectUnit(selectunit, caserne, nameUnit, optionUser) {
+    let Consulterunofficier = false;
     let defaultoptionUnit = document.createElement("option");
     selectunit.appendChild(defaultoptionUnit);
 
@@ -511,23 +524,20 @@ function createSelectUnit(numberUnit, caserne, currentUser, usernameSansEspaces,
         defaultoptionUnit.text = "Choisissez";
     }
 
-    // test groupe
     selectunit.appendChild(optgroupOther);
     selectunit.appendChild(optgroupT5);
     selectunit.appendChild(optgroupT4);
     selectunit.appendChild(optgroupT3);
-
-    return selectunit
 }
 
 // *************** Option "not exist group" ***************
-async function createOneGroupe(data) {
+function createOneGroupe(data) {
     const creategroup = document.getElementById('creategroup');
     const groupName = 'group' + groupNumber;
     let divGroup = document.createElement('div');
     divGroup.classList.add('divgroup');
     divGroup.classList.add(groupName);
-    divGroup.appendChild(namegroup(groupNumber));
+    divGroup.appendChild(namegroup(data, groupNumber));
 
     for (let i = 0; i < 5; i++) {
         let divuser = document.createElement('div');
@@ -621,17 +631,31 @@ function entete() {
     return titledivuser
 }
 
-function namegroup(groupNumber) {
-    let nameUserGroup = createHTMLElement('div', 'namegroup' + groupNumber);
+function namegroup(data, groupNumber) {
+    const divnameUserGroup = createHTMLElement('div', 'divnamegroup' + groupNumber);
+    divnameUserGroup.classList.add('divnamegroup');
+
+    const nameUserGroup = createHTMLElement('div', 'namegroup' + groupNumber);
     nameUserGroup.classList.add('namegroup');
-    nameUserGroup.textContent = 'Groupe n°' + groupNumber;
-    return nameUserGroup
+    nameUserGroup.textContent = "Nom du groupe : ";
+    divnameUserGroup.appendChild(nameUserGroup);
+
+    const inputnameUserGroup = createHTMLElement('input', 'inputnamegroup' + groupNumber);
+    inputnameUserGroup.type = 'text';
+    if (data.NameGroupGvG[groupNumber]) {
+        inputnameUserGroup.placeholder = data.NameGroupGvG[groupNumber];
+    } else {
+        inputnameUserGroup.placeholder = 'Nom du groupe';
+    }
+    divnameUserGroup.appendChild(inputnameUserGroup);
+
+    return divnameUserGroup
 }
 
 // --------------------------------------------------------
 // ----------------- Fonction fetch back ------------------
 // --------------------------------------------------------
-async function saveGroup(redirect) {
+function saveGroup() {
     const creategroup = document.getElementById('creategroup');
     const divuserElements = creategroup.querySelectorAll('.divuser');
 
@@ -650,19 +674,33 @@ async function saveGroup(redirect) {
         dataToSend.push(divuserObject);
     });
 
+    const namegroupElements = creategroup.querySelectorAll('.divnamegroup');
+    let namegroup = [];
+    namegroupElements.forEach((divnamegroupElement) => {
+        let currentGroup = [];
+
+        const inputElement = divnamegroupElement.querySelector('input');
+        const inputValue = inputElement ? inputElement.value : '';
+        if (inputValue != '') {
+            currentGroup[0] = divnamegroupElement.id.replace('divnamegroup', '');
+            currentGroup[1] = inputValue;
+        }
+
+        namegroup.push(currentGroup);
+    });
+
     if (dataToSend.length !== 0) {
-        await fetch(adressAPI + 'saveGroupInDB', {
+        fetch(adressAPI + 'saveGroupInDB', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ dataToSend }),
+            body: JSON.stringify({ dataToSend: dataToSend, namegroup: namegroup }),
         })
             .catch(error => {
                 console.error('Erreur lors de la récupération des données:', error);
             });
     }
-    return redirect
 }
 
 // --------------------------------------------------------
@@ -674,30 +712,33 @@ function createNewline(divName, data, influenceplayer, influenceUnit, unit1, uni
     let selectunit3;
     let selectunit4;
 
-    divName.addEventListener('change', function () {
+    divName.addEventListener('change', async function () {
         const userSelected = divName.value;
-        if (divName.value === "") {
-            MAJlistUserSelect();
+        MAJlistUserSelect();
 
-            if (selectunit1 != undefined) {
-                selectunit1.style.visibility = 'hidden';
-                selectunit1.value = "";
-                if (selectunit2 != undefined) {
-                    selectunit2.style.visibility = 'hidden';
-                    selectunit2.value = "";
-                    if (selectunit3 != undefined) {
-                        selectunit3.style.visibility = 'hidden';
-                        selectunit3.value = "";
-                        if (selectunit4 != undefined) {
-                            selectunit4.style.visibility = 'hidden';
-                            selectunit4.value = "";
-                        }
+        if (selectunit1 != undefined) {
+            selectunit1.style.visibility = 'hidden';
+            selectunit1.value = "";
+            selectunit1.innerHTML = "";
+            if (selectunit2 != undefined) {
+                selectunit2.style.visibility = 'hidden';
+                selectunit2.value = "";
+                selectunit2.innerHTML = "";
+                if (selectunit3 != undefined) {
+                    selectunit3.style.visibility = 'hidden';
+                    selectunit3.value = "";
+                    selectunit3.innerHTML = "";
+                    if (selectunit4 != undefined) {
+                        selectunit4.style.visibility = 'hidden';
+                        selectunit4.value = "";
+                        selectunit4.innerHTML = "";
                     }
                 }
             }
-            influenceUnit.textContent = "";
-            influenceplayer.textContent = "";
-        } else {
+        }
+        influenceUnit.textContent = "";
+        influenceplayer.textContent = "";
+        if (divName.value !== "") {
             listUserSelect.push(userSelected);
             optionSelectUsername();
 
@@ -731,6 +772,9 @@ function createNewline(divName, data, influenceplayer, influenceUnit, unit1, uni
                     }
 
                     if (userSelected !== "") {
+                        // mise à jour des balises select avec les nouvelles unités
+                        await updateSelectUnit(data, selectunit1, selectunit2, selectunit3, selectunit4, userSelected);
+
                         selectunit1.value = "";
                         selectunit1.style.visibility = 'visible';
                         influenceUnit.id = 'influUnit' + usernameSansEspaces;
@@ -890,7 +934,19 @@ function MAJlistUserSelect() {
             }
         });
     });
-    console.log('listUserSelect : ', listUserSelect);
+
+    let divsplace = document.querySelectorAll('.divplace');
+    divsplace.forEach(div => {
+        if (div.id.includes('player_')) {
+            if (listUserSelect.some(element => element.replace(/\s/g, '') === div.id.replace(/^player_/, ''))) {
+                div.textContent = '✅';
+            } else {
+                div.textContent = '❌';
+            }
+        }
+    });
+
+
     optionSelectUsername();
 }
 
@@ -905,4 +961,25 @@ function optionSelectUsername() {
             }
         });
     });
+}
+
+// mise à jour des balises select avec les nouvelles unités
+function updateSelectUnit(data, selectunit1, selectunit2, selectunit3, selectunit4, userSelected) {
+    let infoUsersave = {};
+    for (let j = 0; j < data.ListInscripted.length; j++) {
+        let userInscripted = data.ListInscripted[j];
+        if (userInscripted.Username.replace(/\s/g, '') === userSelected) {
+            infoUsersave = userInscripted;
+            break;
+        }
+    }
+    const usernameSansEspaces = infoUsersave.Username.replace(/\s/g, '');
+    insertSelectUnit(selectunit1, infoUsersave.UserCaserne, "", 0);
+    selectunit1.id = 'unit1' + usernameSansEspaces;
+    insertSelectUnit(selectunit2, infoUsersave.UserCaserne, "", 0);
+    selectunit2.id = 'unit1' + usernameSansEspaces;
+    insertSelectUnit(selectunit3, infoUsersave.UserCaserne, "", 0);
+    selectunit3.id = 'unit1' + usernameSansEspaces;
+    insertSelectUnit(selectunit4, infoUsersave.UserCaserne, "", 0);
+    selectunit4.id = 'unit1' + usernameSansEspaces;
 }

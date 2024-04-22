@@ -4,6 +4,7 @@ import (
 	data "botgvg/internal"
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strings"
 )
@@ -13,6 +14,7 @@ func SaveCreateGroup(r *http.Request, database *sql.DB) {
 	err := json.NewDecoder(r.Body).Decode(&listGroup)
 	CheckErr("Erreur de décodage JSON SaveCreateGroup", err)
 
+	// Update List Group GvG
 	stmt1, errdb := database.Prepare("DELETE FROM GroupGvG")
 	CheckErr("1- DELETE - Requete DB SaveCreateGroup", errdb)
 	stmt1.Exec()
@@ -74,4 +76,26 @@ func SaveCreateGroup(r *http.Request, database *sql.DB) {
 			}
 		}
 	}
+
+	// update NameGroup
+	if len(listGroup.Namegroup) > 0 {
+		fmt.Println("listGroup : ", listGroup.Namegroup)
+		for _, arrayGroup := range listGroup.Namegroup {
+			currentID := 0
+			stmtID, errdb := database.Prepare("SELECT ID FROM NameGroupGvG WHERE GroupNumber = ?")
+			CheckErr("1- Requete DB SELECT NameGroup (exist ?)", errdb)
+			stmtID.QueryRow(arrayGroup[0]).Scan(&currentID)
+
+			if currentID == 0 { // nom de groupe non existant
+				stmtNotExist, errdb := database.Prepare("INSERT INTO NameGroupGvG (GroupNumber,NameGroup) Values(?,?)")
+				CheckErr("2- Requete DB  INSERT NameGroup", errdb)
+				stmtNotExist.Exec(arrayGroup[0], arrayGroup[1])
+			} else { // nom de groupe existant
+				stmtExist, errdb := database.Prepare("UPDATE NameGroupGvG SET NameGroup = ? WHERE GroupNumber = ?")
+				CheckErr("2- Requete DB  update NameGroup", errdb)
+				stmtExist.Exec(arrayGroup[1], arrayGroup[0])
+			}
+		}
+	}
+
 }

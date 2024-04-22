@@ -65,10 +65,12 @@ type SendHTML struct {
 	Gestion        Gestion
 	ListInscripted []UserInfo
 	GroupGvG       []UserGvG
+	NameGroupGvG   map[int]string
 }
 
 type SaveGroup struct {
 	ListGroup []UserGroup `json:"dataToSend"`
+	Namegroup [][]string  `json:"namegroup"`
 }
 
 type UserGroup struct {

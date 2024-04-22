@@ -158,6 +158,22 @@ func GroupGvG(database *sql.DB) (listUserAlreadyRegistered []data.UserGvG) {
 	return listUserAlreadyRegistered
 }
 
+func NameGroupGvG(database *sql.DB) map[int]string {
+	listNameGroup := make(map[int]string)
+	listName, err := database.Prepare(`SELECT GroupNumber, NameGroup FROM NameGroupGvG`)
+	CheckErr("1- Requete DB fonction NameGroupGvG", err)
+	rows, err := listName.Query()
+	CheckErr("2- Requete DB fonction NameGroupGvG", err)
+	for rows.Next() {
+		var GroupNumber int
+		var NameGroup string
+		err = rows.Scan(&GroupNumber, &NameGroup)
+		CheckErr("3- Requete DB fonction NameGroupGvG", err)
+		listNameGroup[GroupNumber] = NameGroup
+	}
+	return listNameGroup
+}
+
 func ListClass(database *sql.DB) (listClass []string) {
 	stmtlistclass, err := database.Prepare(`SELECT ClasseFR FROM ListGameCharacter;`)
 	CheckErr("1- Requete DB fonction ListClass", err)

@@ -37,7 +37,7 @@ func main() {
 	http.Handle("/js/", http.StripPrefix("/js/", http.FileServer(http.Dir("./public/js/"))))
 	http.Handle("/img/", http.StripPrefix("/img/", http.FileServer(http.Dir("./public/images/"))))
 
-	fmt.Println("Server started on port " + data.PORT + "\nLocal adress :     http://localhost:" + data.PORT + "\nExternal address : http://" + data.SITE_DOMAIN + ":" + data.PORT)
+	fmt.Println("Server started at : http://" + data.SITE_DOMAIN + ":" + data.PORT)
 
 	// Mise en écoute du serveur HTTP
 	http.ListenAndServe(":"+data.PORT, nil)
