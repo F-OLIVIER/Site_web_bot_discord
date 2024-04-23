@@ -1,7 +1,7 @@
 // fichier annexe
 import { Client, GatewayIntentBits, Partials } from 'discord.js';
 import { userInfo, classPlay } from './database.js';
-import { ListAdmin, Listusermp } from './config.js';
+import { ListAdmin } from './config.js';
 import { BotChan, BotChanOfficier } from './Main.js';
 
 // Clients Discord
@@ -32,33 +32,12 @@ export const client = new
 
 // Gestion des admins du bot
 export function BooleanAdmin(DiscordPlayerID) {
-  // TODO: List des admins du bot
-  //const ListAdmin = ["179655652153491456"]; // coincoin
   for (var CurrentAdmin = 0; CurrentAdmin < ListAdmin.length; CurrentAdmin++) {
     if (ListAdmin[CurrentAdmin] == DiscordPlayerID) {
       return true;
     }
   }
   return false;
-}
-
-// Gestion des utilisateur autorisé pour les commandes !mp et raid on/off
-export function Booleanusermp(DiscordPlayerID) {
-  let usermp = false;
-  for (var Currentusermp = 0; Currentusermp < Listusermp.length; Currentusermp++) {
-    if (Listusermp[Currentusermp] == DiscordPlayerID) {
-      usermp = true;
-    }
-  }
-  return usermp;
-}
-
-export function MessageInsufficientAuthority(AuthorID) {
-  BotChan.send({
-    content: "<@" + AuthorID + "> \n",
-    files: ["https://i.servimg.com/u/f43/15/76/70/95/admin10.png"],
-    ephemeral: true,
-  });
 }
 
 // Message chan officier
@@ -84,10 +63,6 @@ export function Messagelist(AuthorID, list_present, list_retard, list_absent) {
 
 export function Messageprivatemp(AuthorID, userpourmp) {
   BotChanOfficier.send("<@" + AuthorID + ">\nLe message de rappel d'incription à la prochaine GvG à bien été envoyé en mp à : <@" + userpourmp + ">");
-}
-// Private message de rappel
-export function privatemp(privatemessage, changvg, utilisateurofficier) {
-  privatemessage.send("Bonjour,\nCeci est message de rappel d'inscription à la prochaine GvG\nMerci de t'inscrire sur le bot GvG dans le chan <#" + changvg + ">. Si tu ne sais pas comment faire : écrit !info dans le chan.\nPour répondre a ce message, ne pas répondre directement mais contacter un officier : <@" + utilisateurofficier + "> par exemple.\nA bientôt et bon jeu");
 }
 
 // Embled DATA

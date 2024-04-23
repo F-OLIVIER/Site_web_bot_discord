@@ -1,5 +1,6 @@
 // Fichier annexe
 import { IDmsgGvG, etatmsgGvG } from './database.js';
+import { TODOBotReaction, idCategorie } from './config.js';
 import { msgreactgvg } from './Reaction.js';
 import { isMember } from './FuncData.js';
 import { Resetac } from './FuncRaid.js';
@@ -10,7 +11,7 @@ import moment from 'moment-timezone';
 import sqlite3 from 'sqlite3';
 
 // Fonction de check des presence pendant la GvG
-export function cronCheckpresence(idCategorie) {
+export function cronCheckpresence() {
   const category = client.channels.cache.get(idCategorie);
   category.children.cache.forEach(function (CurrentChan) {
     if (CurrentChan.type == 2) { // 2 = type voice
@@ -18,8 +19,8 @@ export function cronCheckpresence(idCategorie) {
       const updateQuery = `UPDATE Users SET MNDR = MNDR + 1 WHERE DiscordID = ?;`;
       // ID des channels à checker pour les présences pendant la GvG
       CurrentChan.members.forEach(function (CurrentMember) {
-        // console.log("id :", CurrentMember.user.id, ", username :", CurrentMember.user.username);
         if (isMember(CurrentMember.user.id)) {
+          console.log("id :", CurrentMember.user.id, ", username :", CurrentMember.user.username);
           db.run(updateQuery, [CurrentMember.user.id], function (error) {
             if (error) {
               console.error(error.message);
@@ -33,7 +34,7 @@ export function cronCheckpresence(idCategorie) {
 }
 
 // fonction de changement automatique du message de réaction à 21h mardi et samedi
-export async function cronResetMsgReaction(BotReaction, TODOBotReaction, idrole) {
+export async function cronResetMsgReaction(BotReaction) {
   const CurrentDate = new Date(Date.now() + (moment().tz("Europe/Paris").utcOffset() * 60 * 1000));
   var Allumage = await etatmsgGvG();
   if (Allumage == "on") {
@@ -61,7 +62,7 @@ export async function cronResetMsgReaction(BotReaction, TODOBotReaction, idrole)
     var id_msg = await IDmsgGvG();
     client.channels.cache.get(TODOBotReaction).messages.fetch(id_msg).then(message => message.delete());
     Resetac();
-    msgreactgvg(BotReaction, jour, mois, date, idrole);
+    msgreactgvg(BotReaction, jour, mois, date);
   } else {
     console.log("Fonction automatique resetmsgreact à l'arret : " + CurrentDate);
   }

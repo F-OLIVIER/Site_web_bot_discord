@@ -25,3 +25,14 @@ screen -S name -X kill
 # détruire toutes les consoles screen
 pkill screen
 
+# Pour monitorer, voici les commandes de base de `Screen`
+# ```sh
+# # Afficher les consoles Screen en cours
+# screen -ls
+
+# # Allez sur la console Screen detacher du nom `name`
+# screen -r name
+
+# # détruire la console Screen du nom `name`
+# screen -S name -X kill
+```

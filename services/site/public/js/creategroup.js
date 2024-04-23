@@ -13,7 +13,7 @@ export function creategroup() {
             return response.json();
         })
         .then(data => {
-            console.log('Data received (creategroup):', data);
+            // console.log('Data received (creategroup):', data);
             containercreategroup(data);
         })
         .catch(error => {

@@ -1,10 +1,10 @@
 // Fichier annexe
-import { TODOBotChan, TODOBotChanOfficier, TODOBotReaction, TODOBotrappel, TODOusermpgetsaveBDD, TODOchangvg, TODOutilisateurofficier, idrole, idCategorie, siteInternet, idRoleUser, idRoleOfficier } from './config.js';
-import { client, Messagegvg, privatemp, Messageprivatemp, MessageInsufficientAuthority, Booleanusermp, EmbedData, EmbedGuide } from './Constant.js';
+import { TODOBotChan, TODOBotChanOfficier, TODOBotReaction, siteInternet, idRoleUser, idRoleOfficier } from './config.js';
 import { slashvisite, visit1, modalvisitelvlAndInflu, visit2, visit3, slashvisitenotpossible } from './guide.js';
 import { createCommands, slashClass, slashInflu, slashLevel, slashResetmsggvg } from './slashcommand.js';
 import { botOn, unregisteredList, isOfficier, deleteUser } from './database.js';
 import { PlayerCreateOrUpdate, createuser, isMember } from './FuncData.js';
+import { client, Messagegvg, EmbedData, EmbedGuide } from './Constant.js';
 import { cronCheckpresence, cronResetMsgReaction } from "./Cronjob.js"
 import { addReaction, removeReaction } from './Reaction.js';
 import { cmdnb, cmdlist } from "./CommandBot.js";
@@ -40,9 +40,8 @@ client.on('ready', async () => {
   BotChan = client.channels.cache.get(TODOBotChan);
   BotChanOfficier = client.channels.cache.get(TODOBotChanOfficier);
   const BotReaction = client.channels.cache.get(TODOBotReaction);
-  const Botrappel = client.channels.cache.get(TODOBotrappel);
   console.log('│ • Initializing automatic function            │');
-  TaskHandle(BotChan, BotReaction, TODOBotReaction, Botrappel, TODOBotrappel, idrole, TODOusermpgetsaveBDD);
+  TaskHandle(BotReaction);
 
   console.log(`│──────────────────────────────────────────────│
 │              Start-up completed              │
@@ -103,29 +102,26 @@ client.on('voiceStateUpdate', async (oldState, newState) => {
 client.on('guildMemberUpdate', async (oldMember, newMember) => {
   if (newMember.user.bot) return;
 
-  // Roles
+  // Roles utilisateur
   const oldRoles = oldMember.roles.cache,
     newRoles = newMember.roles.cache;
+
   // Has Role user ?
   const oldHasuser = oldRoles.has(idRoleUser),
     newHasuser = newRoles.has(idRoleUser);
   // Check if removed or added
-  if (oldHasuser && !newHasuser) {
-    // console.log('Role user has been removed');
+  if (oldHasuser && !newHasuser) { // Role user remove
     deleteUser(newMember, BotChanOfficier)
-  } else if (!oldHasuser && newHasuser) {
-    // console.log('Role user has been added');
+  } else if (!oldHasuser && newHasuser) { // Role user add
     await PlayerCreateOrUpdate(newMember.user.id);
   }
 
   // Has Role officier ?
   const oldHasofficier = oldRoles.has(idRoleOfficier),
     newHasofficier = newRoles.has(idRoleOfficier);
-  if (oldHasofficier && !newHasofficier) {
-    // console.log('Role officier has been removed');
+  if (oldHasofficier && !newHasofficier) { // Role officier remove
     await PlayerCreateOrUpdate(newMember.user.id);
-  } else if (!oldHasofficier && newHasofficier) {
-    // console.log('Role officier has been added');
+  } else if (!oldHasofficier && newHasofficier) { // Role officier add
     await PlayerCreateOrUpdate(newMember.user.id);
   }
 });
@@ -173,28 +169,6 @@ client.on('messageCreate', async message => {
   //     message.delete();
   // }
 
-  // Définition des canaux ou le bot réagis : canal utilisateur GvG et canal Officier
-  if (message.channel.id == TODOBotChan || message.channel.id == TODOBotChanOfficier) {
-    if (message.author.bot) return; // Ignore les messages provenant d'autres bots
-
-    // Rappel d'inscription GvG en mp
-    if (MC.startsWith("/mp")) {
-      if (Booleanusermp(AuthorID) == true) {
-        if (MC.substring(3, MC.length) > 0) {
-          var userpourmp = MC.substring(3, MC.length).trim();
-          var privatemessage = await client.users.fetch(userpourmp);
-          var changvg = TODOchangvg;
-          var utilisateurofficier = TODOutilisateurofficier;
-          privatemp(privatemessage, changvg, utilisateurofficier);
-          Messageprivatemp(AuthorID, userpourmp);
-          message.delete();
-        }
-      }
-      else {
-        MessageInsufficientAuthority(AuthorID);
-      }
-    }
-  }
 });
 
 // --------------------------------------------------------------
@@ -355,16 +329,16 @@ client.on('interactionCreate', async (interaction) => {
 // --------------------------------------------------------------
 // --------------------- Automatic function ---------------------
 // --------------------------------------------------------------
-function TaskHandle(BotReaction, TODOBotReaction, idrole) {
+function TaskHandle(BotReaction) {
   // Fonction automatique de check des presences discord pendant la GvG
   let checkPresence = new CronJob('0 */1 20 * * 2,6', function () {
-    cronCheckpresence(idCategorie);
+    cronCheckpresence();
   }, null, true, 'Europe/Paris');
   checkPresence.start();
 
   // fonction de changement automatique du message de réaction à 21h mardi et samedi
   let resetmsgreact = new CronJob('0 0 21 * * 2,6', function () {
-    cronResetMsgReaction(BotReaction, TODOBotReaction, idrole);
+    cronResetMsgReaction(BotReaction);
   }, null, true, 'Europe/Paris');
   resetmsgreact.start();
 }
