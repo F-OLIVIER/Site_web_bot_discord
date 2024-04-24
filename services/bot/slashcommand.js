@@ -23,8 +23,7 @@ export async function createCommands() {
     // -------------------------------------------------------------------
 
     // Suppression d'une slash command de l'intégration discord
-    // await client.application.commands.delete('1222540314506563704');
-    // console.log('ok');
+    // await client.application.commands.delete('1232617831787528222'); // id de la slashcommand à supprimer
 
     // Création de la commande '/data'
     await client.application.commands.create({

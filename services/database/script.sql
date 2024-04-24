@@ -6,7 +6,7 @@
 -- Information de fonctionnement pour le bot discord
 CREATE TABLE IF NOT EXISTS GestionBot (
     ID INTEGER PRIMARY KEY,
-    Allumage INTEGER, -- 0 on, 1 off
+    Allumage INTEGER DEFAULT 0, -- 0 on, 1 off
     IDMessageGvG VARCHAR(50)
 );
 
@@ -21,14 +21,14 @@ CREATE TABLE IF NOT EXISTS Users (
     DiscordRole VARCHAR(50),
     DiscordPhoto TEXT,
     GameCharacter_ID INTEGER DEFAULT 0,
-    Lvl INTEGER,
+    Lvl INTEGER DEFAULT 0,
     Influence INTEGER DEFAULT 700,
-    EtatInscription INTEGER,
-    NbEmojiInscription INTEGER,
-    TrustIndicator INTEGER,
-    MNDR INTEGER,
-    NbGvGParticiped INTEGER, -- anciennement Assiduity
-    NbTotalGvG INTEGER,
+    EtatInscription INTEGER DEFAULT 0,
+    NbEmojiInscription INTEGER DEFAULT 0,
+    TrustIndicator INTEGER DEFAULT 0,
+    MNDR INTEGER DEFAULT 0,
+    NbGvGParticiped INTEGER DEFAULT 0, -- anciennement Assiduity
+    NbTotalGvG INTEGER DEFAULT 0,
     DateLastGvGParticiped TEXT,
     FOREIGN KEY (GameCharacter_ID) REFERENCES ListGameCharacter (ID)
 );
@@ -40,7 +40,6 @@ CREATE TABLE IF NOT EXISTS GvG (
     -- Saison_ID INTEGER,
     DateGvG DATE,
     Registered INTEGER, -- 0 non, 1 oui
-    Participed INTEGER, -- présence discord : 0 non, 1 oui
     FOREIGN KEY (User_ID) REFERENCES Users (ID)
     -- FOREIGN KEY(Saison_ID) REFERENCES Saison(ID)
 );
@@ -65,7 +64,7 @@ CREATE TABLE IF NOT EXISTS ListUnit (
     Unit VARCHAR(50),
     InfuenceMax INTEGER,
     LvlMax INTEGER,
-    Maitrise INTEGER, -- 0 (absence de maitrise), 1 (présence d 'une maitrise)
+    Maitrise INTEGER DEFAULT 0, -- 0 (absence de maitrise), 1 (présence d 'une maitrise)
     TypeUnit VARCHAR(15), -- Infanterie, Distant, Cavalerie
     ForceUnit VARCHAR(5), -- T3, T4, T5
     Img TEXT DEFAULT ""
@@ -74,7 +73,7 @@ CREATE TABLE IF NOT EXISTS ListUnit (
 -- exemple Unit1 (Hallebardiers) = "18" // -1: n'a pas l'unité sinon le lvl de l'unit
 CREATE TABLE IF NOT EXISTS Caserne (
     ID INTEGER PRIMARY KEY,
-    User_ID INTEGER not NULL,
+    User_ID INTEGER NOT NULL,
     Unit1 INTEGER DEFAULT "",
     Unit2 INTEGER DEFAULT "",
     Unit3 INTEGER DEFAULT "",
@@ -179,25 +178,25 @@ CREATE TABLE IF NOT EXISTS Caserne (
 
 CREATE TABLE IF NOT EXISTS GroupGvG (
     ID INTEGER PRIMARY KEY,
-    User_ID INTEGER,
+    User_ID INTEGER NOT NULL,
     GroupNumber INTEGER,
-    Unit1 TEXT,
-    Unit2 TEXT,
-    Unit3 TEXT,
-    Unit4 TEXT,
+    Unit1 VARCHAR(50),
+    Unit2 VARCHAR(50),
+    Unit3 VARCHAR(50),
+    Unit4 VARCHAR(50),
     FOREIGN KEY (User_ID) REFERENCES Users (ID)
 );
 
 CREATE TABLE IF NOT EXISTS NameGroupGvG (
     ID INTEGER PRIMARY KEY,
-    GroupNumber INTEGER,
+    GroupNumber INTEGER NOT NULL,
     NameGroup VARCHAR(150)
 );
 
 -- exemple Unit1 (Hallebardiers) // 0: ne maitrise pas, 1: maitrise en cour, 2: maitrise compléte
 CREATE TABLE IF NOT EXISTS CaserneMaitrise (
     ID INTEGER PRIMARY KEY,
-    User_ID INTEGER not NULL,
+    User_ID INTEGER NOT NULL,
     Unit1 INTEGER DEFAULT "",
     Unit2 INTEGER DEFAULT "",
     Unit3 INTEGER DEFAULT "",
