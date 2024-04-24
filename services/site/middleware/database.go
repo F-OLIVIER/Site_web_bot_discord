@@ -327,13 +327,14 @@ func updateDataUnit(dataCreateUnit data.Unit, database *sql.DB) {
 }
 
 func SendStatGvG(database *sql.DB) (listuser []data.UserInfo) {
-	listUser, err := database.Prepare(`SELECT ConnectedSite, DiscordName, GameCharacter_ID, Lvl, Influence, EtatInscription, NbGvGParticiped, NbTotalGvG, DateLastGvGParticiped FROM Users;`)
+	listUser, err := database.Prepare(`SELECT ID, ConnectedSite, DiscordName, GameCharacter_ID, Lvl, Influence, EtatInscription, NbGvGParticiped, NbTotalGvG, DateLastGvGParticiped FROM Users;`)
 	CheckErr("1- Requete DB fonction SendStatGvG", err)
 	rows, err := listUser.Query()
 	CheckErr("2- Requete DB fonction SendStatGvG", err)
 	for rows.Next() {
 		var user data.UserInfo
-		err = rows.Scan(&user.ID, &user.DiscordUsername, &user.GameCharacter_ID, &user.Lvl, &user.Influence, &user.EtatInscription, &user.NbGvGParticiped, &user.NbTotalGvG, &user.DateLastGvGParticiped)
+		var user_ID int
+		err = rows.Scan(&user_ID, &user.ID, &user.DiscordUsername, &user.GameCharacter_ID, &user.Lvl, &user.Influence, &user.EtatInscription, &user.NbGvGParticiped, &user.NbTotalGvG, &user.DateLastGvGParticiped)
 		CheckErr("3- Requete DB fonction SendStatGvG", err)
 
 		if user.GameCharacter_ID != 0 {
@@ -341,7 +342,22 @@ func SendStatGvG(database *sql.DB) (listuser []data.UserInfo) {
 			CheckErr("Requete DB SendStatGvG", errdb)
 			class.QueryRow(user.GameCharacter_ID).Scan(&user.GameCharacter)
 		}
+		user.ListDateGvG = getHistoryUserInfo(user_ID, database)
 		listuser = append(listuser, user)
 	}
 	return listuser
+}
+
+func getHistoryUserInfo(user_ID int, database *sql.DB) (listDateGvG []string) {
+	dateGvG, err := database.Prepare(`SELECT DateGvG FROM HistoryGvG WHERE User_ID = ?;`)
+	CheckErr("1- Requete DB fonction GetHistoryUserInfo", err)
+	rows, err := dateGvG.Query(user_ID)
+	CheckErr("2- Requete DB fonction GetHistoryUserInfo", err)
+	for rows.Next() {
+		var date string
+		err = rows.Scan(&date)
+		CheckErr("3- Requete DB fonction GetHistoryUserInfo", err)
+		listDateGvG = append(listDateGvG, date)
+	}
+	return listDateGvG
 }

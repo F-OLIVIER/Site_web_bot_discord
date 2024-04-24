@@ -42,6 +42,12 @@ export function Resetac() {
 
   const db = new sqlite3.Database(adressdb);
 
+  const insertQuery = `
+    INSERT INTO HistoryGvG (User_ID, DateGvG)
+    SELECT ID, ?
+    FROM Users
+    WHERE MNDR >= 6 AND DiscordID = ?;`;
+  //Mise a jour de la table User
   const updateQuery = `
     UPDATE Users
     SET
@@ -56,8 +62,10 @@ export function Resetac() {
                                 WHEN EtatInscription IN (1, 2, 3) THEN 1
                                 ELSE 0
                               END,
+      MNDR = 0,
       EtatInscription = 0,
-      NbEmojiInscription = 0
+      NbEmojiInscription = 0,
+      NbTotalGvG = NbTotalGvG + 1
     WHERE DiscordID = ?;
   `;
 
@@ -66,7 +74,8 @@ export function Resetac() {
       const selectQuery = `SELECT DiscordID FROM Users;`;
       db.all(selectQuery, [], (err, rows) => {
         if (err) {
-          reject(err);
+          console.error(err);
+          resolve([]);
         } else {
           resolve(rows);
         }
@@ -75,12 +84,24 @@ export function Resetac() {
   };
 
   getAllUsers().then((users) => {
+    let isError = false;
     for (const user of users) {
-      db.run(updateQuery, [`${jour}/${date}/${mois}`, user.DiscordID], function (error) {
-        if (error) {
-          console.error(error.message);
+      db.run(insertQuery, [`${jour}/${date}/${mois}`, user.DiscordID], (err1) => {
+        if (err1) {
+          console.log("err1 getAllUsers (Resetac) : ", err1);
+          isError = true;
+        } else {
+          db.run(updateQuery, [`${jour}/${date}/${mois}`, user.DiscordID], (err2) => {
+            if (err2) {
+              console.log("err2 getAllUsers (Resetac) : ", err2);
+              isError = true;
+            }
+          });
         }
       });
+      if (isError) {
+        break;
+      }
     }
   }).catch((error) => {
     console.error(error);

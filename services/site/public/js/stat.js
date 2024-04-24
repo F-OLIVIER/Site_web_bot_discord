@@ -13,7 +13,7 @@ export function stat() {
             return response.json();
         })
         .then(data => {
-            // console.log('Data received (stat):', data);
+            console.log('Data received (stat):', data);
             containerviewGroup(data);
         })
         .catch(error => {
@@ -27,7 +27,7 @@ function containerviewGroup(data) {
 
         let subContainerStat = createHTMLElement('div', 'subContainerStat');
 
-        let ListFilter = [['sortuserbyname', 'statname'], ['sortuserbyinflu', 'statinfluence'], ['sortuserbylevel', 'statlvl'], ['sortuserbylastGvG', 'statlastgvg']];
+        let ListFilter = [['sortuserbyname', 'statname'], ['sortuserbyinflu', 'statinfluence'], ['sortuserbylevel', 'statlvl'], ['sortuserbyclass', 'statclass'], ['sortuserbynbgvg', 'statnbgvg'], ['sortuserbylastGvG', 'statlastgvg']];
         let filter = createHTMLElement('div', 'statfilter');
         // Titre
         let titlefilter = document.createElement('div');
@@ -44,21 +44,37 @@ function containerviewGroup(data) {
         // filtre par name
         let sortuserbyname = document.createElement('button');
         sortuserbyname.id = 'sortuserbyname';
+        sortuserbyname.value = 0;
         sortuserbyname.textContent = "nom";
         divline1.appendChild(sortuserbyname);
         // filtre par influence
         let sortuserbyinflu = document.createElement('button');
         sortuserbyinflu.id = 'sortuserbyinflu';
+        sortuserbyinflu.value = 0;
         sortuserbyinflu.textContent = "influence";
         divline1.appendChild(sortuserbyinflu);
         // filtre par level
         let sortuserbylevel = document.createElement('button');
         sortuserbylevel.id = 'sortuserbylevel';
+        sortuserbylevel.value = 0;
         sortuserbylevel.textContent = "Level";
         divline1.appendChild(sortuserbylevel);
+        // filtre par classe d'arme
+        let sortuserbyclass = document.createElement('button');
+        sortuserbyclass.id = 'sortuserbyclass';
+        sortuserbyclass.value = 0;
+        sortuserbyclass.textContent = "Classe d'arme";
+        divline2.appendChild(sortuserbyclass);
+        // filtre par classe d'arme
+        let sortuserbynbgvg = document.createElement('button');
+        sortuserbynbgvg.id = 'sortuserbynbgvg';
+        sortuserbynbgvg.value = 0;
+        sortuserbynbgvg.textContent = "Nb GvG";
+        divline2.appendChild(sortuserbynbgvg);
         // filtre par Derniére GvG
         let sortuserbylastGvG = document.createElement('button');
         sortuserbylastGvG.id = 'sortuserbylastGvG';
+        sortuserbylastGvG.value = 0;
         sortuserbylastGvG.textContent = "derniére GvG";
         divline2.appendChild(sortuserbylastGvG);
 
@@ -80,7 +96,7 @@ function containerviewGroup(data) {
         // création des en-tête
         let titledivstat = document.createElement('div');
         titledivstat.classList.add('divTitleStat');
-        titledivstat.classList.add('divstat');
+        titledivstat.classList.add('statuser');
 
         let titleconnected = createHTMLElement('div', 'statconnected');
         titleconnected.textContent = '';
@@ -127,40 +143,75 @@ function DisplayUsers(data, div) {
     for (let i = 0; i < data.length; i++) {
         const currentUser = data[i];
 
-        let divstat = createHTMLElement('div', 'divstat');
-        let connected = createHTMLElement('div', 'connected');
+        const divstat = createHTMLElement('div', 'divstat');
+        const statuser = createHTMLElement('div', 'statuser');
+
+        const connected = createHTMLElement('div', 'connected');
         if (currentUser.ID == 1) {
             connected.textContent = '📱';
         } else {
             connected.textContent = '📵';
         }
-        divstat.appendChild(connected);
+        statuser.appendChild(connected);
 
-        let name = createHTMLElement('div', 'statname');
+        const name = createHTMLElement('div', 'statname');
         name.textContent = currentUser.Username;
-        divstat.appendChild(name);
+        statuser.appendChild(name);
 
-        let classPlayer = createHTMLElement('div', 'statclass');
+        const classPlayer = createHTMLElement('div', 'statclass');
         classPlayer.textContent = currentUser.GameCharacter;
-        divstat.appendChild(classPlayer);
+        statuser.appendChild(classPlayer);
 
-        let influenceplayer = createHTMLElement('div', 'statinfluence');
+        const influenceplayer = createHTMLElement('div', 'statinfluence');
         influenceplayer.textContent = currentUser.Influence;
-        divstat.appendChild(influenceplayer);
+        statuser.appendChild(influenceplayer);
 
-        let lvlplayer = createHTMLElement('div', 'statlvl');
+        const lvlplayer = createHTMLElement('div', 'statlvl');
         lvlplayer.textContent = currentUser.Lvl;
-        divstat.appendChild(lvlplayer);
+        statuser.appendChild(lvlplayer);
 
-        let nbGvGparticiped = createHTMLElement('div', 'statnbgvg');
+        const nbGvGparticiped = createHTMLElement('div', 'statnbgvg');
         nbGvGparticiped.textContent = currentUser.NbGvGParticiped + ' / ' + currentUser.NbTotalGvG;
-        divstat.appendChild(nbGvGparticiped);
+        statuser.appendChild(nbGvGparticiped);
 
-        let lastGvGparticiped = createHTMLElement('div', 'statlastgvg');
+        const lastGvGparticiped = createHTMLElement('div', 'statlastgvg');
         lastGvGparticiped.textContent = currentUser.DateLastGvGParticiped;
-        divstat.appendChild(lastGvGparticiped);
+        statuser.appendChild(lastGvGparticiped);
+        divstat.appendChild(statuser);
 
-        div.appendChild(divstat);
+
+        if (currentUser.ListDateGvG) {
+            divstat.classList.add('divstatwitchinfo');
+
+            const statinfo = createHTMLElement('div', 'statinfo');
+            const titlelistGvG = document.createElement('div');
+            titlelistGvG.classList = 'titlelistGvGstat';
+            titlelistGvG.textContent = 'Liste des GvG participé (présence Discord vérifiés)';
+            statinfo.appendChild(titlelistGvG);
+
+            const contentlistGvG = document.createElement('div');
+            let listGvG = '';
+            for (let j = 0; j < currentUser.ListDateGvG.length; j++) {
+                listGvG += currentUser.ListDateGvG[j];
+                if (j !== currentUser.ListDateGvG.length - 1) {
+                    listGvG += ' - '
+                }
+            }
+            contentlistGvG.textContent = listGvG;
+            statinfo.appendChild(contentlistGvG);
+            statinfo.style.display = 'none';
+            divstat.appendChild(statinfo);
+
+            statuser.addEventListener("click", function () {
+                if (statinfo.style.display === 'none') {
+                    statinfo.style.display = 'block';
+                } else {
+                    statinfo.style.display = 'none';
+                }
+            });
+        }
+
+        div.appendChild(divstat)
     }
 }
 
@@ -168,23 +219,33 @@ function createFilterEventlistener(ListFilter) {
     ListFilter.forEach(sortButton => {
         const button = document.getElementById(sortButton[0])
         button.addEventListener("click", function () {
-            sortBy(sortButton[1]);
+            const div = document.getElementById(sortButton[1])
+            sortBy(sortButton[1], div.value);
+            if (div.value === 0) {
+                div.value = 1;
+            } else {
+                div.value = 0;
+            }
         });
     });
 }
 
 // Fonction de trie qui fonctionne pour tous
-function sortBy(option = '') {
-    var statsContainer = document.getElementById('subContainerStatForSort');
-    var stats = statsContainer.children;
+function sortBy(option = '', order) {
+    const statsContainer = document.getElementById('subContainerStatForSort');
+    const stats = statsContainer.children;
     // Convertir la collection d'éléments en un tableau pour pouvoir utiliser sort()
-    var statsArray = Array.from(stats);
+    const statsArray = Array.from(stats);
 
     // Trier les éléments pour le critère spécifié
     statsArray.sort(function (a, b) {
-        var valueA = a.querySelector('.' + option).textContent.toUpperCase();
-        var valueB = b.querySelector('.' + option).textContent.toUpperCase();
-        return (valueA < valueB) ? -1 : (valueA > valueB) ? 1 : 0;
+        const valueA = a.querySelector('.' + option).textContent.toUpperCase();
+        const valueB = b.querySelector('.' + option).textContent.toUpperCase();
+        if (order == 0) {
+            return (valueA < valueB) ? -1 : (valueA > valueB) ? 1 : 0;
+        } else {
+            return (valueA > valueB) ? -1 : (valueA < valueB) ? 1 : 0;
+        }
     });
 
     // Effacer l'ancien contenu
@@ -196,3 +257,4 @@ function sortBy(option = '') {
         statsContainer.appendChild(stat);
     });
 }
+

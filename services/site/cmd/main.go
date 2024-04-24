@@ -32,10 +32,24 @@ func main() {
 	http.HandleFunc("/api/statGvG", handlers.StatGvG)
 	http.HandleFunc("/api/logout", handlers.LogoutHandler)
 
-	// Appel des fichiers annexes
-	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("./public/css/"))))
-	http.Handle("/js/", http.StripPrefix("/js/", http.FileServer(http.Dir("./public/js/"))))
-	http.Handle("/img/", http.StripPrefix("/img/", http.FileServer(http.Dir("./public/images/"))))
+	// Appel des fichiers annexes et les mettres en cache navigateur client autmatiquement
+	cssHandler := http.StripPrefix("/css/", http.FileServer(http.Dir("./public/css/")))
+	http.HandleFunc("/css/", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Cache-Control", "max-age=31536000, only-if-cached")
+		cssHandler.ServeHTTP(w, r)
+	})
+
+	jsHandler := http.StripPrefix("/js/", http.FileServer(http.Dir("./public/js/")))
+	http.HandleFunc("/js/", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Cache-Control", "max-age=31536000, only-if-cached")
+		jsHandler.ServeHTTP(w, r)
+	})
+
+	imgHandler := http.StripPrefix("/img/", http.FileServer(http.Dir("./public/images/")))
+	http.HandleFunc("/img/", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Cache-Control", "max-age=31536000, only-if-cached")
+		imgHandler.ServeHTTP(w, r)
+	})
 
 	fmt.Println("Server started at : http://" + data.SITE_DOMAIN + ":" + data.PORT)
 
