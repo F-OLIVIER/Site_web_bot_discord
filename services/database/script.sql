@@ -1,16 +1,15 @@
--- Initialisation de la db :
+-- Initialisation manuel de la db :
 -- 1: sqlite3 ./database/databaseGvG.db
 -- 2: .databases
 -- 3: .quit
 -- run query
--- Information de fonctionnement pour le bot discord
+
 CREATE TABLE IF NOT EXISTS GestionBot (
     ID INTEGER PRIMARY KEY,
     Allumage INTEGER DEFAULT 0, -- 0 on, 1 off
-    IDMessageGvG VARCHAR(50)
+    IDMessageGvG VARCHAR(50) NOT NULL
 );
 
--- Fiche personnage IG
 CREATE TABLE IF NOT EXISTS Users (
     ID INTEGER PRIMARY KEY,
     uuid INTEGER,
@@ -27,45 +26,42 @@ CREATE TABLE IF NOT EXISTS Users (
     NbEmojiInscription INTEGER DEFAULT 0,
     TrustIndicator INTEGER DEFAULT 0,
     MNDR INTEGER DEFAULT 0,
-    NbGvGParticiped INTEGER DEFAULT 0, -- anciennement Assiduity
+    NbGvGParticiped INTEGER DEFAULT 0,
     NbTotalGvG INTEGER DEFAULT 0,
-    DateLastGvGParticiped TEXT,
+    DateLastGvGParticiped TEXT default "",
     FOREIGN KEY (GameCharacter_ID) REFERENCES ListGameCharacter (ID)
-);
-
--- liste des classes d'arme des héros
-CREATE TABLE IF NOT EXISTS ListGameCharacter (
-    ID INTEGER PRIMARY KEY,
-    ClasseFR VARCHAR(50),
-    ClasseEN VARCHAR(50) DEFAULT ""
 );
 
 CREATE TABLE IF NOT EXISTS GroupGvG (
     ID INTEGER PRIMARY KEY,
     User_ID INTEGER NOT NULL,
-    GroupNumber INTEGER,
-    Unit1 VARCHAR(50),
-    Unit2 VARCHAR(50),
-    Unit3 VARCHAR(50),
-    Unit4 VARCHAR(50),
+    GroupNumber INTEGER NOT NULL,
+    Unit1 VARCHAR(50) DEFAULT "",
+    Unit2 VARCHAR(50) DEFAULT "",
+    Unit3 VARCHAR(50) DEFAULT "",
+    Unit4 VARCHAR(50) DEFAULT "",
     FOREIGN KEY (User_ID) REFERENCES Users (ID)
 );
 
 CREATE TABLE IF NOT EXISTS NameGroupGvG (
     ID INTEGER PRIMARY KEY,
     GroupNumber INTEGER NOT NULL,
-    NameGroup VARCHAR(150)
+    NameGroup VARCHAR(150) NOT NULL
 );
 
--- Historique précis des participation GvG
 CREATE TABLE IF NOT EXISTS HistoryGvG (
     ID INTEGER PRIMARY KEY,
     User_ID INTEGER NOT NULL,
     DateGvG VARCHAR(50) NOT NULL,
+    Valid INTEGER NOT NULL,
     FOREIGN KEY (User_ID) REFERENCES Users (ID)
 );
 
--- Liste des unités jouable IG
+CREATE TABLE IF NOT EXISTS ListGameCharacter (
+    ID INTEGER PRIMARY KEY,
+    ClasseFR VARCHAR(50) NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS ListUnit (
     ID INTEGER PRIMARY KEY,
     Unit VARCHAR(50),
@@ -77,7 +73,6 @@ CREATE TABLE IF NOT EXISTS ListUnit (
     Img TEXT DEFAULT ""
 );
 
--- exemple Unit1 (Hallebardiers) = "18" // -1: n'a pas l'unité sinon le lvl de l'unit
 CREATE TABLE IF NOT EXISTS Caserne (
     ID INTEGER PRIMARY KEY,
     User_ID INTEGER NOT NULL,
@@ -183,7 +178,6 @@ CREATE TABLE IF NOT EXISTS Caserne (
     FOREIGN KEY (User_ID) REFERENCES Users (ID)
 );
 
--- exemple Unit1 (Hallebardiers) // 0: ne maitrise pas, 1: maitrise en cour, 2: maitrise compléte
 CREATE TABLE IF NOT EXISTS CaserneMaitrise (
     ID INTEGER PRIMARY KEY,
     User_ID INTEGER NOT NULL,
