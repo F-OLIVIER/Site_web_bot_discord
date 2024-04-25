@@ -31,19 +31,19 @@ func Createdb() {
 	idClass := database.QueryRow("SELECT ID FROM ListGameCharacter WHERE ClasseFR = 'Pique'").Scan()
 	if idClass == sql.ErrNoRows {
 		requestInsert := `
-        INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES('Arc court','Short bow');
-        INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES('Arc long','Long bow');
-        INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES('Lames jumelles','Twin blades (dual blade)');
-        INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES('Épée courte & bouclier','Short sword & shield');
-        INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES('Épée longue & bouclier','Long sword & shield');
-        INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES('Guandao','Guandao');
-        INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES('Hache d''arme','Weapon ax (poleaxe)');
-        INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES('Lance','Spear');
-        INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES('Mousquet','Musket');
-        INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES('Nodashi','Nodashi');
-        INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES('Masse de guerre','Mass of war');
-        INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES('Dague à chaine (cimeterre)','Chain dart (scimitar)');
-        INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES('Pique','Pike');`
+        INSERT INTO ListGameCharacter(ClasseFR) VALUES('Arc court');
+        INSERT INTO ListGameCharacter(ClasseFR) VALUES('Arc long');
+        INSERT INTO ListGameCharacter(ClasseFR) VALUES('Lames jumelles');
+        INSERT INTO ListGameCharacter(ClasseFR) VALUES('Épée courte & bouclier');
+        INSERT INTO ListGameCharacter(ClasseFR) VALUES('Épée longue & bouclier');
+        INSERT INTO ListGameCharacter(ClasseFR) VALUES('Guandao');
+        INSERT INTO ListGameCharacter(ClasseFR) VALUES('Hache d''arme');
+        INSERT INTO ListGameCharacter(ClasseFR) VALUES('Lance');
+        INSERT INTO ListGameCharacter(ClasseFR) VALUES('Mousquet');
+        INSERT INTO ListGameCharacter(ClasseFR) VALUES('Nodashi');
+        INSERT INTO ListGameCharacter(ClasseFR) VALUES('Masse de guerre');
+        INSERT INTO ListGameCharacter(ClasseFR) VALUES('Dague à chaine (cimeterre)');
+        INSERT INTO ListGameCharacter(ClasseFR) VALUES('Pique');`
 		_, err = database.Exec(requestInsert)
 		CheckErr(err, "4- Err Insert class in Createdb")
 	}

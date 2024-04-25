@@ -27,7 +27,7 @@ func UserInfo(uuid string, database *sql.DB) (user_id, DiscordName, DiscordPhoto
 	return user_id, DiscordName, DiscordPhoto, false
 }
 
-func Charactercard(uuid string, database *sql.DB) (userInfo data.UserInfo, officier bool) {
+func Charactercard(uuid string, database *sql.DB) (userInfo data.UserInfo) {
 	stmt1, errdb := database.Prepare("SELECT ID, DiscordName, DiscordRole, DiscordPhoto, GameCharacter_ID, Lvl, Influence, EtatInscription, NbGvGParticiped, NbTotalGvG, DateLastGvGParticiped FROM Users WHERE uuid = ?")
 	CheckErr("1- Requete DB UserInfo", errdb)
 	var DiscordRole string
@@ -42,9 +42,9 @@ func Charactercard(uuid string, database *sql.DB) (userInfo data.UserInfo, offic
 	}
 
 	if DiscordRole == "Officier" {
-		return userInfo, true
+		return userInfo
 	}
-	return userInfo, false
+	return userInfo
 }
 
 func UpdateCharacter(r *http.Request, uuid string, database *sql.DB) {
@@ -240,9 +240,9 @@ func UpdateAdministration(r *http.Request, database *sql.DB) {
 		}
 	} else if data.NewWeapon != "" { // ajout d'une nouvelle arme de héros
 		// insertion de la nouvelle arme dans la db
-		stmt, err := database.Prepare(`INSERT INTO ListGameCharacter(ClasseFR,ClasseEN) VALUES(?,?);`)
+		stmt, err := database.Prepare(`INSERT INTO ListGameCharacter(ClasseFR) VALUES(?);`)
 		CheckErr("1- INSERT NewWeapon in UpdateAdministration ", err)
-		stmt.Exec(data.NewWeapon, "")
+		stmt.Exec(data.NewWeapon)
 	}
 }
 
