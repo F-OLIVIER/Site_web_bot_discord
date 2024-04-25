@@ -9,28 +9,31 @@ import (
 )
 
 func main() {
-	// Initialisation de la database
+	// Initialisation database
 	data.Createdb()
 
 	flag.Parse()
-	// home non connecté
+	// Page not connected
 	http.HandleFunc("/", handlers.ServeHome)
+
 	// page de transition de connexion
 	http.HandleFunc("/discord", handlers.DiscordHandler)
 	http.HandleFunc("/api/discord", handlers.DiscordApiHandler)
-	// page utilisateur connecté/autorisé
-	http.HandleFunc("/api/home", handlers.HomeHandler)
-	http.HandleFunc("/api/charactercard", handlers.CharacterCardHandler)
-	http.HandleFunc("/api/updateCharacterCard", handlers.UpdateCharacterCard)
-	http.HandleFunc("/api/caserne", handlers.CaserneHandler)
-	http.HandleFunc("/api/majcaserne", handlers.MAJCaserneHandler)
-	http.HandleFunc("/api/creategroup", handlers.CreateGroupHandler)
-	http.HandleFunc("/api/saveGroupInDB", handlers.SaveGroupInDB)
-	http.HandleFunc("/api/CheckAppAdmin", handlers.CheckAppAdmin)
-	http.HandleFunc("/api/UpdateAdmin", handlers.UpdateAdmin)
-	http.HandleFunc("/api/adminitrateBot", handlers.AdminitrateBot)
-	http.HandleFunc("/api/statGvG", handlers.StatGvG)
-	http.HandleFunc("/api/logout", handlers.LogoutHandler)
+
+	// page user connected/autorised
+	http.HandleFunc("/api/home", handlers.ApiHandler)
+	http.HandleFunc("/api/charactercard", handlers.ApiHandler)
+	http.HandleFunc("/api/caserne", handlers.ApiHandler)
+	http.HandleFunc("/api/majcaserne", handlers.ApiHandler)
+	http.HandleFunc("/api/creategroup", handlers.ApiHandler)
+	http.HandleFunc("/api/CheckAppAdmin", handlers.ApiHandler)
+	http.HandleFunc("/api/statGvG", handlers.ApiHandler)
+
+	http.HandleFunc("/api/logout", handlers.ApiWithoutReturnHandler)
+	http.HandleFunc("/api/updateCharacterCard", handlers.ApiWithoutReturnHandler)
+	http.HandleFunc("/api/saveGroupInDB", handlers.ApiWithoutReturnHandler)
+	http.HandleFunc("/api/UpdateAdmin", handlers.ApiWithoutReturnHandler)
+	http.HandleFunc("/api/adminitrateBot", handlers.ApiWithoutReturnHandler)
 
 	// Appel des fichiers annexes et les mettres en cache navigateur client autmatiquement
 	cssHandler := http.StripPrefix("/css/", http.FileServer(http.Dir("./public/css/")))

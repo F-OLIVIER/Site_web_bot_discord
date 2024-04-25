@@ -15,9 +15,8 @@ import (
 
 var tb = utils.NewTokenBucket(5, 5)
 
-// Page d'accueil "/"
+// Home page "/"
 func ServeHome(w http.ResponseWriter, r *http.Request) {
-	// w.Header().Set("Cache-Control", "public, max-age=31536000")
 	if tb.Request(1) {
 		ts, err := template.ParseFiles("./index.html")
 		if err != nil {
@@ -27,20 +26,7 @@ func ServeHome(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Handler de deconnexion
-func LogoutHandler(w http.ResponseWriter, r *http.Request) {
-	if tb.Request(1) {
-		_, err := r.Cookie("user_token")
-		if err != http.ErrNoCookie {
-			database, err := sql.Open("sqlite3", data.ADRESS_DB)
-			utils.CheckErr("open db in homehandler", err)
-			defer database.Close()
-			utils.Logout(w, r, database)
-		}
-	}
-}
-
-// page de transition discord
+// Discord transition page "/discord"
 func DiscordHandler(w http.ResponseWriter, r *http.Request) {
 	if tb.Request(1) {
 		ts, err := template.ParseFiles("./discord.html")
@@ -51,18 +37,17 @@ func DiscordHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Check d'exécution de la page "/discord"
+// Discord transition, user connects
 func DiscordApiHandler(w http.ResponseWriter, r *http.Request) {
-	// fmt.Println("ENTER DiscordApiHandler")
 	if tb.Request(1) {
 		var sendHTML *data.SendHTML
 		if r.Method == "POST" && r.URL.Path == "/api/discord" {
-			// ouverture database
+			// Open database
 			database, err := sql.Open("sqlite3", data.ADRESS_DB)
 			utils.CheckErr("open db in homehandler", err)
 			defer database.Close()
 
-			if utils.CheckUser(w, r, database) { // l'utilisateur se connecte
+			if utils.CheckUser(w, r, database) { // user connects
 				gestion := &data.Gestion{
 					Logged:   true,
 					Redirect: "/home",
@@ -70,7 +55,7 @@ func DiscordApiHandler(w http.ResponseWriter, r *http.Request) {
 				sendHTML = &data.SendHTML{
 					Gestion: *gestion,
 				}
-			} else { // conexion echoué
+			} else { // Connection failed
 				gestion := &data.Gestion{
 					Logged:   false,
 					Redirect: "/",
@@ -79,7 +64,7 @@ func DiscordApiHandler(w http.ResponseWriter, r *http.Request) {
 					Gestion: *gestion,
 				}
 			}
-		} else { // pas en méthode POST ou non autorisé
+		} else {
 			gestion := &data.Gestion{
 				Logged:   false,
 				Redirect: "/",
@@ -94,238 +79,69 @@ func DiscordApiHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// page "/home" (utilisateur connecté)
-func HomeHandler(w http.ResponseWriter, r *http.Request) {
-	// fmt.Println("ENTER HomeHandler")
+func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 	if tb.Request(1) {
-		var sendHTML *data.SendHTML
-		// lecture du cookie
-		cookie, err1 := r.Cookie("user_token")
-
-		database, err := sql.Open("sqlite3", data.ADRESS_DB)
-		utils.CheckErr("open db in homehandler", err)
-		defer database.Close()
-
-		if r.URL.Path == "/api/home" && err1 != http.ErrNoCookie {
-			// récupération des informations utilisateur
-			_, DiscordName, DiscordPhoto, officier := utils.UserInfo(cookie.Value, database)
-
-			// Vérification de la validité du cookie
-			if !utils.CheckToken(utils.Sessions, cookie) { // si cookie non valide
-				utils.Logout(w, r, database)
-				gestion := &data.Gestion{
-					Logged:   false,
-					Redirect: "/",
-				}
-				sendHTML = &data.SendHTML{
-					Gestion: *gestion,
-				}
-			} else { // si cookies valide
-				userInfo := &data.UserInfo{
-					DiscordUsername: DiscordName,
-					DiscordPhoto:    DiscordPhoto,
-				}
-				gestion := &data.Gestion{
-					Logged:   true,
-					Officier: officier,
-				}
-				sendHTML = &data.SendHTML{
-					Gestion:  *gestion,
-					UserInfo: *userInfo,
-				}
-			}
-		} else { // absence de cookie
-			// fmt.Println("probléme cookie")
+		_, err := r.Cookie("user_token")
+		if err != http.ErrNoCookie {
+			database, err := sql.Open("sqlite3", data.ADRESS_DB)
+			utils.CheckErr("open db in homehandler", err)
+			defer database.Close()
 			utils.Logout(w, r, database)
-			gestion := &data.Gestion{
-				Logged:   false,
-				Redirect: "/",
-			}
-
-			sendHTML = &data.SendHTML{
-				Gestion: *gestion,
-			}
 		}
-		jsonData, err := json.Marshal(sendHTML)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		// fmt.Println(string(jsonData))
-		w.Header().Set("Content-Type", "application/json")
-		w.Write(jsonData)
 	}
 }
 
-// page "/caserne" (utilisateur connecté)
-func CaserneHandler(w http.ResponseWriter, r *http.Request) {
-	// fmt.Println("ENTER CaserneHandler")
-	// w.Header().Set("Cache-Control", "max-age=31536000")
+func ApiWithoutReturnHandler(w http.ResponseWriter, r *http.Request) {
 	if tb.Request(1) {
-		var sendHTML *data.SendHTML
-		// lecture du cookie
+		// Readcookie
 		cookie, err1 := r.Cookie("user_token")
 
-		database, err := sql.Open("sqlite3", data.ADRESS_DB)
-		utils.CheckErr("open db in homehandler", err)
-		defer database.Close()
-
-		if r.URL.Path == "/api/caserne" && err1 != http.ErrNoCookie {
-
-			// récupération des informations utilisateur
-			userID, DiscordName, DiscordPhoto, officier := utils.UserInfo(cookie.Value, database)
-
-			// Vérification de la validité du cookie
-			if !utils.CheckToken(utils.Sessions, cookie) { // si cookie non valide
-				utils.Logout(w, r, database)
-				gestion := &data.Gestion{
-					Logged:   false,
-					Redirect: "/",
-				}
-				sendHTML = &data.SendHTML{
-					Gestion: *gestion,
-				}
-			} else { // si cookies valide
-				userInfo := &data.UserInfo{
-					DiscordUsername: DiscordName,
-					DiscordPhoto:    DiscordPhoto,
-				}
-				gestion := &data.Gestion{
-					Logged:   true,
-					Officier: officier,
-				}
-				sendHTML = &data.SendHTML{
-					Gestion:  *gestion,
-					UserInfo: *userInfo,
-					ListUnit: utils.CaserneUser(userID, database),
-				}
-			}
-		} else { // absence de cookie
-			utils.Logout(w, r, database)
-			gestion := &data.Gestion{
-				Logged:   false,
-				Redirect: "/",
-			}
-
-			sendHTML = &data.SendHTML{
-				Gestion: *gestion,
-			}
-		}
-		jsonData, err := json.Marshal(sendHTML)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		// fmt.Println(string(jsonData))
-		w.Header().Set("Content-Type", "application/json")
-		w.Write(jsonData)
-	}
-}
-
-// page "/creategroup" (utilisateur connecté)
-func CreateGroupHandler(w http.ResponseWriter, r *http.Request) {
-	// fmt.Println("ENTER CreateGroupHandler")
-	if tb.Request(1) {
-		var sendHTML *data.SendHTML
-		// lecture du cookie
-		cookie, err1 := r.Cookie("user_token")
-
-		database, err := sql.Open("sqlite3", data.ADRESS_DB)
-		utils.CheckErr("open db in homehandler", err)
-		defer database.Close()
-
-		if r.URL.Path == "/api/creategroup" && err1 != http.ErrNoCookie {
-
-			// récupération des informations utilisateur
-			_, DiscordName, DiscordPhoto, officier := utils.UserInfo(cookie.Value, database)
-
-			// Vérification de la validité du cookie
-			if !utils.CheckToken(utils.Sessions, cookie) { // si cookie non valide
-				utils.Logout(w, r, database)
-				gestion := &data.Gestion{
-					Logged:   false,
-					Redirect: "/",
-				}
-				sendHTML = &data.SendHTML{
-					Gestion: *gestion,
-				}
-			} else { // si cookies valide
-				// TODO: Page création des groupes a faire ici
-				userInfo := &data.UserInfo{
-					DiscordUsername: DiscordName,
-					DiscordPhoto:    DiscordPhoto,
-				}
-				gestion := &data.Gestion{
-					Logged:   true,
-					Officier: officier,
-				}
-				sendHTML = &data.SendHTML{
-					Gestion:        *gestion,
-					UserInfo:       *userInfo,
-					ListInscripted: utils.ListInscriptedUsers(database),
-					GroupGvG:       utils.GroupGvG(database),
-					NameGroupGvG:   utils.NameGroupGvG(database),
-				}
-			}
-		} else { // absence de cookie
-			utils.Logout(w, r, database)
-			gestion := &data.Gestion{
-				Logged:   false,
-				Redirect: "/",
-			}
-
-			sendHTML = &data.SendHTML{
-				Gestion: *gestion,
-			}
-		}
-		jsonData, err := json.Marshal(sendHTML)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		// fmt.Println(string(jsonData))
-		w.Header().Set("Content-Type", "application/json")
-		w.Write(jsonData)
-	}
-}
-
-func SaveGroupInDB(w http.ResponseWriter, r *http.Request) {
-	// fmt.Println("ENTER SaveGroupInDB")
-	if tb.Request(1) {
-		// lecture du cookie
-		cookie, err1 := r.Cookie("user_token")
-		if r.URL.Path == "/api/saveGroupInDB" && err1 != http.ErrNoCookie {
+		if err1 != http.ErrNoCookie && r.Method == "POST" {
+			// Open database
 			database, err := sql.Open("sqlite3", data.ADRESS_DB)
 			utils.CheckErr("open db in homehandler", err)
 			defer database.Close()
 
-			// Vérification de la validité du cookie
-			if !utils.CheckToken(utils.Sessions, cookie) { // si cookie non valide
+			if !utils.CheckToken(utils.Sessions, cookie) { // If cookies not valid
 				utils.Logout(w, r, database)
-			} else { // si cookies valide
-				utils.SaveCreateGroup(r, database)
+			} else { // If cookies valid
+				_, _, _, officier := utils.UserInfo(cookie.Value, database)
+				if officier { // If user has the right to modify
+					switch r.URL.Path {
+					case "/api/adminitrateBot":
+						utils.UploadInformationsBot(r, database)
+
+					case "/api/UpdateAdmin":
+						utils.UpdateAdministration(r, database)
+
+					case "/api/updateCharacterCard":
+						utils.UpdateCharacter(r, cookie.Value, database)
+
+					case "/api/saveGroupInDB":
+						utils.SaveCreateGroup(r, database)
+
+					default:
+						fmt.Println("\nError r.URL.Path in ApiReturnHandler : ", r.URL.Path)
+					}
+				}
 			}
 		}
 	}
 }
 
-func MAJCaserneHandler(w http.ResponseWriter, r *http.Request) {
-	// fmt.Println("ENTER MAJCaserneHandler")
+func ApiHandler(w http.ResponseWriter, r *http.Request) {
 	if tb.Request(1) {
 		var sendHTML *data.SendHTML
-		// lecture du cookie
+		// Read cookie
 		cookie, err1 := r.Cookie("user_token")
 
+		// Open database
 		database, err := sql.Open("sqlite3", data.ADRESS_DB)
 		utils.CheckErr("open db in homehandler", err)
 		defer database.Close()
 
-		if r.Method == "POST" && r.URL.Path == "/api/majcaserne" && err1 != http.ErrNoCookie {
-			// récupération des informations utilisateur
-			userID, DiscordName, DiscordPhoto, officier := utils.UserInfo(cookie.Value, database)
-
-			// Vérification de la validité du cookie
-			if !utils.CheckToken(utils.Sessions, cookie) { // si cookie non valide
+		if err1 != http.ErrNoCookie { // If cookie
+			if !utils.CheckToken(utils.Sessions, cookie) { // If cookie not valid
 				utils.Logout(w, r, database)
 				gestion := &data.Gestion{
 					Logged:   false,
@@ -334,250 +150,11 @@ func MAJCaserneHandler(w http.ResponseWriter, r *http.Request) {
 				sendHTML = &data.SendHTML{
 					Gestion: *gestion,
 				}
-			} else { // si cookies valide
-				utils.MAJCaserne(r, userID, database)
-				userInfo := &data.UserInfo{
-					DiscordUsername: DiscordName,
-					DiscordPhoto:    DiscordPhoto,
-				}
-				gestion := &data.Gestion{
-					Logged:   true,
-					Redirect: "/caserne",
-					Officier: officier,
-				}
-				sendHTML = &data.SendHTML{
-					Gestion:  *gestion,
-					UserInfo: *userInfo,
-				}
-			}
-		} else { // absence de cookie
-			utils.Logout(w, r, database)
-			gestion := &data.Gestion{
-				Logged:   false,
-				Redirect: "/",
-			}
-
-			sendHTML = &data.SendHTML{
-				Gestion: *gestion,
-			}
-		}
-		jsonData, err := json.Marshal(sendHTML)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		// fmt.Println(string(jsonData))
-		w.Header().Set("Content-Type", "application/json")
-		w.Write(jsonData)
-	}
-}
-
-func CharacterCardHandler(w http.ResponseWriter, r *http.Request) {
-	// fmt.Println("ENTER CharacterCardHandler")
-	if tb.Request(1) {
-		var sendHTML *data.SendHTML
-		// lecture du cookie
-		cookie, err1 := r.Cookie("user_token")
-
-		database, err := sql.Open("sqlite3", data.ADRESS_DB)
-		utils.CheckErr("open db in homehandler", err)
-		defer database.Close()
-
-		if r.URL.Path == "/api/charactercard" && err1 != http.ErrNoCookie {
-			if !utils.CheckToken(utils.Sessions, cookie) { // si cookie non valide
-				utils.Logout(w, r, database)
-				gestion := &data.Gestion{
-					Logged:   false,
-					Redirect: "/",
-				}
-				sendHTML = &data.SendHTML{
-					Gestion: *gestion,
-				}
-			} else { // si cookies valide
-				userInfo, officier := utils.Charactercard(cookie.Value, database)
-				gestion := &data.Gestion{
-					Logged:    true,
-					Officier:  officier,
-					ListClass: utils.ListClass(database),
-				}
-				sendHTML = &data.SendHTML{
-					Gestion:  *gestion,
-					UserInfo: userInfo,
-				}
-			}
-		} else { // absence de cookie
-			utils.Logout(w, r, database)
-			gestion := &data.Gestion{
-				Logged:   false,
-				Redirect: "/",
-			}
-
-			sendHTML = &data.SendHTML{
-				Gestion: *gestion,
-			}
-		}
-		jsonData, err := json.Marshal(sendHTML)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		// fmt.Println(string(jsonData))
-		w.Header().Set("Content-Type", "application/json")
-		w.Write(jsonData)
-	}
-}
-
-func UpdateCharacterCard(w http.ResponseWriter, r *http.Request) {
-	// fmt.Println("ENTER UpdateCharacterCard")
-	if tb.Request(1) {
-		// lecture du cookie
-		cookie, err1 := r.Cookie("user_token")
-		if r.URL.Path == "/api/updateCharacterCard" && err1 != http.ErrNoCookie && r.Method == "POST" {
-			database, err := sql.Open("sqlite3", data.ADRESS_DB)
-			utils.CheckErr("open db in homehandler", err)
-			defer database.Close()
-
-			// Vérification de la validité du cookie
-			if !utils.CheckToken(utils.Sessions, cookie) { // si cookie non valide
-				utils.Logout(w, r, database)
-			} else { // si cookies valide
-				utils.UpdateCharacter(r, cookie.Value, database)
-			}
-		}
-	}
-}
-
-func CheckAppAdmin(w http.ResponseWriter, r *http.Request) {
-	// fmt.Println("ENTER CheckAppAdmin")
-	if tb.Request(1) {
-		var sendHTML *data.SendHTML
-		// lecture du cookie
-		cookie, err1 := r.Cookie("user_token")
-
-		database, err := sql.Open("sqlite3", data.ADRESS_DB)
-		utils.CheckErr("open db in homehandler", err)
-		defer database.Close()
-
-		if r.URL.Path == "/api/CheckAppAdmin" && err1 != http.ErrNoCookie {
-			if !utils.CheckToken(utils.Sessions, cookie) { // si cookie non valide
-				utils.Logout(w, r, database)
-				gestion := &data.Gestion{
-					Logged:   false,
-					Redirect: "/",
-				}
-				sendHTML = &data.SendHTML{
-					Gestion: *gestion,
-				}
-			} else { // si cookies valide
+			} else { // If cookie valid
+				// User information
 				userID, DiscordName, DiscordPhoto, officier := utils.UserInfo(cookie.Value, database)
-				userInfo := &data.UserInfo{
-					DiscordUsername: DiscordName,
-					DiscordPhoto:    DiscordPhoto,
-				}
-				gestion := &data.Gestion{
-					Logged:      true,
-					Officier:    officier,
-					BotActivate: utils.BotActivation(database),
-				}
-				sendHTML = &data.SendHTML{
-					Gestion:        *gestion,
-					UserInfo:       *userInfo,
-					ListUnit:       utils.CaserneUser(userID, database),
-					ListInscripted: utils.SendStatGvG(database),
-				}
-			}
-		} else { // absence de cookie
-			utils.Logout(w, r, database)
-			gestion := &data.Gestion{
-				Logged:   false,
-				Redirect: "/",
-			}
 
-			sendHTML = &data.SendHTML{
-				Gestion: *gestion,
-			}
-		}
-		jsonData, err := json.Marshal(sendHTML)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		// fmt.Println(string(jsonData))
-		w.Header().Set("Content-Type", "application/json")
-		w.Write(jsonData)
-	}
-}
-
-func UpdateAdmin(w http.ResponseWriter, r *http.Request) {
-	// fmt.Println("ENTER UpdateAdmin")
-	if tb.Request(1) {
-		// lecture du cookie
-		cookie, err1 := r.Cookie("user_token")
-		if r.URL.Path == "/api/UpdateAdmin" && err1 != http.ErrNoCookie && r.Method == "POST" {
-			database, err := sql.Open("sqlite3", data.ADRESS_DB)
-			utils.CheckErr("open db in homehandler", err)
-			defer database.Close()
-
-			// Vérification de la validité du cookie
-			if !utils.CheckToken(utils.Sessions, cookie) { // si cookie non valide
-				utils.Logout(w, r, database)
-			} else { // si cookies valide
-				_, _, _, officier := utils.UserInfo(cookie.Value, database)
-				if officier { // si l'utilisateur a le droit de modifier
-					utils.UpdateAdministration(r, database)
-				}
-			}
-		}
-	}
-}
-
-func AdminitrateBot(w http.ResponseWriter, r *http.Request) {
-	// fmt.Println("ENTER AdminitrateBot")
-	if tb.Request(1) {
-		// lecture du cookie
-		cookie, err1 := r.Cookie("user_token")
-		if r.URL.Path == "/api/adminitrateBot" && err1 != http.ErrNoCookie && r.Method == "POST" {
-			database, err := sql.Open("sqlite3", data.ADRESS_DB)
-			utils.CheckErr("open db in homehandler", err)
-			defer database.Close()
-
-			// Vérification de la validité du cookie
-			if !utils.CheckToken(utils.Sessions, cookie) { // si cookie non valide
-				utils.Logout(w, r, database)
-			} else { // si cookies valide
-				_, _, _, officier := utils.UserInfo(cookie.Value, database)
-				if officier { // si l'utilisateur a le droit de modifier
-					fmt.Println("bien arrivé ici")
-					utils.UploadInformationsBot(r, database)
-				}
-			}
-		}
-	}
-}
-
-func StatGvG(w http.ResponseWriter, r *http.Request) {
-	// fmt.Println("ENTER StatGvG")
-	if tb.Request(1) {
-		var sendHTML *data.SendHTML
-		// lecture du cookie
-		cookie, err1 := r.Cookie("user_token")
-
-		database, err := sql.Open("sqlite3", data.ADRESS_DB)
-		utils.CheckErr("open db in homehandler", err)
-		defer database.Close()
-
-		if r.URL.Path == "/api/statGvG" && err1 != http.ErrNoCookie {
-			if !utils.CheckToken(utils.Sessions, cookie) { // si cookie non valide
-				utils.Logout(w, r, database)
-				gestion := &data.Gestion{
-					Logged:   false,
-					Redirect: "/",
-				}
-				sendHTML = &data.SendHTML{
-					Gestion: *gestion,
-				}
-			} else { // si cookies valide
-				_, DiscordName, DiscordPhoto, officier := utils.UserInfo(cookie.Value, database)
+				// Information to send
 				userInfo := &data.UserInfo{
 					DiscordUsername: DiscordName,
 					DiscordPhoto:    DiscordPhoto,
@@ -587,22 +164,59 @@ func StatGvG(w http.ResponseWriter, r *http.Request) {
 					Officier: officier,
 				}
 				sendHTML = &data.SendHTML{
-					Gestion:        *gestion,
-					UserInfo:       *userInfo,
-					ListInscripted: utils.SendStatGvG(database),
+					UserInfo: *userInfo,
 				}
+
+				// Additional information to be sent depending on the page
+				switch r.URL.Path {
+				case "/api/statGvG":
+					sendHTML.ListInscripted = utils.SendStatGvG(database)
+
+				case "/api/CheckAppAdmin":
+					gestion.BotActivate = utils.BotActivation(database)
+					sendHTML.ListUnit = utils.CaserneUser(userID, database)
+					sendHTML.ListInscripted = utils.SendStatGvG(database)
+
+				case "/api/charactercard":
+					gestion.ListClass = utils.ListClass(database)
+					sendHTML.UserInfo = utils.Charactercard(cookie.Value, database)
+
+				case "/api/majcaserne":
+					if r.Method == "POST" {
+						utils.MAJCaserne(r, userID, database)
+						gestion.Redirect = "/caserne"
+					} else {
+						return
+					}
+
+				case "/api/creategroup":
+					sendHTML.ListInscripted = utils.ListInscriptedUsers(database)
+					sendHTML.GroupGvG = utils.GroupGvG(database)
+					sendHTML.NameGroupGvG = utils.NameGroupGvG(database)
+
+				case "/api/caserne":
+					sendHTML.ListUnit = utils.CaserneUser(userID, database)
+
+				case "/api/home":
+					// Nothing to add
+
+				default:
+					fmt.Println("\nError r.URL.Path in ApiHandler : ", r.URL.Path)
+				}
+
+				sendHTML.Gestion = *gestion
 			}
-		} else { // absence de cookie
+		} else { // No cookie
 			utils.Logout(w, r, database)
 			gestion := &data.Gestion{
 				Logged:   false,
 				Redirect: "/",
 			}
-
 			sendHTML = &data.SendHTML{
 				Gestion: *gestion,
 			}
 		}
+		// Sending reply
 		jsonData, err := json.Marshal(sendHTML)
 		if err != nil {
 			fmt.Println(err)
