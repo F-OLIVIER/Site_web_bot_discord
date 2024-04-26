@@ -348,16 +348,16 @@ func SendStatGvG(database *sql.DB) (listuser []data.UserInfo) {
 	return listuser
 }
 
-func getHistoryUserInfo(user_ID int, database *sql.DB) (listDateGvG []string) {
-	dateGvG, err := database.Prepare(`SELECT DateGvG FROM HistoryGvG WHERE User_ID = ?;`)
+func getHistoryUserInfo(user_ID int, database *sql.DB) (listDateGvG [][]string) {
+	dateGvG, err := database.Prepare(`SELECT DateGvG, Valid FROM HistoryGvG WHERE User_ID = ?;`)
 	CheckErr("1- Requete DB fonction GetHistoryUserInfo", err)
 	rows, err := dateGvG.Query(user_ID)
 	CheckErr("2- Requete DB fonction GetHistoryUserInfo", err)
 	for rows.Next() {
-		var date string
-		err = rows.Scan(&date)
+		var date, valid string
+		err = rows.Scan(&date, &valid)
 		CheckErr("3- Requete DB fonction GetHistoryUserInfo", err)
-		listDateGvG = append(listDateGvG, date)
+		listDateGvG = append(listDateGvG, []string{valid, date})
 	}
 	return listDateGvG
 }

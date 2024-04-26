@@ -21,7 +21,7 @@ type UserInfo struct {
 	DateLastGvGParticiped string `json:"DateLastGvGParticiped"`
 	UserCaserne           []Unit
 	ConnectedSite         string `json:"ConnectedSite"`
-	ListDateGvG           []string
+	ListDateGvG           [][]string
 }
 
 type Gestion struct {

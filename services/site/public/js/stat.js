@@ -186,19 +186,42 @@ function DisplayUsers(data, div) {
             const statinfo = createHTMLElement('div', 'statinfo');
             const titlelistGvG = document.createElement('div');
             titlelistGvG.classList = 'titlelistGvGstat';
-            titlelistGvG.textContent = 'Liste des GvG participé (présence Discord vérifiés)';
+            titlelistGvG.textContent = 'Liste des GvG participé';
             statinfo.appendChild(titlelistGvG);
 
-            const contentlistGvG = document.createElement('div');
-            let listGvG = '';
-            for (let j = 0; j < currentUser.ListDateGvG.length; j++) {
-                listGvG += currentUser.ListDateGvG[j];
-                if (j !== currentUser.ListDateGvG.length - 1) {
-                    listGvG += ' - '
+            let listGvGValid = '';
+            let listGvGNotValid = '';
+            for (let j = currentUser.ListDateGvG.length - 1; j >= 0; j--) {
+                const currentDate = currentUser.ListDateGvG[j]
+                if (currentDate[0] == '0') {
+                    if (listGvGNotValid !== '') {
+                        listGvGNotValid += ' - '
+                    }
+                    listGvGNotValid += currentDate[1];
+                } else {
+                    if (listGvGValid !== '') {
+                        listGvGValid += ' - '
+                    }
+                    listGvGValid += currentDate[1];
                 }
             }
-            contentlistGvG.textContent = listGvG;
-            statinfo.appendChild(contentlistGvG);
+
+            const titlecontentlistGvGValid = document.createElement('div');
+            titlecontentlistGvGValid.textContent = 'Présence Discord vérifiés : ';
+            titlecontentlistGvGValid.classList = 'titlepresencediscord';
+            statinfo.appendChild(titlecontentlistGvGValid);
+            const contentlistGvGValid = document.createElement('div');
+            contentlistGvGValid.classList = 'presencediscord';
+            contentlistGvGValid.textContent = listGvGValid;
+            statinfo.appendChild(contentlistGvGValid);
+            const titlecontentlistGvGNotValid = document.createElement('div');
+            titlecontentlistGvGNotValid.classList = 'titlepresencediscord';
+            titlecontentlistGvGNotValid.textContent = 'Absent du Discord : ';
+            statinfo.appendChild(titlecontentlistGvGNotValid);
+            const contentlistGvGNotValid = document.createElement('div');
+            contentlistGvGNotValid.classList = 'presencediscord';
+            contentlistGvGNotValid.textContent = listGvGNotValid;
+            statinfo.appendChild(contentlistGvGNotValid);
             statinfo.style.display = 'none';
             divstat.appendChild(statinfo);
 
