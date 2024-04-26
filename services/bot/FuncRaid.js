@@ -42,32 +42,33 @@ export function Resetac() {
 
   const db = new sqlite3.Database(adressdb);
 
-  const insertQuery = `
-    INSERT INTO HistoryGvG (User_ID, DateGvG)
-    SELECT ID, ?
-    FROM Users
-    WHERE MNDR >= 6 AND DiscordID = ?;`;
+  const insertQuery = `INSERT INTO HistoryGvG (User_ID, DateGvG, Valid)
+                        SELECT ID, ?, 
+                              CASE 
+                                  WHEN MNDR >= 6 THEN 1
+                                  ELSE 0
+                              END AS Valid
+                        FROM Users
+                        WHERE MNDR >= 6 AND DiscordID = ?;`;
   //Mise a jour de la table User
-  const updateQuery = `
-    UPDATE Users
-    SET
-      TrustIndicator = TrustIndicator + CASE 
-                                WHEN MNDR >= 6 THEN 1
-                                ELSE 0 END,
-      DateLastGvGParticiped = CASE
-                                WHEN EtatInscription IN (1, 2, 3) THEN ?
-                                ELSE DateLastGvGParticiped
-                              END,
-      NbGvGParticiped = NbGvGParticiped + CASE
-                                WHEN EtatInscription IN (1, 2, 3) THEN 1
-                                ELSE 0
-                              END,
-      MNDR = 0,
-      EtatInscription = 0,
-      NbEmojiInscription = 0,
-      NbTotalGvG = NbTotalGvG + 1
-    WHERE DiscordID = ?;
-  `;
+  const updateQuery = `UPDATE Users
+                      SET
+                        TrustIndicator = TrustIndicator + CASE 
+                                                  WHEN MNDR >= 6 THEN 1
+                                                  ELSE 0 END,
+                        DateLastGvGParticiped = CASE
+                                                  WHEN EtatInscription IN (1, 2, 3) THEN ?
+                                                  ELSE DateLastGvGParticiped
+                                                END,
+                        NbGvGParticiped = NbGvGParticiped + CASE
+                                                  WHEN EtatInscription IN (1, 2, 3) THEN 1
+                                                  ELSE 0
+                                                END,
+                        MNDR = 0,
+                        EtatInscription = 0,
+                        NbEmojiInscription = 0,
+                        NbTotalGvG = NbTotalGvG + 1
+                      WHERE DiscordID = ?;`;
 
   const getAllUsers = async () => {
     return new Promise((resolve, reject) => {
