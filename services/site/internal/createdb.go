@@ -124,7 +124,6 @@ func Createdb() {
         INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Arbalétriers avant-garde',160,18,0,'Distant','T3','./img/unit/arbaletriersAvantGarde.jpg');
         INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Arbalétriers à plumes',150,18,0,'Distant','T3','./img/unit/arbaletriersPlumes.jpg');
         INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Archers avant-garde',150,18,0,'Distant','T3','./img/unit/archersAvantGarde.jpg');
-        INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Archers avant-garde',150,18,0,'Distant','T3','./img/unit/archersAvantGarde.jpg');
         INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Archers de namkhan',180,18,0,'Distant','T3','./img/unit/archersNamkhan.jpg');
         INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Archers préfectoraux',180,18,0,'Distant','T3','./img/unit/archersPrefectoraux.jpg');
         INSERT INTO ListUnit(Unit,InfuenceMax,LvlMax,Maitrise,TypeUnit,ForceUnit,Img) VALUES('Archers vipères',155,18,0,'Distant','T3','./img/unit/archersViperes.jpg');
