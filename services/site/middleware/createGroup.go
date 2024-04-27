@@ -4,7 +4,6 @@ import (
 	data "botgvg/internal"
 	"database/sql"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strings"
 )
@@ -78,8 +77,8 @@ func SaveCreateGroup(r *http.Request, database *sql.DB) {
 	}
 
 	// update NameGroup
-	if len(listGroup.Namegroup) > 0 {
-		fmt.Println("listGroup : ", listGroup.Namegroup)
+	if len(listGroup.Namegroup) > 0 && len(listGroup.Namegroup[0]) > 0 {
+		// fmt.Println("listGroup : ", listGroup.Namegroup)
 		for _, arrayGroup := range listGroup.Namegroup {
 			currentID := 0
 			stmtID, errdb := database.Prepare("SELECT ID FROM NameGroupGvG WHERE GroupNumber = ?")
