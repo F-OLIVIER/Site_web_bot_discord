@@ -1,27 +1,10 @@
-import { adressAPI, cookieName } from "./config.js";
-import { communBlock, createHTMLElement, fetchlogout } from "./useful.js";
+import { communBlock, createHTMLElement, fetchServer, fetchlogout } from "./useful.js";
 
-export function stat() {
-    if (!document.cookie.split(";").some((item) => item.trim().startsWith(cookieName + "="))) {
-        window.location.href = '/';
-    }
-    fetch(adressAPI + 'statGvG')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Erreur de réseau: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Data received (stat):', data);
-            containerviewGroup(data);
-        })
-        .catch(error => {
-            console.error('Data recovery error:', error);
-        });
+export async function stat() {
+    containerstat(await fetchServer('statGvG'));
 }
 
-function containerviewGroup(data) {
+function containerstat(data) {
     if (data.Gestion.Logged && data.Gestion.Officier) {
         communBlock(data);
 

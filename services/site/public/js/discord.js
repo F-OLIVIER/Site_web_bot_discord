@@ -22,7 +22,6 @@ fetch('https://discord.com/api/users/@me', {
 function checkid(id, username) {
     // récupération des information saisie deans le formulaire
     const dataToSend = { id, username };
-    // console.log("dataToSend : ", dataToSend);
 
     fetch(adressAPI + 'discord', {
         method: 'POST',

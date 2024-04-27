@@ -1,12 +1,12 @@
-import { home } from "./home.js";
-import { caserne } from "./caserne.js";
-import { creategroup } from "./creategroup.js";
-import { characterCard } from "./characterCard.js";
-import { administration } from "./administration.js";
-import { viewgroup } from "./viewGroup.js";
-import { stat } from "./stat.js";
-import { createHTMLElement } from "./useful.js";
 import { LINK_DISCORD, cookieName } from "./config.js";
+import { administration } from "./administration.js";
+import { characterCard } from "./characterCard.js";
+import { createHTMLElement } from "./useful.js";
+import { creategroup } from "./creategroup.js";
+import { viewgroup } from "./viewGroup.js";
+import { caserne } from "./caserne.js";
+import { home } from "./home.js";
+import { stat } from "./stat.js";
 
 let path = window.location.pathname;
 switch (path) {
@@ -57,7 +57,6 @@ switch (path) {
 
 function homeNotConnected() {
     let Container = document.getElementById('Container');
-
     let containerHomeNotConnected = createHTMLElement('div', 'containerHomeNotConnected');
 
     let link = createHTMLElement('a', 'linkDiscord');
@@ -95,9 +94,6 @@ function homeNotConnected() {
     cas3.textContent = "Erreur de connexion";
     divinfo.appendChild(cas3);
 
-
-
     containerHomeNotConnected.appendChild(divinfo);
-
     Container.appendChild(containerHomeNotConnected);
 }

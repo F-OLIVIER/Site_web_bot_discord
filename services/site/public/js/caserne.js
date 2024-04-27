@@ -1,31 +1,11 @@
-import { adressAPI, cookieName } from "./config.js";
-import { communBlock, createHTMLElement, fetchlogout } from "./useful.js";
+import { adressAPI } from "./config.js";
+import { communBlock, createHTMLElement, fetchServer, fetchlogout } from "./useful.js";
 
-export function caserne() {
-    if (!document.cookie.split(";").some((item) => item.trim().startsWith(cookieName + "="))) {
-        window.location.href = '/';
-    }
-    // Si le cookie est present, fetch des données. Le back fera une vérification de la validité du cookie
-    fetch(adressAPI + 'caserne')
-        .then(response => {
-            // Vérifier si la requête a réussi (status code 200)
-            if (!response.ok) {
-                throw new Error(`Erreur de réseau: ${response.status}`);
-            }
-
-            // Convertir la réponse en JSON
-            return response.json();
-        })
-        .then(data => {
-            // console.log('Data received (caserne):', data);
-            containercaserne(data);
-        })
-        .catch(error => {
-            // Gérer les erreurs
-            console.error('Data recovery error:', error);
-        });
+export async function caserne() {
+    containercaserne(await fetchServer('caserne'));
 }
 
+let timerThrottlebutton = 0;
 function containercaserne(data) {
     if (data.Gestion.Logged) {
         communBlock(data)
@@ -69,10 +49,14 @@ function containercaserne(data) {
         divInfanterie.appendChild(listUnitInfanterie)
         caserne.appendChild(divInfanterie);
         TitleDivInfanterie.addEventListener('click', function () {
-            if (listUnitInfanterie.style.display === 'none') {
-                listUnitInfanterie.style.display = 'flex';
-            } else {
-                listUnitInfanterie.style.display = 'none';
+            const now = new Date();
+            if (now - timerThrottlebutton > 500) {
+                timerThrottlebutton = now;
+                if (listUnitInfanterie.style.display === 'none') {
+                    listUnitInfanterie.style.display = 'flex';
+                } else {
+                    listUnitInfanterie.style.display = 'none';
+                }
             }
         });
 
@@ -80,10 +64,14 @@ function containercaserne(data) {
         divDistant.appendChild(listUnitDistant);
         caserne.appendChild(divDistant);
         TitleDivDistant.addEventListener('click', function () {
-            if (listUnitDistant.style.display === 'none') {
-                listUnitDistant.style.display = 'flex';
-            } else {
-                listUnitDistant.style.display = 'none';
+            const now = new Date();
+            if (now - timerThrottlebutton > 500) {
+                timerThrottlebutton = now;
+                if (listUnitDistant.style.display === 'none') {
+                    listUnitDistant.style.display = 'flex';
+                } else {
+                    listUnitDistant.style.display = 'none';
+                }
             }
         });
 
@@ -91,10 +79,14 @@ function containercaserne(data) {
         divCav.appendChild(listUnitCav)
         caserne.appendChild(divCav);
         TitleDivCav.addEventListener('click', function () {
-            if (listUnitCav.style.display === 'none') {
-                listUnitCav.style.display = 'flex';
-            } else {
-                listUnitCav.style.display = 'none';
+            const now = new Date();
+            if (now - timerThrottlebutton > 500) {
+                timerThrottlebutton = now;
+                if (listUnitCav.style.display === 'none') {
+                    listUnitCav.style.display = 'flex';
+                } else {
+                    listUnitCav.style.display = 'none';
+                }
             }
         });
 
@@ -112,7 +104,6 @@ function containercaserne(data) {
     }
 }
 
-let timerThrottlebutton = 0;
 function MAJCaserne(nbunit) {
     var boutonMAJCaserne = document.getElementById("MAJCaserne");
     boutonMAJCaserne.addEventListener("click", function () {

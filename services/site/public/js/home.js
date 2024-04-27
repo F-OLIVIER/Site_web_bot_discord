@@ -1,36 +1,12 @@
-import { adressAPI, cookieName } from "./config.js";
-import { communBlock, createHTMLElement, fetchlogout } from "./useful.js";
+import { communBlock, createHTMLElement, fetchServer, fetchlogout } from "./useful.js";
 
-export function home() {
-  if (!document.cookie.split(";").some((item) => item.trim().startsWith(cookieName + "="))) {
-    window.location.href = '/';
-  }
-  console.log('ENTER HOME JS')
-  // Si le cookie est present, fetch des données. Le back fera une vérification de la validité du cookie
-  fetch(adressAPI + 'home')
-    .then(response => {
-      // Vérifier si la requête a réussi (status code 200)
-      if (!response.ok) {
-        throw new Error(`Erreur de réseau: ${response.status}`);
-      }
-
-      // Convertir la réponse en JSON
-      return response.json();
-    })
-    .then(data => {
-      // console.log('Data received (home):', data);
-      containerhome(data);
-    })
-    .catch(error => {
-      // Gérer les erreurs
-      console.error('Data recovery error:', error);
-    });
+export async function home() {
+  containerhome(await fetchServer('home'));
 }
-
 
 function containerhome(data) {
   if (data.Gestion.Logged) {
-    communBlock(data)
+    communBlock(data);
 
     let Container = document.getElementById('Container');
     Container.innerHTML = '';

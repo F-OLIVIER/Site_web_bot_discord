@@ -1,28 +1,8 @@
-import { adressAPI, cookieName } from "./config.js";
-import { communBlock, createHTMLElement, fetchlogout } from "./useful.js";
+import { adressAPI } from "./config.js";
+import { communBlock, createHTMLElement, fetchServer, fetchlogout } from "./useful.js";
 
-export function administration() {
-    if (!document.cookie.split(";").some((item) => item.trim().startsWith(cookieName + "="))) {
-        window.location.href = '/';
-    }
-    // Si le cookie est present, fetch des données. Le back fera une vérification de la validité du cookie
-    fetch(adressAPI + 'CheckAppAdmin')
-        .then(response => {
-            // Vérifier si la requête a réussi (status code 200)
-            if (!response.ok) {
-                throw new Error(`Erreur de réseau: ${response.status}`);
-            }
-            // Convertir la réponse en JSON
-            return response.json();
-        })
-        .then(data => {
-            // console.log('Data received (administration):', data);
-            containerAppAdmin(data);
-        })
-        .catch(error => {
-            // Gérer les erreurs
-            console.error('Data recovery error:', error);
-        });
+export async function administration() {
+    containerAppAdmin(await fetchServer('CheckAppAdmin'));
 }
 
 let checkedRadioValue_Unit_maitrise = '';
@@ -30,7 +10,7 @@ function containerAppAdmin(data) {
     if (data.Gestion.Logged && data.Gestion.Officier) {
         communBlock(data)
 
-        let subContainer = createHTMLElement('div', 'subContainerbotEtat');
+        const subContainer = createHTMLElement('div', 'subContainerbotEtat');
 
         // Etat du bot
         let divBotEtat = createHTMLElement('div', 'divBotEtat');
@@ -276,89 +256,97 @@ function addEventOnAllButton(listUnit, connectedUsername) {
     // Modification d'une unité existante
     let selectChangeUnit = document.getElementById('selectChangeUnit');
     selectChangeUnit.addEventListener('change', () => {
-        let unitSelected;
-        for (let i = 0; i < listUnit.length; i++) {
-            if (selectChangeUnit.value === listUnit[i].Unit_name) {
-                unitSelected = listUnit[i];
-                break;
-            }
-        }
-
-        // suppression des anciens éléments si existant
-        if (document.getElementById('changeUnitInfluence')) {
-            document.getElementById('changeUnitInfluence').remove();
-            document.getElementById('changeUnitLvlMax').remove();
-            // document.getElementById('changeUnitTier').remove();
-            document.getElementById('changeUnitimg').remove();
-            document.getElementById('buttonChangeUnit').remove();
-        }
-
-        if (selectChangeUnit.value != "") {
-            // Ajout des nouveaux éléments
-            let formChangeUnit = document.getElementById('formchangeUnit');
-            // Unit_influence
-            let input_Unit_influence = createHTMLElement('input', 'changeUnitInfluence');
-            input_Unit_influence.type = 'number';
-            input_Unit_influence.placeholder = 'Influence actuel : ' + unitSelected.Unit_influence;
-            formChangeUnit.appendChild(input_Unit_influence);
-            // Unit_lvlMax
-            let input_Unit_lvlMax = createHTMLElement('input', 'changeUnitLvlMax');
-            input_Unit_lvlMax.type = 'number';
-            input_Unit_lvlMax.placeholder = 'Level max actuel : ' + unitSelected.Unit_lvlMax;
-            formChangeUnit.appendChild(input_Unit_lvlMax);
-
-            // Maitrise d'unité
-            if (unitSelected.Unit_maitrise === '0') {
-                let input_Unit_maitrise = createHTMLElement('fieldset', 'changemaitriseUnit');
-                let legend = document.createElement('legend');
-                legend.textContent = " Maîtrise d'unité ";
-                input_Unit_maitrise.appendChild(legend);
-
-                const divfieldset = document.createElement('div');
-                const checkbox = document.createElement('input');
-                checkbox.setAttribute('type', 'checkbox');
-                checkbox.setAttribute('name', 'changeUnitMaitrise');
-                checkbox.setAttribute('id', 'changeUnitMaitrise');
-                checkbox.setAttribute('value', '1');
-                divfieldset.appendChild(checkbox);
-
-                const label = document.createElement('label');
-                label.setAttribute('for', "Ajouter à l'unité une maîtrise");
-                label.textContent = "Ajouter à l'unité une maîtrise";
-                divfieldset.appendChild(label);
-                label.addEventListener('click', function () {
-                    checkbox.checked = !checkbox.checked;
-                });
-
-                input_Unit_maitrise.appendChild(divfieldset);
-                formChangeUnit.appendChild(input_Unit_maitrise);
+        const now = new Date();
+        if (now - timerThrottlebutton > 500) {
+            timerThrottlebutton = now;
+            let unitSelected;
+            for (let i = 0; i < listUnit.length; i++) {
+                if (selectChangeUnit.value === listUnit[i].Unit_name) {
+                    unitSelected = listUnit[i];
+                    break;
+                }
             }
 
-            // Unit_img
-            let input_Unit_img = createHTMLElement('input', 'changeUnitimg');
-            input_Unit_img.type = 'file';
-            input_Unit_img.lang = 'fr';
-            input_Unit_img.accept = '.jpg, .jpeg, .png';
-            formChangeUnit.appendChild(input_Unit_img);
-
-            // button
-            let buttonChangeUnit = createHTMLElement('button', 'buttonChangeUnit');
-            buttonChangeUnit.type = 'submit';
-            buttonChangeUnit.textContent = "Modifier l'unité";
-            formChangeUnit.appendChild(buttonChangeUnit);
-
-            let divChangeUnit = document.getElementById('divChangeUnit');
-            divChangeUnit.appendChild(formChangeUnit);
-        }
-
-        document.getElementById('formchangeUnit').addEventListener('submit', (event) => {
-            event.preventDefault();
-            const now = new Date();
-            if (now - timerThrottlebutton > 500) {
-                timerThrottlebutton = now;
-                adminitrateBot('buttonChangeUnit');
+            // suppression des anciens éléments si existant
+            if (document.getElementById('changeUnitInfluence')) {
+                document.getElementById('changeUnitInfluence').remove();
+                document.getElementById('changeUnitLvlMax').remove();
+                // document.getElementById('changeUnitTier').remove();
+                document.getElementById('changeUnitimg').remove();
+                document.getElementById('buttonChangeUnit').remove();
             }
-        });
+
+            if (selectChangeUnit.value != "") {
+                // Ajout des nouveaux éléments
+                let formChangeUnit = document.getElementById('formchangeUnit');
+                // Unit_influence
+                let input_Unit_influence = createHTMLElement('input', 'changeUnitInfluence');
+                input_Unit_influence.type = 'number';
+                input_Unit_influence.placeholder = 'Influence actuel : ' + unitSelected.Unit_influence;
+                formChangeUnit.appendChild(input_Unit_influence);
+                // Unit_lvlMax
+                let input_Unit_lvlMax = createHTMLElement('input', 'changeUnitLvlMax');
+                input_Unit_lvlMax.type = 'number';
+                input_Unit_lvlMax.placeholder = 'Level max actuel : ' + unitSelected.Unit_lvlMax;
+                formChangeUnit.appendChild(input_Unit_lvlMax);
+
+                // Maitrise d'unité
+                if (unitSelected.Unit_maitrise === '0') {
+                    let input_Unit_maitrise = createHTMLElement('fieldset', 'changemaitriseUnit');
+                    let legend = document.createElement('legend');
+                    legend.textContent = " Maîtrise d'unité ";
+                    input_Unit_maitrise.appendChild(legend);
+
+                    const divfieldset = document.createElement('div');
+                    const checkbox = document.createElement('input');
+                    checkbox.setAttribute('type', 'checkbox');
+                    checkbox.setAttribute('name', 'changeUnitMaitrise');
+                    checkbox.setAttribute('id', 'changeUnitMaitrise');
+                    checkbox.setAttribute('value', '1');
+                    divfieldset.appendChild(checkbox);
+
+                    const label = document.createElement('label');
+                    label.setAttribute('for', "Ajouter à l'unité une maîtrise");
+                    label.textContent = "Ajouter à l'unité une maîtrise";
+                    divfieldset.appendChild(label);
+                    label.addEventListener('click', function () {
+                        const now = new Date();
+                        if (now - timerThrottlebutton > 500) {
+                            timerThrottlebutton = now;
+                            checkbox.checked = !checkbox.checked;
+                        }
+                    });
+
+                    input_Unit_maitrise.appendChild(divfieldset);
+                    formChangeUnit.appendChild(input_Unit_maitrise);
+                }
+
+                // Unit_img
+                let input_Unit_img = createHTMLElement('input', 'changeUnitimg');
+                input_Unit_img.type = 'file';
+                input_Unit_img.lang = 'fr';
+                input_Unit_img.accept = '.jpg, .jpeg, .png';
+                formChangeUnit.appendChild(input_Unit_img);
+
+                // button
+                let buttonChangeUnit = createHTMLElement('button', 'buttonChangeUnit');
+                buttonChangeUnit.type = 'submit';
+                buttonChangeUnit.textContent = "Modifier l'unité";
+                formChangeUnit.appendChild(buttonChangeUnit);
+
+                let divChangeUnit = document.getElementById('divChangeUnit');
+                divChangeUnit.appendChild(formChangeUnit);
+            }
+
+            document.getElementById('formchangeUnit').addEventListener('submit', (event) => {
+                event.preventDefault();
+                const now = new Date();
+                if (now - timerThrottlebutton > 500) {
+                    timerThrottlebutton = now;
+                    adminitrateBot('buttonChangeUnit');
+                }
+            });
+        }
     });
 
     // Ajouter une nouvelle arme (new class)

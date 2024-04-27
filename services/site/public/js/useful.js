@@ -1,4 +1,27 @@
-import { adressAPI } from "./config.js";
+import { adressAPI, cookieName } from "./config.js";
+
+export async function fetchServer(option) {
+    try {
+        if (!document.cookie.split(";").some((item) => item.trim().startsWith(cookieName + "="))) {
+            window.location.href = '/';
+            return;
+        }
+
+        const response = await fetch(adressAPI + option);
+
+        if (!response.ok) {
+            throw new Error(`Erreur de réseau: ${response.status}`);
+        }
+
+        const data = await response.json();
+        // console.log('Data received (' + option + '):', data);
+        return data;
+
+    } catch (error) {
+        console.error('Data recovery error:', error);
+        throw error;
+    }
+}
 
 export function communBlock(data) {
     let userConected = document.getElementById('user');

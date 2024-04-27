@@ -1,26 +1,10 @@
-import { adressAPI, cookieName } from "./config.js";
-import { communBlock, createHTMLElement } from "./useful.js";
+import { communBlock, createHTMLElement, fetchServer, fetchlogout } from "./useful.js";
 
-export function viewgroup() {
-    if (!document.cookie.split(";").some((item) => item.trim().startsWith(cookieName + "="))) {
-        window.location.href = '/';
-    }
-    fetch(adressAPI + 'creategroup')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Erreur de réseau: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            // console.log('Data received (viewGroup):', data);
-            containerviewGroup(data);
-        })
-        .catch(error => {
-            console.error('Data recovery error:', error);
-        });
+export async function viewgroup() {
+    containerviewGroup(await fetchServer('creategroup'));
 }
 
+let timerThrottlebutton = 0;
 function containerviewGroup(data) {
     if (data.Gestion.Logged && data.Gestion.Officier) {
         communBlock(data);
@@ -170,17 +154,21 @@ function containerviewGroup(data) {
         buttonDownloadGroup.textContent = "Télécharger l'image des groupes";
         containerGroupe.appendChild(buttonDownloadGroup);
         buttonDownloadGroup.addEventListener('click', function () {
-            html2canvas(viewgroup, { allowTaint: true }).then(function (canvas) {
-                var link = document.createElement("a");
-                document.body.appendChild(link);
-                const now = new Date(Date.now());
-                console.log("now : ", now.getMonth());
-                const date = String(now.getDate()).padStart(2, '0') + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + now.getFullYear();
-                link.download = date + "_groupeGvG.jpg";
-                link.href = canvas.toDataURL();
-                link.target = '_blank';
-                link.click();
-            });
+            const now = new Date();
+            if (now - timerThrottlebutton > 500) {
+                timerThrottlebutton = now;
+                html2canvas(viewgroup, { allowTaint: true }).then(function (canvas) {
+                    var link = document.createElement("a");
+                    document.body.appendChild(link);
+                    const now = new Date(Date.now());
+                    console.log("now : ", now.getMonth());
+                    const date = String(now.getDate()).padStart(2, '0') + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + now.getFullYear();
+                    link.download = date + "_groupeGvG.jpg";
+                    link.href = canvas.toDataURL();
+                    link.target = '_blank';
+                    link.click();
+                });
+            }
         });
 
         // bouton pour revenir à l'édition des groupes
@@ -188,14 +176,17 @@ function containerviewGroup(data) {
         buttonEditGroup.textContent = "Revenir à l'édition des groupes";
         containerGroupe.appendChild(buttonEditGroup);
         buttonEditGroup.addEventListener('click', function () {
-            window.location.href = '/creategroup';
+            const now = new Date();
+            if (now - timerThrottlebutton > 500) {
+                timerThrottlebutton = now;
+                window.location.href = '/creategroup';
+            }
         });
 
         container.appendChild(containerGroupe);
 
     } else {
-        document.cookie = cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        window.location.href = '/';
+        fetchlogout();
     }
 }
 
