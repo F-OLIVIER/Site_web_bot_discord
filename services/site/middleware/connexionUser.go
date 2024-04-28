@@ -36,11 +36,11 @@ func CheckUser(w http.ResponseWriter, r *http.Request, database *sql.DB) bool {
 			cookie := &http.Cookie{
 				Name:    "user_token",
 				Value:   uuid,
-				Expires: time.Now().Add(6 * time.Hour),
+				Expires: time.Now().Add(4380 * time.Hour), // 6 mois
 				Domain:  data.SITE_DOMAIN,
 				Path:    "/",
-				// Secure:  true,
-				// HttpOnly: true,
+				Secure:  true,
+				// HttpOnly: true, // (accessible uniquement via HTTP et pas via JavaScript)
 			}
 
 			err := cookie.Valid()
