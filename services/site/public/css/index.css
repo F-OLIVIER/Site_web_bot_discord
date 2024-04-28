@@ -552,7 +552,7 @@ button:hover {
 
 .divuser select {
     width: calc((100% - 35px)/5);
-    height: auto;
+    height: 40px;
     margin: 5px;
     padding: 2px;
     text-align: left;
@@ -560,6 +560,9 @@ button:hover {
     word-wrap: break-word;
     border: 2px solid white;
     border-radius: 15px;
+}
+.divuser select option{
+    overflow-wrap: break-word;
 }
 
 .titlename {
