@@ -12,3 +12,4 @@ export const adressAPI = 'http://localhost:8080/api/';
 // export const adressAPI = 'https://lnb.sytes.net:443/api/';
 
 export const cookieName = "user_token";
+export const domain = "localhost";

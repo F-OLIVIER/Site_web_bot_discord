@@ -1,4 +1,4 @@
-import { adressAPI, cookieName } from "./config.js";
+import { adressAPI, cookieName, domain } from "./config.js";
 
 export async function fetchServer(option) {
     try {
@@ -72,6 +72,7 @@ function DisconnectedButton() {
         const now = new Date();
         if (now - timerThrottlebutton > 500) {
             timerThrottlebutton = now;
+            document.cookie = cookieName + '=; Max-Age=0; path=/; domain=' + domain + ";expires=Thu, 01 Jan 1970 00:00:01 GMT";
             fetchlogout();
         }
     }
