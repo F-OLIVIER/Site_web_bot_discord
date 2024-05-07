@@ -138,8 +138,8 @@ func ListInscriptedUsers(database *sql.DB) (UsersIncripted []data.UserInfo) {
 	return UsersIncripted
 }
 
-func GroupGvG(database *sql.DB) (listUserAlreadyRegistered []data.UserGvG) {
-	listUnit, err := database.Prepare(`SELECT User_ID, GroupNumber, Unit1, Unit2, Unit3, Unit4 FROM GroupGvG`)
+func GroupGvG(database *sql.DB, nameTable string) (listUserAlreadyRegistered []data.UserGvG) {
+	listUnit, err := database.Prepare("SELECT User_ID, GroupNumber, Unit1, Unit2, Unit3, Unit4 FROM " + nameTable)
 	CheckErr("1- Requete DB fonction GroupGvG", err)
 	rows, err := listUnit.Query()
 	CheckErr("2- Requete DB fonction GroupGvG", err)

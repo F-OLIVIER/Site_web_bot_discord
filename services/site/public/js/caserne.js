@@ -173,7 +173,7 @@ function addUnit(data, listUnitInfanterie, listUnitDistant, listUnitCav, tier) {
 
             // Ajout de la maitrise
             if (Currentunit.Unit_maitrise === '1') { // presence d'une maitrise sur l'unité
-                const listoption = [["", "Maîtrise non démarré", 'red'], ["1", "Maitrise en cours", 'orange'], ["2", "Maitrise compléte", 'green']];
+                const listoption = [["0", "Maîtrise non démarré", 'red'], ["1", "Maitrise en cours", 'orange'], ["2", "Maitrise compléte", 'green']];
                 let selecctMaitrise = document.createElement('select');
                 selecctMaitrise.className = 'selecctMaitriseCaserne';
                 selecctMaitrise.name = "Unit" + Currentunit.Unit_id;
