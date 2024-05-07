@@ -113,8 +113,7 @@ export function Resetac() {
 }
 
 function deleteListGvG(db) {
-  const sql = "DELETE FROM GroupeGvG";
-  db.run(updateQuery, function (error) {
+  db.run("DELETE FROM GroupGvG", function (error) {
     if (error) {
       console.error(error.message);
     }
