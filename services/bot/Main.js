@@ -158,6 +158,9 @@ client.on("messageReactionRemove", async (reaction, user) => {
 // ---------------------- Message command -----------------------
 // --------------------------------------------------------------
 client.on('messageCreate', async message => {
+
+  const BotReaction = client.channels.cache.get(TODOBotReaction);
+  
   if (message.author.bot) return;
   var MC = message.content.toLowerCase();
   var AuthorID = message.author.id;
@@ -165,9 +168,10 @@ client.on('messageCreate', async message => {
   if (!await isMember(AuthorID)) return;
 
   // Fonction de test
-  // if (MC.startsWith("/test")){
-  //     message.delete();
-  // }
+  if (MC.startsWith("/test")) {
+    cronResetMsgReaction(BotReaction);
+    message.delete();
+  }
 
 });
 

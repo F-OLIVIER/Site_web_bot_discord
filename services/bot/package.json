@@ -16,7 +16,7 @@
     "sqlite3": "^5.1.7"
   },
   "engines": {
-    "node": "^21.x.x",
+    "node": "^22.x.x",
     "npm": "^10.x.x"
   },
   "license": "MIT",

@@ -100,7 +100,7 @@ ___
 ## 🔗 Dépendences
 
 **Partie 1 : le bot Discord** <br>
-Le serveur utilise la version 18 de [nodeJS](https://nodejs.org/en) est les module [npm](https://www.npmjs.com) version 9 suivant :<br>
+Le serveur utilise la version 22 de [nodeJS](https://nodejs.org/en) est les module [npm](https://www.npmjs.com) version 10 suivant :<br>
 - [sqlite3](https://www.npmjs.com/package/sqlite3)
 - [moment-timezone](https://www.npmjs.com/package/moment-timezone)
 - [cron](https://www.npmjs.com/package/cron)
