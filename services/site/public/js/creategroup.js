@@ -23,7 +23,7 @@ export async function containercreategroup(data) {
 
         // Boutton pour afficher l'encart de création des groupes
         let buttonDisplaycreategroup = await createHTMLElement('div', 'buttonDisplaycreategroup');
-        buttonDisplaycreategroup.textContent = 'Création des groupes GvG';
+        buttonDisplaycreategroup.textContent = '》Création des groupes GvG'; //︾
         containerGroupe.appendChild(buttonDisplaycreategroup);
 
         // div de la création des groupes GvG
@@ -63,7 +63,7 @@ export async function containercreategroup(data) {
 
         // Boutton pour ajouter un groupe (5 joueurs)
         let buttonAddGroup = await createHTMLElement('div', 'buttonAddGroup');
-        buttonAddGroup.textContent = 'Ajouter un groupe';
+        buttonAddGroup.textContent = '➕ Ajouter un groupe';
         divcreategroup.appendChild(buttonAddGroup);
         buttonAddGroup.addEventListener('click', function () {
             const now = new Date();
@@ -76,7 +76,7 @@ export async function containercreategroup(data) {
 
         // Boutton pour sauvegarder les groupes
         let buttonSaveGroup = await createHTMLElement('div', 'buttonSaveGroup');
-        buttonSaveGroup.textContent = 'Sauvegarder les groupes';
+        buttonSaveGroup.textContent = '💾 Sauvegarder les groupes';
         divcreategroup.appendChild(buttonSaveGroup);
         buttonSaveGroup.addEventListener('click', function () {
             const now = new Date();
@@ -89,15 +89,17 @@ export async function containercreategroup(data) {
 
         // Boutton pour les groupes
         let buttonGroupType = await createHTMLElement('div', 'buttonGroupType');
-        buttonGroupType.textContent = 'Groupes type';
+        buttonGroupType.textContent = '》Groupes type';
         divcreategroup.appendChild(buttonGroupType);
         buttonGroupType.addEventListener('click', function () {
             const now = new Date();
             if (now - timerThrottlebutton > 500) {
                 timerThrottlebutton = now;
                 if (document.getElementById('divGroupType').style.display === 'none') {
+                    buttonGroupType.textContent = "︾ Groupe type"; // ︾
                     document.getElementById('divGroupType').style.display = 'flex';
                 } else {
+                    buttonGroupType.textContent = "》Groupe type"; // ︾
                     document.getElementById('divGroupType').style.display = 'none';
                 }
             }
@@ -111,9 +113,11 @@ export async function containercreategroup(data) {
             if (now - timerThrottlebutton > 500) {
                 timerThrottlebutton = now;
                 if (document.getElementById('divinscripted').style.display === 'none') {
+                    document.getElementById('buttonDisplayInscripted').textContent = '︾ Liste des inscrits';
                     document.getElementById('legendInscripted').style.display = 'flex';
                     document.getElementById('divinscripted').style.display = 'block';
                 } else {
+                    document.getElementById('buttonDisplayInscripted').textContent = '》Liste des inscrits';
                     document.getElementById('legendInscripted').style.display = 'none';
                     document.getElementById('divinscripted').style.display = 'none';
                 }
@@ -126,8 +130,10 @@ export async function containercreategroup(data) {
             if (now - timerThrottlebutton > 500) {
                 timerThrottlebutton = now;
                 if (document.getElementById('divcreategroup').style.display === 'none') {
+                    document.getElementById('buttonDisplaycreategroup').textContent = '︾ Création des groupes GvG';
                     document.getElementById('divcreategroup').style.display = 'block';
                 } else {
+                    document.getElementById('buttonDisplaycreategroup').textContent = '》Création des groupes GvG';
                     document.getElementById('divcreategroup').style.display = 'none';
                 }
             }
@@ -184,7 +190,7 @@ async function listInscripted(data) {
     // Boutton pour afficher la liste des inscrits
     let buttonDisplayInscripted = await createHTMLElement('div', 'buttonDisplayInscripted');
     buttonDisplayInscripted.id = 'buttonDisplayInscripted';
-    buttonDisplayInscripted.textContent = 'Liste des inscrits';
+    buttonDisplayInscripted.textContent = '》Liste des inscrits';
     divlistInscripted.appendChild(buttonDisplayInscripted);
 
     // légende
@@ -643,6 +649,7 @@ function createOneGroupe(data) {
         divGroup.appendChild(divuser)
     }
     creategroup.appendChild(divGroup)
+    optionSelectUsername();
 }
 
 // --------------------------------------------------------

@@ -23,11 +23,15 @@ function containerAppAdmin(data) {
             buttonBotEtat.value = "false";
             buttonBotEtat.textContent = 'Désactiver les fonctions automatique';
         } else {
-            botEtat.textContent = "Fonction automatique du bot discord inactif";
+            botEtat.textContent = "Fonction automatique (reset en fin de GvG) du bot discord inactif";
             buttonBotEtat.value = "true";
             buttonBotEtat.textContent = 'Activer les fonctions automatique';
         }
         divBotEtat.appendChild(botEtat);
+        let explication = createHTMLElement('div', 'explicationbotetat');
+        explication.textContent = '(changement du message GvG + calcul des statistique gvg + re-initialisation des groupes en fin de GvG)';
+        divBotEtat.appendChild(explication);
+
         divBotEtat.appendChild(buttonBotEtat);
         subContainer.appendChild(divBotEtat);
 
