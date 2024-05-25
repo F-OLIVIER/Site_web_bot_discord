@@ -1,17 +1,18 @@
 // Fichier annexe
 import { TODOBotChan, TODOBotChanOfficier, TODOBotReaction, siteInternet, idRoleUser, idRoleOfficier } from './config.js';
 import { slashvisite, visit1, modalvisitelvlAndInflu, visit2, visit3, slashvisitenotpossible } from './guide.js';
-import { createCommands, slashClass, slashInflu, slashLevel, slashRaidReset, slashResetmsggvg } from './slashcommand.js';
-import { botOn, unregisteredList, isOfficier, deleteUser } from './database.js';
-import { PlayerCreateOrUpdate, createuser, isMember } from './FuncData.js';
+import { slashClass, slashInflu, slashLevel, slashRaidReset, slashResetmsggvg } from './slashcommand.js';
+import { botOn, unregisteredList, isOfficier, deleteUser, listInscription } from './database.js';
+import { PlayerCreateOrUpdate, isMember } from './FuncData.js';
 import { client, Messagegvg, EmbedData, EmbedGuide } from './Constant.js';
 import { cronCheckpresence, cronResetMsgReaction } from "./Cronjob.js"
-import { addReaction, removeReaction } from './Reaction.js';
+import { ButtonEmbedInscription, EmbedInscription, addReaction, removeReaction } from './Reaction.js';
 import { cmdnb, cmdlist } from "./CommandBot.js";
 
 // Module nodejs et npm
 import { } from 'dotenv/config';
 import { CronJob } from 'cron';
+import { MAJinscription } from './FuncRaid.js';
 
 client.login(process.env.TOKEN);
 client.on('error', (error) => { console.error('\nUne erreur est survenue :\n', error); });
@@ -32,9 +33,9 @@ client.on('ready', async () => {
 │        Bot starting up, please wait ...      │
 │──────────────────────────────────────────────│
 │ • Create command discord in process          │`);
-  await createCommands();
+  // await createCommands();
   console.log('│ • Create db user in process                  │');
-  await createuser();
+  // await createuser();
 
   // Création des channels
   BotChan = client.channels.cache.get(TODOBotChan);
@@ -160,16 +161,24 @@ client.on("messageReactionRemove", async (reaction, user) => {
 client.on('messageCreate', async message => {
 
   const BotReaction = client.channels.cache.get(TODOBotReaction);
-  
+
   if (message.author.bot) return;
   var MC = message.content.toLowerCase();
   var AuthorID = message.author.id;
   await PlayerCreateOrUpdate(AuthorID);
+
   if (!await isMember(AuthorID)) return;
 
   // Fonction de test
-  if (MC.startsWith("/test")) {
-    cronResetMsgReaction(BotReaction);
+  if (MC.startsWith("!test")) {
+    const futurdateformate = new Date();
+    const jour = 2 // futurdateformate.getDay();
+    const date = futurdateformate.getDate();
+    const mois = futurdateformate.getMonth();
+    message.reply({
+      embeds: [await EmbedInscription(jour, date, mois)],
+      components: [await ButtonEmbedInscription()],
+    });
     message.delete();
   }
 
@@ -180,6 +189,57 @@ client.on('messageCreate', async message => {
 // --------------------------------------------------------------
 client.on('interactionCreate', async (interaction) => {
   if (interaction.user.bot) return;
+
+  // ---------------------------------------------------------------------------------
+  // --------------------------- Test Embed Inscription ------------------------------
+  // ---------------------------------------------------------------------------------
+
+  if (interaction.isButton()) {
+    const userId = interaction.user.id;
+
+    if (interaction.customId === 'present') {
+      await MAJinscription(userId, 1);
+    } else if (interaction.customId === 'absent') {
+      await MAJinscription(userId, 3);
+    } else {
+      console.log('probléme boutton');
+    }
+
+    const listinscrit = await listInscription();
+
+    let presentList = [];
+    if (listinscrit[0] !== undefined) {
+      presentList = listinscrit[0].map(id => {
+        const userId = BigInt(id);
+        const user = client.users.cache.get(userId.toString());
+        return user ? user.username : null;
+      }).filter(username => username !== null);
+    }
+
+    let absentList = [];
+    if (listinscrit[2] !== undefined) {
+      absentList = listinscrit[2].map(id => {
+        const userId = BigInt(id);
+        const user = client.users.cache.get(userId.toString());
+        return user ? user.username : null;
+      }).filter(username => username !== null);
+    }
+
+    // console.log('interaction.customId  : ', interaction.customId);
+    // console.log('id : ', interaction.user.id);
+    // console.log('presentList : ', presentList);
+    // console.log('absentList : ', absentList, '\n');
+
+    await interaction.update({
+      embeds: [await EmbedInscription(presentList, absentList)],
+      components: [await ButtonEmbedInscription()],
+    });
+    return
+  }
+  // ---------------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------------
+
   interaction.ephemeral = true;
 
   // -----------------------

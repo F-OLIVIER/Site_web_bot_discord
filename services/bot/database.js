@@ -330,3 +330,32 @@ export async function IDmsgGvG() {
     db.close();
     return idmsg;
 }
+
+
+export async function listInscription() {
+    const db = new sqlite3.Database('../database/databaseGvG.db');
+    const requestQueries = [
+        `SELECT DiscordID FROM Users WHERE EtatInscription = 1;`,
+        `SELECT DiscordID FROM Users WHERE EtatInscription = 2;`,
+        `SELECT DiscordID FROM Users WHERE EtatInscription = 3;`,
+    ];
+
+    const playerLists = await Promise.all(
+        requestQueries.map(query => {
+            return new Promise((resolve, reject) => {
+                db.all(query, [], (err, rows) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(rows.map(row => row.DiscordID));
+                    }
+                });
+            });
+        })
+    );
+    db.close();
+
+    // console.log('playerLists : ', playerLists); 
+    // index 0 present, 1 retard, 2 absent
+    return playerLists
+}
