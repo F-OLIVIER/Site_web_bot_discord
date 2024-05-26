@@ -3,7 +3,6 @@
 -- 2: .databases
 -- 3: .quit
 -- run query
-
 CREATE TABLE IF NOT EXISTS GestionBot (
     ID INTEGER PRIMARY KEY,
     Allumage INTEGER DEFAULT 0, -- 0 on, 1 off
@@ -300,5 +299,20 @@ CREATE TABLE IF NOT EXISTS CaserneMaitrise (
     Unit96 INTEGER DEFAULT 0,
     Unit97 INTEGER DEFAULT 0,
     Unit98 INTEGER DEFAULT 0,
+    FOREIGN KEY (User_ID) REFERENCES Users (ID)
+);
+
+CREATE TABLE IF NOT EXISTS ListEvent (
+    ID INTEGER PRIMARY KEY,
+    Title VARCHAR(100) NOT NULL,
+    Descriptions VARCHAR(4000) NOT NULL,
+    Dates VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS EventInscripted (
+    ID INTEGER PRIMARY KEY,
+    IDevent INTEGER NOT NULL,
+    User_ID INTEGER NOT NULL,
+    FOREIGN KEY (IDevent) REFERENCES ListEvent (ID),
     FOREIGN KEY (User_ID) REFERENCES Users (ID)
 );

@@ -1,5 +1,5 @@
 // fichier annexe
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, setPosition } from 'discord.js';
 import { MAJPresent, MAJRetard, MAJAbsent, removeInscription } from './FuncRaid.js';
 import { idRoleUser } from './config.js';
 import { updateIdMessage } from './database.js';
@@ -95,15 +95,26 @@ export async function msgreactgvg(BotReaction, jour, mois, date) {
 // ----------------------------------------------------------
 
 export async function EmbedInscription(presents = [], absents = []) {
+  let nbpresent = 0;
+  if (presents.length !== undefined) {
+    nbpresent = presents.length;
+  }
+
+  let nbabsents = 0;
+  if (absents.length !== undefined) {
+    nbabsents = absents.length;
+  }
+
   const embedData = new EmbedBuilder()
+    // .setImage("https://i.ibb.co/chF2Z4W/Upj0-MHck-1.gif")
     .setTitle(":regional_indicator_g::regional_indicator_v::regional_indicator_g:")
     .setColor(13373715)
-    .setDescription("Veuillez indiquer votre présence pour la prochaine GvG.")
+    .setDescription("<@&" + idRoleUser + ">\nVeuillez indiquer votre présence pour la prochaine GvG.")
     .setThumbnail("https://i43.servimg.com/u/f43/15/76/70/95/embedi11.png")
     .addFields(
-      { name: "Date de la prochaine GvG", value: dateGvG(), inline: false },
-      { name: '✅ ' + presents.length + ' __Présent(s)__', value: presents.length ? presents.join('\n') : 'Aucun', inline: true },
-      { name: '❌ ' + absents.length + ' __Absent(s)__', value: absents.length ? absents.join('\n') : 'Aucun', inline: true }
+      { name: "Date de la prochaine GvG", value: dateGvG() + "\n\n", inline: false },
+      { name: '✅ ' + nbpresent + ' __Présent(s)__', value: presents.length ? presents.join('\n') : 'Aucun', inline: true },
+      { name: '❌ ' + nbabsents + ' __Absent(s)__', value: absents.length ? absents.join('\n') : 'Aucun', inline: true }
     );
 
   return embedData
