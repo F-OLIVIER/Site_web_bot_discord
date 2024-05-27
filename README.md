@@ -100,10 +100,14 @@ ___
 ## 🔗 Dépendences
 
 **Partie 1 : le bot Discord** <br>
-Le serveur utilise la version 22 de [nodeJS](https://nodejs.org/en) est les module [npm](https://www.npmjs.com) version 10 suivant :<br>
+Le serveur utilise la version 22 de [nodeJS](https://nodejs.org/en) est les modules (dépendence) [npm](https://www.npmjs.com) version 10 suivants :<br>
+- [discord.js](https://www.npmjs.com/package/discord.js)
+- [discord-reactions-roles](https://www.npmjs.com/package/discord-reactions-roles)
 - [sqlite3](https://www.npmjs.com/package/sqlite3)
 - [moment-timezone](https://www.npmjs.com/package/moment-timezone)
+- [date-fns](https://www.npmjs.com/package/date-fns)
 - [cron](https://www.npmjs.com/package/cron)
+
 
 **Partie 2 : le site internet** <br>
 Le front utilise du `javascript`, `html` et `css`.<br>
