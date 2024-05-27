@@ -60,8 +60,9 @@ export async function createevent(interaction) {
     }
 
     const idevent = await createeventindb(titleInput, descriptionInput, dateInput);
-    
+
     await interaction.reply({
+        files: ["https://i43.servimg.com/u/f43/15/76/70/95/events12.jpg"],
         embeds: [await EmbedEvent(titleInput, dateInput, descriptionInput)],
         components: [await ButtonEmbedEvent(idevent)],
     }).catch(err => {
@@ -77,16 +78,15 @@ export async function EmbedEvent(title, date, description, inscrit = []) {
 
     const listeDesInscrits = inscrit.map(entry => entry.DiscordName).join(' - ');
     const dateFormat = new Date(date);
-    const formattedDate = format(dateFormat, "'Le' EEEE dd MMMM yyyy 'à' HH'h'mm", { locale: frLocale });
+    const formattedDate = format(dateFormat, "'Le' EEEE dd MMMM yyyy 'à' HH'h'mm''", { locale: frLocale });
     const embedData = new EmbedBuilder()
-        .setTitle(title)
+        .setAuthor({ name: title })
+        .setTitle(formattedDate)
         .setColor(13373715)
-        .setDescription("<@&" + idRoleUser + ">")
-        .setThumbnail("https://i43.servimg.com/u/f43/15/76/70/95/events10.jpg")
+        .setDescription("Pour : <@&" + idRoleUser + ">")
         .addFields(
-            { name: "Description de l'événement'", value: description, inline: false },
-            { name: "Date de l'événement'", value: formattedDate, inline: false },
-            { name: '✅ Liste des inscrits (' + listInscrit + ')', value: listeDesInscrits || 'Aucun', inline: true }
+            { name: "Description de l'événement :", value: description, inline: false },
+            { name: '✅ Liste des inscrits (' + listInscrit + ') :', value: listeDesInscrits || 'Aucun', inline: true }
         );
 
     return embedData

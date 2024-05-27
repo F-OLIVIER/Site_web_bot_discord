@@ -247,39 +247,41 @@ client.on('interactionCreate', async (interaction) => {
     // Gestion des boutons d'inscription au événements divers
     const currentDate = new Date();
     const listEvent = await ListEvent();
-    for (let index = 0; index < listEvent.length; index++) {
-      const event = listEvent[index];
-      // modification uniquement si la date et à venir
-      const eventDate = new Date(event.Dates);
-      if (eventDate > currentDate) {
-        // inscription à un event
-        if (interaction.customId === 'eventinscripted' + event.ID && await existEvent(event.ID)) {
-          await InscriptionEvent(interaction.user.id, event.ID);
-          const listinscripted = await ListInscriptedEvent(event.ID);
-          await interaction.update({
-            embeds: [await EmbedEvent(event.Title, event.Dates, event.Descriptions, listinscripted)],
-          }).catch(err => {
-            console.error('Error update EmbedEvent eventinscripted :', err);
-          });
-          return true
-        }
+    if (listEvent && listEvent.length > 0) {
+      for (let index = 0; index < listEvent.length; index++) {
+        const event = listEvent[index];
+        // modification uniquement si la date et à venir
+        const eventDate = new Date(event.Dates);
+        if (eventDate > currentDate) {
+          // inscription à un event
+          if (interaction.customId === 'eventinscripted' + event.ID && await existEvent(event.ID)) {
+            await InscriptionEvent(interaction.user.id, event.ID);
+            const listinscripted = await ListInscriptedEvent(event.ID);
+            await interaction.update({
+              embeds: [await EmbedEvent(event.Title, event.Dates, event.Descriptions, listinscripted)],
+            }).catch(err => {
+              console.error('Error update EmbedEvent eventinscripted :', err);
+            });
+            return true
+          }
 
-        // désinscription à un event
-        if (interaction.customId === 'eventdisinscripted' + event.ID && await existEvent(event.ID)) {
-          await CancelEventInscription(interaction.user.id, event.ID);
-          const listinscripted = await ListInscriptedEvent(event.ID);
+          // désinscription à un event
+          if (interaction.customId === 'eventdisinscripted' + event.ID && await existEvent(event.ID)) {
+            await CancelEventInscription(interaction.user.id, event.ID);
+            const listinscripted = await ListInscriptedEvent(event.ID);
 
-          await interaction.update({
-            embeds: [await EmbedEvent(event.Title, event.Dates, event.Descriptions, listinscripted)],
-          }).catch(err => {
-            console.error('Error update EmbedEvent eventdisinscripted :', err);
-          });
-          return true
+            await interaction.update({
+              embeds: [await EmbedEvent(event.Title, event.Dates, event.Descriptions, listinscripted)],
+            }).catch(err => {
+              console.error('Error update EmbedEvent eventdisinscripted :', err);
+            });
+            return true
+          }
+        } else {
+          await DeleteEvent(event.ID);
         }
-      } else {
-        await DeleteEvent(event.ID);
       }
-    };
+    }
 
     // si l'interaction n'existe plus, suppression des bouttons d'interactions
     if (interaction.customId.includes('eventinscripted')) {

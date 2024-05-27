@@ -72,15 +72,17 @@ export async function cronResetMsgReaction(BotReaction) {
 
 
 // Fonction de check des presence pendant la GvG
-export function cronDeleteEvent() {
+export async function cronDeleteEvent() {
   const currentDate = new Date();
-  const listEvent = ListEvent();
+  const listEvent = await ListEvent();
 
-  listEvent.forEach(async (event) => {
-    const eventDate = new Date(event.Dates);
-    if (eventDate < currentDate) {
-      await DeleteEvent(event.ID);
-    }
-  });
+  if (listEvent && listEvent.length > 0) {
+    listEvent.forEach(async (event) => {
+      const eventDate = new Date(event.Dates);
+      if (eventDate < currentDate) {
+        await DeleteEvent(event.ID);
+      }
+    });
+  }
 }
 
