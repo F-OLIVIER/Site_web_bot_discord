@@ -41,7 +41,6 @@ Les officiers de la guilde ont accès à plusieurs onglets dont ne dispose pas u
     </tbody>
 </table>
 
-
 ___
 ## ⚙️ Installation & usage
 
@@ -57,10 +56,7 @@ ___
 
 **Méthode d'éxécution :** <br>
 Une méthode d'éxécutions possible sur un serveur ce fais via [Screen](https://doc.ubuntu-fr.org/screen)</br>
-Installer le avec :
-```sh
-sudo apt install screen
-```
+
 Lors du premier lancement, le site internet doit être exécuté en premier, car c'est lui qui crée la base de donnée. Ensuite le bot discord peut être exécuté, lors de son lancement, il va compléter la base de donnée avec les utilisateurs déjà présent sur le discord.
 
 Pour démarrer le site internet (qui se trouve dans le dossier `./services/site`)
@@ -77,17 +73,6 @@ sh ./launch_bot.sh
 # Pour detacher la console, faite `[CTRL]+[a]` suivi de `[d]`
 ```
 
-Pour monitorer, voici les commandes de base de `Screen`
-```sh
-# Afficher les consoles Screen en cours
-screen -ls
-
-# Allez sur la console Screen detacher du nom `name`
-screen -r name
-
-# détruire la console Screen du nom `name`
-screen -S name -X kill
-```
 ___
 ## 🔗 Dépendences
 
