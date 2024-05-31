@@ -371,19 +371,6 @@ client.on('interactionCreate', async (interaction) => {
     }
   }
 
-  // interaction création d'un event divers, Command /visite_guidée
-  if (interaction.commandName === "créer_un_événement") {
-    if (await isOfficier(interaction.user.id)) {
-      return await modalcreateevent(interaction);
-    } else {
-      interaction.reply({
-        content: "Vous n'avez pas les autorisations nécéssaire pour réaliser cet action",
-        ephemeral: true,
-      });
-    }
-    return true
-  }
-
   // Les intéraction suivante sont réservé aux membre
   if (!await isMember(interaction.user.id)) return;
 
@@ -405,22 +392,22 @@ client.on('interactionCreate', async (interaction) => {
     return true;
   }
 
-  // interaction changement de level du héros, Command /lvl
+  // interaction changement de level du héros, Command /level
   if (interaction.commandName === "level") {
     return await slashLevel(interaction);
   }
 
-  // interaction changement de l'influence du héros, Command /influ
+  // interaction changement de l'influence du héros, Command /influence
   if (interaction.commandName === "influence") {
     return await slashInflu(interaction);
   }
 
-  // interaction changement de classe, Command /class
+  // interaction changement de classe, Command /classe
   if (interaction.commandName === "classe") {
     return await slashClass(interaction);
   }
 
-  // interaction qui donne l'adresse du site internet associé au bot
+  // interaction qui donne l'adresse du site internet associé au bot, Command /site
   if (interaction.commandName === "site") {
     interaction.reply({
       content: "Voici le lien du site internet associé au bot :\n<" + siteInternet + ">",
@@ -432,6 +419,8 @@ client.on('interactionCreate', async (interaction) => {
   // --------------------------
   // ---- Command Officier ----
   // --------------------------
+
+  // interaction affichage du nombre d'inscrits, Command /officier_nombre_inscript
   if (interaction.commandName === "officier_nombre_inscript") {
     if (isOfficier(interaction.user.id)) {
       cmdnb(interaction.user.id);
@@ -448,6 +437,7 @@ client.on('interactionCreate', async (interaction) => {
     return true;
   }
 
+  // interaction affichage de la liste des inscrits, Command /officier_liste_inscrits
   if (interaction.commandName === "officier_liste_inscrits") {
     if (isOfficier(interaction.user.id)) {
       cmdlist(interaction.user.id);
@@ -464,6 +454,7 @@ client.on('interactionCreate', async (interaction) => {
     return true;
   }
 
+  // interaction affichage de la liste des non inscrits, Command /officier_liste_non_inscrits
   if (interaction.commandName === "officier_liste_non_inscrits") {
     if (isOfficier(interaction.user.id)) {
       const unregisteredlist = await unregisteredList();
@@ -479,6 +470,19 @@ client.on('interactionCreate', async (interaction) => {
       });
     }
     return true;
+  }
+
+  // interaction création d'un event divers, Command /officier_créer_un_événement
+  if (interaction.commandName === "officier_créer_un_événement") {
+    if (await isOfficier(interaction.user.id)) {
+      return await modalcreateevent(interaction);
+    } else {
+      interaction.reply({
+        content: "Vous n'avez pas les autorisations nécéssaire pour réaliser cet action",
+        ephemeral: true,
+      });
+    }
+    return true
   }
 
   // ------------------------------
