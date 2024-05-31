@@ -28,6 +28,7 @@ button {
     font-size: 18px;
     background-color: #fef4c3;
     color: rgb(0, 0, 0);
+    transition: all ease-in-out 0.2s;
 }
 
 button:hover {
@@ -43,7 +44,7 @@ button:hover {
 .bandeau {
     width: 100%;
     height: 150px;
-    background-color: rgb(97, 92, 79, 0.8);
+    background-color: rgb(152, 138, 85, 0.5);
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -103,6 +104,7 @@ button:hover {
     font-family: Agbalumo, sans-serif;
     text-shadow: 1px 1px 5px rgba(0, 0, 0), 0 0 1em rgb(0, 0, 0), 0 0 0.2em rgb(0, 0, 0);
     cursor: pointer;
+    transition: all ease-in-out 0.4s;
 }
 
 .Title:hover {
@@ -191,6 +193,7 @@ button:hover {
     justify-content: center;
     background-color: rgba(0, 0, 0, 0.5);
     border-radius: 25px;
+    transition: all ease-in-out 0.2s;
 }
 
 .discordConnect:hover {
@@ -285,8 +288,9 @@ button:hover {
     cursor: pointer;
     border-radius: 15px;
     margin-bottom: 25px;
-    background-color: rgb(92, 72, 224);
+    background-color: rgb(63, 85, 116);
     text-shadow: 1px 1px 5px rgba(0, 0, 0), 0 0 1em rgb(0, 0, 0), 0 0 0.2em rgb(0, 0, 0);
+    transition: all ease-in-out 0.2s;
 }
 
 .buttoncharacterCard:hover,
@@ -294,7 +298,7 @@ button:hover {
 .buttonCreateGroup:hover,
 .buttonAppAdmin:hover,
 .buttonStat:hover {
-    background-color: rgb(92, 72, 224, 0.8);
+    background-color: rgb(63, 85, 116, 0.8);
     border: 1px solid white;
 }
 
@@ -346,7 +350,13 @@ button:hover {
 }
 
 .divInfanterie {
-    background-color: rgb(77, 77, 255);
+    background-color: rgb(63, 85, 116, 0.9);
+}
+
+#titleInfanterie,
+#titleDistant,
+#titleCav {
+    transition: all ease-in-out 0.2s;
 }
 
 #titleInfanterie:hover {
@@ -355,7 +365,7 @@ button:hover {
 }
 
 .divDistant {
-    background-color: rgb(196, 99, 252);
+    background-color: rgb(98, 35, 32, 0.9);
 }
 
 #titleDistant:hover {
@@ -364,7 +374,7 @@ button:hover {
 }
 
 .divCav {
-    background-color: rgb(163, 141, 43);
+    background-color: rgb(152, 138, 85, 0.9);
 }
 
 #titleCav:hover {
@@ -425,7 +435,7 @@ button:hover {
 .divinscripted,
 .legendInscripted {
     width: 100%;
-    background-color: #fef4c3;
+    background-color: rgb(98, 35, 32);
     border-radius: 15px;
     text-align: center;
     font-size: 18px;
@@ -436,8 +446,8 @@ button:hover {
     display: flex;
     flex-direction: column;
     margin-bottom: 5px;
-    color: black;
-    text-shadow: 1px 1px 5px rgba(255, 255, 255), 0 0 1em rgb(255, 255, 255), 0 0 0.2em rgb(255, 255, 255);
+    color: white;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0), 0 0 1em rgb(0, 0, 0), 0 0 0.2em rgb(0, 0, 0);
 }
 
 .divlistlegend {
@@ -465,8 +475,8 @@ button:hover {
 
 .inscriptedtitledivuser {
     font-size: 22px;
-    color: black;
-    text-shadow: 1px 1px 5px rgb(255, 255, 255), 0 0 1em rgb(255, 255, 255), 0 0 rgb(255, 254, 254);
+    color: white;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0), 0 0 1em rgb(0, 0, 0), 0 0 0.2em rgb(0, 0, 0);
 }
 
 .divconnected,
@@ -626,7 +636,6 @@ button:hover {
 
 .viewtitlename {
     width: 18%;
-    /* padding-left: 20px; */
 }
 
 .viewusername {
@@ -657,7 +666,7 @@ button:hover {
     display: flex;
     flex-direction: row;
     align-items: center;
-    background-color: #524F61;
+    background-color: rgb(98, 35, 32);
     text-shadow: 1px 1px 5px rgba(0, 0, 0), 0 0 1em rgb(0, 0, 0), 0 0 0.2em rgb(0, 0, 0);
     border-radius: 15px;
 }
@@ -675,16 +684,22 @@ button:hover {
 
 .group1,
 .viewgroup1 {
-    background-color: #fef4c3;
-    color: black;
-    text-shadow: 1px 1px 5px rgba(255, 255, 255), 0 0 1em rgb(255, 255, 255), 0 0 0.2em rgb(255, 255, 255);
+    background-color: rgb(216, 202, 130);
+}
 
+.group1 {
+    color: white;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0), 0 0 1em rgb(0, 0, 0), 0 0 0.2em rgb(0, 0, 0);
+}
+
+.viewgroup1 {
+    color: white;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0), 0 0 1em rgb(0, 0, 0), 0 0 0.2em rgb(0, 0, 0);
 }
 
 .viewgroup1 .consultOff {
     background-color: #f98348;
 }
-
 
 .group2,
 .viewgroup2 {
@@ -754,36 +769,39 @@ button:hover {
 .buttonViewGroup,
 .buttonEditGroup {
     margin-bottom: 10px;
-    background-color: rgb(92, 72, 224);
+    background-color: rgb(63, 85, 116);
+    transition: all ease-in-out 0.2s;
 }
 
 .buttonDisplayInscripted:hover,
 .buttonDisplaycreategroup:hover,
 .buttonViewGroup:hover,
 .buttonEditGroup:hover {
-    background-color: rgb(92, 72, 224, 0.8);
+    background-color: rgb(63, 85, 116, 0.8);
     border: 1px solid white;
 }
 
 .buttonAddGroup,
 .buttonDownloadGroup,
 .buttonSaveGroup {
-    background-color: rgb(224, 223, 72);
+    background-color: rgb(254, 244, 195);
+    transition: all ease-in-out 0.2s;
 }
 
 .buttonAddGroup:hover,
 .buttonDownloadGroup:hover,
 .buttonSaveGroup:hover {
-    background-color: rgb(224, 223, 72, 0.8);
+    background-color: rgba(254, 244, 195, 0.8);
     border: 1px solid white;
 }
 
 .buttonGroupType {
-    background-color: rgb(51, 250, 233);
+    background-color: rgb(152, 138, 85);
+    transition: all ease-in-out 0.2s;
 }
 
 .buttonGroupType:hover {
-    background-color: rgb(51, 250, 233, 0.8);
+    background-color: rgb(152, 138, 85, 0.8);
     border: 1px solid white;
 }
 
@@ -837,6 +855,7 @@ button:hover {
     padding: 10px;
     font-size: large;
     cursor: pointer;
+    transition: all ease-in-out 0.2s;
 }
 
 .buttonSaveGroupTypeAtt:hover,
@@ -890,7 +909,7 @@ button:hover {
     align-items: flex-start;
     width: 45%;
     border-radius: 15px;
-    background-color: rgba(0, 68, 255, 0.6);
+    background-color: rgb(63, 85, 116, 0.8);
     font-size: 20px;
     text-shadow: none;
     color: white;
@@ -973,20 +992,14 @@ button:hover {
     text-shadow: 1px 1px 5px rgba(0, 0, 0), 0 0 1em rgb(0, 0, 0), 0 0 0.2em rgb(0, 0, 0);
 }
 
-.divBotEtat {
-    background-color: rgba(0, 68, 255, 0.7);
-}
-
-.divNewUnit {
-    background-color: rgb(0, 128, 0, 0.7);
-}
-
+.divBotEtat,
 .divChangeUnit {
-    background-color: rgba(0, 68, 255, 0.7);
+    background-color: rgb(63, 85, 116, 0.9);
 }
 
+.divNewUnit,
 .divNewclass {
-    background-color: rgb(0, 128, 0, 0.7);
+    background-color: rgb(98, 35, 32, 0.9);
 }
 
 .titleNewUnit,
@@ -1027,6 +1040,10 @@ button:hover {
     border-radius: 15px;
     margin-bottom: 5px;
     padding: 5px;
+}
+
+.formchangeUnit>.selectChangeUnit {
+    background-color: #fef4c3;
 }
 
 .maitriseUnit,
@@ -1074,7 +1091,7 @@ button:hover {
     justify-content: space-around;
     align-items: center;
     width: 100%;
-    background-color: rgba(0, 68, 255, 0.8);
+    background-color: rgb(63, 85, 116, 0.8);
     font-size: 25px;
     border-radius: 25px;
     margin-bottom: 5px;
@@ -1117,7 +1134,7 @@ button:hover {
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
-    background-color: rgba(0, 68, 255, 0.8);
+    background-color: rgb(63, 85, 116, 0.8);
     border-radius: 15px;
     text-shadow: 1px 1px 5px rgba(0, 0, 0), 0 0 1em rgb(0, 0, 0), 0 0 0.2em rgb(0, 0, 0);
     margin-bottom: 10px;
@@ -1137,15 +1154,19 @@ button:hover {
     justify-content: center;
     text-align: center;
     align-items: center;
-    background-color: rgba(0, 68, 255, 0.45);
+    background-color: rgb(63, 85, 116, 0.8);
     text-shadow: 1px 1px 5px rgba(0, 0, 0), 0 0 1em rgb(0, 0, 0), 0 0 0.2em rgb(0, 0, 0);
     min-height: 40px;
     border-bottom: 2px solid black;
 }
 
+.divstatwitchinfo .statuser {
+    transition: all ease-in-out 0.2s;
+}
+
 .divstatwitchinfo .statuser:hover {
     cursor: pointer;
-    background-color: rgb(0, 128, 0, 0.45);
+    background-color: rgb(98, 35, 32, 0.8);
 }
 
 .titlelistGvGstat {
@@ -1155,10 +1176,19 @@ button:hover {
 
 .statinfo {
     width: calc(100% - 20px);
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.8);
     text-shadow: 1px 1px 5px rgba(0, 0, 0), 0 0 1em rgb(0, 0, 0), 0 0 0.2em rgb(0, 0, 0);
     text-align: left;
-    padding: 5px 10px 10px 10px;
+    padding: 0px 10px 0px 10px;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 1s ease, max-height 1s ease;
+}
+
+.statinfo.show {
+    opacity: 1;
+    max-height: 1000px;
 }
 
 .titlepresencediscord {
@@ -1204,4 +1234,50 @@ button:hover {
 
 .statlastgvg {
     width: 23%;
+}
+
+@media (max-width: 600px) {
+    .banner {
+        display: none;
+    }
+
+    .Title {
+        font-size: x-large;
+    }
+
+    .UsernameBandeau {
+        font-size: 15px;
+    }
+
+    .changeInfo {
+        flex-direction: column;
+    }
+
+    .buttoncharacterCard,
+    .buttonCaserne,
+    .buttonCreateGroup,
+    .buttonAppAdmin,
+    .buttonStat {
+        font-size: 25px;
+    }
+
+    .unit>img {
+        height: 150px;
+        width: auto;
+    }
+}
+
+@media (max-width: 1000px) {
+    .divMAJ {
+        flex-direction: column;
+    }
+
+    .personnage,
+    .infoGvG {
+        width: 100%;
+    }
+
+    .personnage {
+        margin-bottom: 20px;
+    }
 }

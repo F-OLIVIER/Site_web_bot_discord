@@ -15,6 +15,7 @@ import { } from 'dotenv/config';
 import { CronJob } from 'cron';
 import { MAJinscription } from './FuncRaid.js';
 import { AttachmentBuilder } from 'discord.js';
+import moment from 'moment-timezone';
 
 client.login(process.env.TOKEN);
 client.on('error', (error) => { console.error('\nUne erreur est survenue :\n', error); });
@@ -234,7 +235,6 @@ client.on('interactionCreate', async (interaction) => {
         }).filter(displayName => displayName !== null);
       }
 
-      const imageAttachment = new AttachmentBuilder('https://i.ibb.co/chF2Z4W/Upj0-MHck-1.gif');
       await interaction.update({
         embeds: [await EmbedInscription(presentList, absentList)],
       }).catch(err => {
@@ -245,58 +245,80 @@ client.on('interactionCreate', async (interaction) => {
     }
 
     // Gestion des boutons d'inscription au événements divers
-    const currentDate = new Date();
-    const listEvent = await ListEvent();
-    if (listEvent && listEvent.length > 0) {
-      for (let index = 0; index < listEvent.length; index++) {
-        const event = listEvent[index];
-        // modification uniquement si la date et à venir
-        const eventDate = new Date(event.Dates);
-        if (eventDate > currentDate) {
-          // inscription à un event
-          if (interaction.customId === 'eventinscripted' + event.ID && await existEvent(event.ID)) {
-            await InscriptionEvent(interaction.user.id, event.ID);
-            const listinscripted = await ListInscriptedEvent(event.ID);
-            await interaction.update({
-              embeds: [await EmbedEvent(event.Title, event.Dates, event.Descriptions, listinscripted)],
-            }).catch(err => {
-              console.error('Error update EmbedEvent eventinscripted :', err);
-            });
-            return true
-          }
+    if (interaction.customId.includes('eventinscripted') || interaction.customId.includes('eventdisinscripted')) {
+      const customId = interaction.customId.match(/(?:eventinscripted|eventdisinscripted)(\d+)/);
+      const eventId = parseInt(customId[1], 10);
 
-          // désinscription à un event
-          if (interaction.customId === 'eventdisinscripted' + event.ID && await existEvent(event.ID)) {
-            await CancelEventInscription(interaction.user.id, event.ID);
-            const listinscripted = await ListInscriptedEvent(event.ID);
+      // si l'event n'existe plus dans la db
+      if (!await existEvent(customId)) {
+        // supression des bouttons
+        await interaction.update({
+          components: [],
+        }).catch(err => {
+          console.error('Error update existEvent EmbedEvent event passé :', err);
+        });
 
-            await interaction.update({
-              embeds: [await EmbedEvent(event.Title, event.Dates, event.Descriptions, listinscripted)],
-            }).catch(err => {
-              console.error('Error update EmbedEvent eventdisinscripted :', err);
-            });
-            return true
+        await interaction.followUp({
+          content: "L'événement est passé, inscription impossible.",
+          ephemeral: true,
+        });
+
+        return true
+      }
+
+      // si l'event existe dans la db
+      const currentDate = moment.tz('Europe/Paris');
+      const listEvent = await ListEvent();
+      if (listEvent && listEvent.length > 0) {
+        for (let index = 0; index < listEvent.length; index++) {
+          const event = listEvent[index];
+          if (eventId === event.ID) {
+            // modification uniquement si la date et à venir
+            const eventDate = moment.tz(event.Dates, 'YYYY-MM-DD HH:mm', 'Europe/Paris'); // new Date(event.Dates);
+            if (eventDate.isAfter(currentDate)) {
+              // inscription à un event
+              if (interaction.customId === 'eventinscripted' + event.ID) {
+                await InscriptionEvent(interaction.user.id, event.ID);
+                const listinscripted = await ListInscriptedEvent(event.ID);
+                await interaction.update({
+                  embeds: [await EmbedEvent(event.Title, event.Dates, event.Descriptions, listinscripted)],
+                }).catch(err => {
+                  console.error('Error update EmbedEvent eventinscripted :', err);
+                });
+                return true
+              }
+
+              // désinscription à un event
+              if (interaction.customId === 'eventdisinscripted' + event.ID) {
+                await CancelEventInscription(interaction.user.id, event.ID);
+                const listinscripted = await ListInscriptedEvent(event.ID);
+
+                await interaction.update({
+                  embeds: [await EmbedEvent(event.Title, event.Dates, event.Descriptions, listinscripted)],
+                }).catch(err => {
+                  console.error('Error update EmbedEvent eventdisinscripted :', err);
+                });
+                return true
+              }
+            } else { // si la date de l'event est passé mais que l'event n'ai pas encore supprimé de la db
+              // supression de l'event de la db
+              await DeleteEvent(event.ID);
+              // supression des bouttons
+              await interaction.update({
+                components: [],
+              }).catch(err => {
+                console.error('Error update existEvent EmbedEvent event passé :', err);
+              });
+
+              await interaction.followUp({
+                content: "L'événement est passé, inscription impossible.",
+                ephemeral: true,
+              });
+              return true
+            }
           }
-        } else {
-          await DeleteEvent(event.ID);
         }
       }
-    }
-
-    // si l'interaction n'existe plus, suppression des bouttons d'interactions
-    if (interaction.customId.includes('eventinscripted')) {
-      await interaction.update({
-        components: [],
-      }).catch(err => {
-        console.error('Error update components EmbedEvent event passé :', err);
-      });
-
-      await interaction.followUp({
-        content: "L'événement est passé, inscription impossible.",
-        ephemeral: true,
-      });
-
-      return true
     }
   }
   // ---------------------------------------------------------------------------------

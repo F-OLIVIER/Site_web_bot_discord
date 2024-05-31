@@ -205,14 +205,21 @@ function DisplayUsers(data, div) {
             contentlistGvGNotValid.classList = 'presencediscord';
             contentlistGvGNotValid.textContent = listGvGNotValid;
             statinfo.appendChild(contentlistGvGNotValid);
-            statinfo.style.display = 'none';
+            statinfo.style.display = 'hidden';
             divstat.appendChild(statinfo);
 
+            // statuser.addEventListener("click", function () {
+            //     if (statinfo.style.display === 'none') {
+            //         statinfo.style.display = 'block';
+            //     } else {
+            //         statinfo.style.display = 'none';
+            //     }
+            // });
             statuser.addEventListener("click", function () {
-                if (statinfo.style.display === 'none') {
-                    statinfo.style.display = 'block';
+                if (statinfo.classList.contains('show')) {
+                    statinfo.classList.remove('show');
                 } else {
-                    statinfo.style.display = 'none';
+                    statinfo.classList.add('show');
                 }
             });
         }

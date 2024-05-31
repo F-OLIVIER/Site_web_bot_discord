@@ -2,7 +2,6 @@
 import { adressdb } from './config.js';
 
 // module nodejs et npm
-import moment from 'moment-timezone';
 import sqlite3 from 'sqlite3';
 
 export function Resetsc() {

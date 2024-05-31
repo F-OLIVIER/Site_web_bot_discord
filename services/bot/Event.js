@@ -79,13 +79,19 @@ export async function EmbedEvent(title, date, description, inscrit = []) {
     const listeDesInscrits = inscrit.map(entry => entry.DiscordName).join(' - ');
     const dateFormat = new Date(date);
     const formattedDate = format(dateFormat, "'Le' EEEE dd MMMM yyyy 'à' HH'h'mm''", { locale: frLocale });
+    const formattedDateQuand = format(dateFormat, "'Le' EEEE dd MMMM yyyy'", { locale: frLocale });
+    const formattedDatehour = format(dateFormat, "HH'h'mm'", { locale: frLocale });
+
+
     const embedData = new EmbedBuilder()
-        .setAuthor({ name: title })
-        .setTitle(formattedDate)
-        .setColor(13373715)
+        // .setAuthor({ name: title })
+        // .setTitle(formattedDate)
+        .setTitle(title)
         .setDescription("Pour : <@&" + idRoleUser + ">")
         .addFields(
             { name: "Description de l'événement :", value: description, inline: false },
+            { name: '__Quand ?__', value: formattedDateQuand, inline: true },
+            { name: '__A quel heure ?__', value: formattedDatehour, inline: true },
             { name: '✅ Liste des inscrits (' + listInscrit + ') :', value: listeDesInscrits || 'Aucun', inline: true }
         );
 
