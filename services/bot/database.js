@@ -227,8 +227,12 @@ export function deleteUser(member, BotChanOfficier) {
             const listQuery = [
                 `DELETE FROM Caserne WHERE User_ID = ?;`,
                 `DELETE FROM CaserneMaitrise WHERE User_ID = ?;`,
-                `DELETE FROM GvG WHERE User_ID = ?;`,
+                `DELETE FROM GroupGvG WHERE User_ID = ?;`,
+                `DELETE FROM GroupTypeAtt WHERE User_ID = ?;`,
+                `DELETE FROM GroupTypeDef WHERE User_ID = ?;`,
+                `DELETE FROM HistoryGvG WHERE User_ID = ?;`,
                 `DELETE FROM Users WHERE ID = ?;`
+
             ];
 
             listQuery.forEach(deleteQuery => {

@@ -86,19 +86,19 @@ function containerstat(data) {
         titledivstat.appendChild(titleconnected);
 
         let titlename = createHTMLElement('div', 'statname');
-        titlename.textContent = 'Pseudo joueur';
+        titlename.textContent = 'Pseudo';
         titledivstat.appendChild(titlename);
 
         let titleclass = createHTMLElement('div', 'statclass');
-        titleclass.textContent = 'classe joué';
+        titleclass.textContent = 'Classe joué';
         titledivstat.appendChild(titleclass);
 
         let titleinfluenceplayer = createHTMLElement('div', 'statinfluence');
-        titleinfluenceplayer.textContent = 'influence joueur';
+        titleinfluenceplayer.textContent = 'Influence';
         titledivstat.appendChild(titleinfluenceplayer);
 
         let titlelvlplayer = createHTMLElement('div', 'statlvl');
-        titlelvlplayer.textContent = 'Level joueur';
+        titlelvlplayer.textContent = 'Level';
         titledivstat.appendChild(titlelvlplayer);
 
         let titlenbGvGparticiped = createHTMLElement('div', 'statnbgvg');
@@ -106,7 +106,7 @@ function containerstat(data) {
         titledivstat.appendChild(titlenbGvGparticiped);
 
         let titlelastGvGparticiped = createHTMLElement('div', 'statlastgvg');
-        titlelastGvGparticiped.textContent = 'Derniére GvG participé le';
+        titlelastGvGparticiped.textContent = 'Dernière GvG participé le';
         titledivstat.appendChild(titlelastGvGparticiped);
 
         subContainerStat.appendChild(titledivstat);
