@@ -1,5 +1,5 @@
 // fichier annexe
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } from 'discord.js';
+import { ActionRowBuilder, AttachmentBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } from 'discord.js';
 import { idRoleUser } from './config.js';
 import { updateIdMessage } from './database.js';
 import moment from 'moment-timezone';
@@ -10,11 +10,14 @@ export async function msgreactgvg(BotReaction) {
   const jour = futurdateformate.getDay();
   const date = futurdateformate.getDate();
   const mois = futurdateformate.getMonth();
-  const imageAttachment = new AttachmentBuilder('https://i.ibb.co/chF2Z4W/Upj0-MHck-1.gif');
+  const imageAttachment = new AttachmentBuilder('https://i43.servimg.com/u/f43/15/76/70/95/gvg10.jpg');
+  //new AttachmentBuilder('https://i.ibb.co/chF2Z4W/Upj0-MHck-1.gif');
+
 
   // Génére le message et l'envoi sur discord
   const sendMessage = await BotReaction.send({
     files: [imageAttachment],
+    content: "<@&" + idRoleUser + ">",
     embeds: [await EmbedInscription(jour, date, mois)],
     components: [await ButtonEmbedInscription()],
   });
@@ -35,10 +38,9 @@ export async function EmbedInscription(presents = [], absents = []) {
   }
 
   const embedData = new EmbedBuilder()
-    // .setImage("https://i.ibb.co/chF2Z4W/Upj0-MHck-1.gif")
     .setTitle(":regional_indicator_g::regional_indicator_v::regional_indicator_g:")
     .setColor(13373715)
-    .setDescription("<@&" + idRoleUser + ">\nVeuillez indiquer votre présence pour la prochaine GvG.")
+    .setDescription("Veuillez indiquer votre présence pour la prochaine GvG.")
     .setThumbnail("https://i43.servimg.com/u/f43/15/76/70/95/embedi11.png")
     .addFields(
       { name: "Date de la prochaine GvG", value: dateGvG() + "\n\n", inline: false },
@@ -76,9 +78,11 @@ function dateGvG() {
     case 0: // dimanche
       futurdate = moment().add(2, 'days');
       break;
+
     case 1: // lundi
       futurdate = moment().add(1, 'days');
       break;
+
     case 2: // mardi
       // test si avant 22h
       if (now.hour() < 21) {
@@ -87,15 +91,19 @@ function dateGvG() {
         futurdate = moment().add(4, 'days');
       }
       break;
+
     case 3: // mercredi
       futurdate = moment().add(3, 'days');
       break;
+
     case 4: // jeudi
       futurdate = moment().add(2, 'days');
       break;
+
     case 5: // vendredi
       futurdate = moment().add(1, 'days');
       break;
+
     case 6: // samedi
       // test si avant 22h
       if (now.hour() < 21) {
@@ -104,14 +112,6 @@ function dateGvG() {
         futurdate = moment().add(3, 'days');
       }
       break;
-  }
-
-  if (day == 2) { // Cronjob du mardi (jour 2)
-
-  } else if (day == 6) { // Cronjob du samedi (jour 6)
-
-  } else {
-    console.log('Day 2 ou 6 non présent, mauvais reset');
   }
 
   // génére la date au bon format

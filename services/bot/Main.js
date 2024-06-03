@@ -135,13 +135,13 @@ client.on('guildMemberUpdate', async (oldMember, newMember) => {
 client.on('messageCreate', async message => {
 
   if (message.author.bot) return;
-  // var MC = message.content.toLowerCase();
-  var AuthorID = message.author.id;
+  const MC = message.content.toLowerCase();
+  const AuthorID = message.author.id;
   await PlayerCreateOrUpdate(AuthorID);
 
   // if (!await isMember(AuthorID)) return;
 
-  // const BotReaction = client.channels.cache.get(TODOBotReaction);
+  const BotReaction = client.channels.cache.get(TODOBotReaction);
   // Fonction de test
   // if (MC.startsWith("!test")) {
   //   const futurdateformate = new Date();
@@ -159,6 +159,10 @@ client.on('messageCreate', async message => {
   //     console.error('Error sending message:', err);
   //   });
   // }
+
+  if (MC.startsWith("!test")) {
+    cronResetMsgReaction(BotReaction);
+  }
 
 });
 
