@@ -2,8 +2,8 @@
 import { TODOBotChan, TODOBotChanOfficier, TODOBotReaction, siteInternet, idRoleUser, idRoleOfficier } from './config.js';
 import { slashvisite, visit1, modalvisitelvlAndInflu, visit2, visit3, slashvisitenotpossible } from './guide.js';
 import { createCommands, slashClass, slashInflu, slashLevel, slashRaidReset, slashResetmsggvg } from './slashcommand.js';
-import { botOn, unregisteredList, isOfficier, deleteUser, listInscription, ListEvent, ListInscriptedEvent, CancelEventInscription, InscriptionEvent, existEvent, DeleteEvent } from './database.js';
-import { ButtonEmbedInscription, EmbedInscription, addReaction, removeReaction } from './Reaction.js';
+import { unregisteredList, isOfficier, deleteUser, listInscription, ListEvent, ListInscriptedEvent, CancelEventInscription, InscriptionEvent, existEvent, DeleteEvent } from './database.js';
+import { EmbedInscription } from './Reaction.js';
 import { PlayerCreateOrUpdate, createuser, isMember } from './FuncData.js';
 import { client, Messagegvg, EmbedData, EmbedGuide } from './Constant.js';
 import { cronCheckpresence, cronDeleteEvent, cronResetMsgReaction } from "./Cronjob.js"
@@ -14,7 +14,6 @@ import { cmdnb, cmdlist } from "./CommandBot.js";
 import { } from 'dotenv/config';
 import { CronJob } from 'cron';
 import { MAJinscription } from './FuncRaid.js';
-import { AttachmentBuilder } from 'discord.js';
 import moment from 'moment-timezone';
 
 client.login(process.env.TOKEN);
@@ -107,12 +106,12 @@ client.on('guildMemberUpdate', async (oldMember, newMember) => {
   if (newMember.user.bot) return;
 
   // Roles utilisateur
-  const oldRoles = oldMember.roles.cache,
-    newRoles = newMember.roles.cache;
+  const oldRoles = oldMember.roles.cache;
+  const newRoles = newMember.roles.cache;
 
   // Has Role user ?
-  const oldHasuser = oldRoles.has(idRoleUser),
-    newHasuser = newRoles.has(idRoleUser);
+  const oldHasuser = oldRoles.has(idRoleUser);
+  const newHasuser = newRoles.has(idRoleUser);
   // Check if removed or added
   if (oldHasuser && !newHasuser) { // Role user remove
     deleteUser(newMember, BotChanOfficier)
@@ -121,8 +120,8 @@ client.on('guildMemberUpdate', async (oldMember, newMember) => {
   }
 
   // Has Role officier ?
-  const oldHasofficier = oldRoles.has(idRoleOfficier),
-    newHasofficier = newRoles.has(idRoleOfficier);
+  const oldHasofficier = oldRoles.has(idRoleOfficier);
+  const newHasofficier = newRoles.has(idRoleOfficier);
   if (oldHasofficier && !newHasofficier) { // Role officier remove
     await PlayerCreateOrUpdate(newMember.user.id);
   } else if (!oldHasofficier && newHasofficier) { // Role officier add
@@ -131,64 +130,35 @@ client.on('guildMemberUpdate', async (oldMember, newMember) => {
 });
 
 // --------------------------------------------------------------
-// -------------------- Add message reaction --------------------
-// --------------------------------------------------------------
-client.on("messageReactionAdd", async (reaction, user) => {
-  if (user.bot) return;
-  if (!await isMember(user.id)) return;
-
-  if (reaction.message.channel.id == TODOBotReaction && botOn(reaction.message.id)) {
-    await PlayerCreateOrUpdate(user.id);
-    // Ajout de la réaction
-    await addReaction(reaction, user);
-  }
-});
-
-// --------------------------------------------------------------
-// ------------------ Delete message reaction -------------------
-// --------------------------------------------------------------
-client.on("messageReactionRemove", async (reaction, user) => {
-  if (user.bot) return;
-  if (!await isMember(user.id)) return;
-
-  if (reaction.message.channel.id == TODOBotReaction && botOn(reaction.message.id)) {
-    await PlayerCreateOrUpdate(user.id);
-    // Retrait de la réaction
-    await removeReaction(reaction, user);
-  }
-});
-
-// --------------------------------------------------------------
 // ---------------------- Message command -----------------------
 // --------------------------------------------------------------
 client.on('messageCreate', async message => {
 
-  const BotReaction = client.channels.cache.get(TODOBotReaction);
-
   if (message.author.bot) return;
-  var MC = message.content.toLowerCase();
+  // var MC = message.content.toLowerCase();
   var AuthorID = message.author.id;
   await PlayerCreateOrUpdate(AuthorID);
 
-  if (!await isMember(AuthorID)) return;
+  // if (!await isMember(AuthorID)) return;
 
+  // const BotReaction = client.channels.cache.get(TODOBotReaction);
   // Fonction de test
-  if (MC.startsWith("!test")) {
-    const futurdateformate = new Date();
-    const jour = 2 // futurdateformate.getDay();
-    const date = futurdateformate.getDate();
-    const mois = futurdateformate.getMonth();
-    const imageAttachment = new AttachmentBuilder('https://i.ibb.co/chF2Z4W/Upj0-MHck-1.gif');
-    await message.reply({
-      files: [imageAttachment],
-      embeds: [await EmbedInscription(jour, date, mois)],
-      components: [await ButtonEmbedInscription()],
-    }).then(() => {
-      message.delete();
-    }).catch(err => {
-      console.error('Error sending message:', err);
-    });
-  }
+  // if (MC.startsWith("!test")) {
+  //   const futurdateformate = new Date();
+  //   const jour = 2 // futurdateformate.getDay();
+  //   const date = futurdateformate.getDate();
+  //   const mois = futurdateformate.getMonth();
+  //   const imageAttachment = new AttachmentBuilder('https://i.ibb.co/chF2Z4W/Upj0-MHck-1.gif');
+  //   await message.reply({
+  //     files: [imageAttachment],
+  //     embeds: [await EmbedInscription(jour, date, mois)],
+  //     components: [await ButtonEmbedInscription()],
+  //   }).then(() => {
+  //     message.delete();
+  //   }).catch(err => {
+  //     console.error('Error sending message:', err);
+  //   });
+  // }
 
 });
 
@@ -274,7 +244,7 @@ client.on('interactionCreate', async (interaction) => {
           const event = listEvent[index];
           if (eventId === event.ID) {
             // modification uniquement si la date et à venir
-            const eventDate = moment.tz(event.Dates, 'YYYY-MM-DD HH:mm', 'Europe/Paris'); // new Date(event.Dates);
+            const eventDate = moment.tz(event.Dates, ['DD/MM/YYYY HH:mm', 'DD-MM-YYYY HH:mm'], 'Europe/Paris');
             if (eventDate.isAfter(currentDate)) {
               // inscription à un event
               if (interaction.customId === 'eventinscripted' + event.ID) {

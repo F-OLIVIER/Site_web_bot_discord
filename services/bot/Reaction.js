@@ -1,98 +1,27 @@
 // fichier annexe
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, setPosition } from 'discord.js';
-import { MAJPresent, MAJRetard, MAJAbsent, removeInscription } from './FuncRaid.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } from 'discord.js';
 import { idRoleUser } from './config.js';
 import { updateIdMessage } from './database.js';
 import moment from 'moment-timezone';
 
-// Fonction d'ajout de réaction
-export async function addReaction(reaction, user) {
-  if (reaction.emoji.name == "👍") { // si present ajouté
-    await MAJPresent(user.id);
-  } else if (reaction.emoji.name == "⌚") { // si retard ajouté
-    await MAJRetard(user.id);
-  } else if (reaction.emoji.name == "👎") { // si absent ajouté
-    await MAJAbsent(user.id);
-  }
-}
-
-// Fonction de remove de réaction
-export async function removeReaction(reaction, user) {
-  if (reaction.emoji.name == "👍" || reaction.emoji.name == "⌚" || reaction.emoji.name == "👎") {
-    removeInscription(user.id);
-  }
-}
-
 // Renouvellement du message d'inscription GvG pour reset les réactions
-export async function msgreactgvg(BotReaction, jour, mois, date) {
-  // Gestion de l'affichage du mois
-  var moisfr = "";
-  // var moisen = "";
-  if (mois == 0) {
-    moisfr = "janvier";
-    // moisen = "january";
-  } else if (mois == 1) {
-    moisfr = "février";
-    // moisen = "february";
-  } else if (mois == 2) {
-    moisfr = "mars";
-    // moisen = "march";
-  } else if (mois == 3) {
-    moisfr = "avril";
-    // moisen = "april";
-  } else if (mois == 4) {
-    moisfr = "mai";
-    // moisen = "may";
-  } else if (mois == 5) {
-    moisfr = "juin";
-    // moisen = "june";
-  } else if (mois == 6) {
-    moisfr = "juillet";
-    // moisen = "july";
-  } else if (mois == 7) {
-    moisfr = "août";
-    // moisen = "august";
-  } else if (mois == 8) {
-    moisfr = "septembre";
-    // moisen = "september";
-  } else if (mois == 9) {
-    moisfr = "octobre";
-    // moisen = "october";
-  } else if (mois == 10) {
-    moisfr = "novembre";
-    // moisen = "november";
-  } else if (mois == 11) {
-    moisfr = "décembre";
-    // moisen = "december";
-  }
-
-  // Génére le format de date pour le message
-  var msgfr = "";
-  // var msgen = "";
-  if (jour == 2) { // la date sera un mardi (jour 2)
-    msgfr = "mardi " + date + " " + moisfr + "";
-    // msgen = "tuesday " + moisen + " " + date + "";
-  } else if (jour == 6) { // la date sera un samedi (jour 6)
-    msgfr = "samedi " + date + " " + moisfr + "";
-    // msgen = "saturday " + moisen + " " + date + "";
-  }
+export async function msgreactgvg(BotReaction) {
+  const futurdateformate = new Date();
+  const jour = futurdateformate.getDay();
+  const date = futurdateformate.getDate();
+  const mois = futurdateformate.getMonth();
+  const imageAttachment = new AttachmentBuilder('https://i.ibb.co/chF2Z4W/Upj0-MHck-1.gif');
 
   // Génére le message et l'envoi sur discord
-  var sendMessage = await BotReaction.send({
-    content: "<@&" + idRoleUser + ">,les inscriptions pour la GvG de ***" + msgfr + "*** sont ouvertes",
-    files: ["https://i43.servimg.com/u/f43/15/76/70/95/image_15.png"]
+  const sendMessage = await BotReaction.send({
+    files: [imageAttachment],
+    embeds: [await EmbedInscription(jour, date, mois)],
+    components: [await ButtonEmbedInscription()],
   });
-  // Ajout des réactions de base
-  await sendMessage.react("👍"); // emoji present
-  // await sendMessage.react("⌚"); // emoji retard
-  await sendMessage.react("👎"); // emoji absent
+
   // Inscription du nouvelle ID du message dans la db
   updateIdMessage(sendMessage.id);
 }
-
-// ----------------------------------------------------------
-// ----------------------- Test Embed -----------------------
-// ----------------------------------------------------------
 
 export async function EmbedInscription(presents = [], absents = []) {
   let nbpresent = 0;

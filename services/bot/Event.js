@@ -33,8 +33,8 @@ export async function modalcreateevent(interaction) {
                 .setComponents(
                     new TextInputBuilder()
                         .setCustomId('date')
-                        .setLabel("Date et heure (ex: 2024-05-26 14:30)")
-                        .setPlaceholder("AAAA-MM-JJ HH:MM")
+                        .setLabel("Date et heure (ex: 03/05/2024 21:00)")
+                        .setPlaceholder("JJ/MM/AAAA HH:MM")
                         .setStyle(TextInputStyle.Short)
                         .setRequired(true)
                 )
@@ -51,9 +51,10 @@ export async function createevent(interaction) {
     const descriptionInput = interaction.fields.getTextInputValue('description');
     // date et heure de l'event
     const dateInput = interaction.fields.getTextInputValue('date');
-    if (!moment(dateInput, 'YYYY-MM-DD HH:mm', true).isValid()) {
+
+    if (!moment(dateInput, ['DD-MM-YYYY HH:mm', 'DD/MM/YYYY HH:mm'], true).isValid()) {
         interaction.reply({
-            content: "Format de date et heure invalide. Merci d'utilisez AAAA-MM-JJ HH:MM.",
+            content: "Format de date et heure invalide. Merci d'utilisez JJ/MM/AAAA HH:MM.",
             ephemeral: true
         });
         return
@@ -78,21 +79,17 @@ export async function EmbedEvent(title, date, description, inscrit = []) {
 
     const listeDesInscrits = inscrit.map(entry => entry.DiscordName).join(' - ');
     const dateFormat = new Date(date);
-    const formattedDate = format(dateFormat, "'Le' EEEE dd MMMM yyyy 'à' HH'h'mm''", { locale: frLocale });
     const formattedDateQuand = format(dateFormat, "'Le' EEEE dd MMMM yyyy'", { locale: frLocale });
     const formattedDatehour = format(dateFormat, "HH'h'mm'", { locale: frLocale });
 
-
     const embedData = new EmbedBuilder()
-        // .setAuthor({ name: title })
-        // .setTitle(formattedDate)
         .setTitle(title)
         .setDescription("Pour : <@&" + idRoleUser + ">")
         .addFields(
             { name: "Description de l'événement :", value: description, inline: false },
             { name: '__Quand ?__', value: formattedDateQuand, inline: true },
             { name: '__A quel heure ?__', value: formattedDatehour, inline: true },
-            { name: '✅ Liste des inscrits (' + listInscrit + ') :', value: listeDesInscrits || 'Aucun', inline: true }
+            { name: '✅ Liste des inscrits (' + listInscrit + ') :', value: listeDesInscrits || 'Aucun', inline: false }
         );
 
     return embedData
