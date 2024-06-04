@@ -1,19 +1,20 @@
 // Fichier annexe
+import { unregisteredList, isOfficier, deleteUser, listInscription, ListEvent, ListInscriptedEvent, CancelEventInscription, InscriptionEvent, existEvent, DeleteEvent } from './database.js';
 import { TODOBotChan, TODOBotChanOfficier, TODOBotReaction, siteInternet, idRoleUser, idRoleOfficier } from './config.js';
 import { slashvisite, visit1, modalvisitelvlAndInflu, visit2, visit3, slashvisitenotpossible } from './guide.js';
 import { createCommands, slashClass, slashInflu, slashLevel, slashRaidReset, slashResetmsggvg } from './slashcommand.js';
-import { unregisteredList, isOfficier, deleteUser, listInscription, ListEvent, ListInscriptedEvent, CancelEventInscription, InscriptionEvent, existEvent, DeleteEvent } from './database.js';
-import { EmbedInscription } from './Reaction.js';
-import { PlayerCreateOrUpdate, createuser, isMember } from './FuncData.js';
-import { client, Messagegvg, EmbedData, EmbedGuide } from './Constant.js';
 import { cronCheckpresence, cronDeleteEvent, cronResetMsgReaction } from "./Cronjob.js"
+import { client, Messagegvg, EmbedData, EmbedGuide } from './Constant.js';
 import { EmbedEvent, createevent, modalcreateevent } from './Event.js';
+import { PlayerCreateOrUpdate, createuser, isMember } from './FuncData.js';
 import { cmdnb, cmdlist } from "./CommandBot.js";
+import { MAJinscription } from './FuncRaid.js';
+import { EmbedInscription } from './gvg.js';
+import { socket } from './socket.js';
 
 // Module nodejs et npm
 import { } from 'dotenv/config';
 import { CronJob } from 'cron';
-import { MAJinscription } from './FuncRaid.js';
 import moment from 'moment-timezone';
 
 client.login(process.env.TOKEN);
@@ -45,7 +46,8 @@ client.on('ready', async () => {
   const BotReaction = client.channels.cache.get(TODOBotReaction);
   console.log('│ • Initializing automatic function            │');
   TaskHandle(BotReaction);
-
+  console.log('│ • Initializing golang communication          │');
+  socket(BotReaction);
   console.log(`│──────────────────────────────────────────────│
 │              Start-up completed              │
 │                 Bot ready !                  │
@@ -135,13 +137,13 @@ client.on('guildMemberUpdate', async (oldMember, newMember) => {
 client.on('messageCreate', async message => {
 
   if (message.author.bot) return;
-  const MC = message.content.toLowerCase();
+  // const MC = message.content.toLowerCase();
+  // const BotReaction = client.channels.cache.get(TODOBotReaction);
   const AuthorID = message.author.id;
   await PlayerCreateOrUpdate(AuthorID);
 
   // if (!await isMember(AuthorID)) return;
 
-  const BotReaction = client.channels.cache.get(TODOBotReaction);
   // Fonction de test
   // if (MC.startsWith("!test")) {
   //   const futurdateformate = new Date();
@@ -159,10 +161,6 @@ client.on('messageCreate', async message => {
   //     console.error('Error sending message:', err);
   //   });
   // }
-
-  if (MC.startsWith("!test")) {
-    cronResetMsgReaction(BotReaction);
-  }
 
 });
 

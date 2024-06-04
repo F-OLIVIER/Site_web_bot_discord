@@ -1,7 +1,7 @@
 // Fichier annexe
-import { DeleteEvent, IDmsgGvG, ListEvent, etatmsgGvG } from './database.js';
-import { TODOBotReaction, idCategorie } from './config.js';
-import { msgreactgvg } from './Reaction.js';
+import { DeleteEvent, ListEvent, etatmsgGvG } from './database.js';
+import { idCategorie } from './config.js';
+import { msgreactgvg } from './gvg.js';
 import { isMember } from './FuncData.js';
 import { Resetac } from './FuncRaid.js';
 import { client } from './Constant.js';
@@ -38,12 +38,8 @@ export async function cronResetMsgReaction(BotReaction) {
   const CurrentDate = new Date(Date.now() + (moment().tz("Europe/Paris").utcOffset() * 60 * 1000));
   var Allumage = await etatmsgGvG();
   if (Allumage[0].Allumage === 0) {
-    // Suppression du message d'inscription GvG
-    var id_msg = await IDmsgGvG();
-    client.channels.cache.get(TODOBotReaction).messages.fetch(id_msg[0].IDMessageGvG).then(message => message.delete());
     Resetac();
     msgreactgvg(BotReaction);
-
   } else {
     console.log("Fonction automatique resetmsgreact à l'arret : " + CurrentDate);
   }

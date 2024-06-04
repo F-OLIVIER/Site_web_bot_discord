@@ -1,18 +1,23 @@
 // fichier annexe
 import { ActionRowBuilder, AttachmentBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } from 'discord.js';
-import { idRoleUser } from './config.js';
-import { updateIdMessage } from './database.js';
+import { TODOBotReaction, idRoleUser } from './config.js';
+import { IDmsgGvG, updateIdMessage } from './database.js';
+import { client } from './Constant.js';
+
+// module nodejs et npm
 import moment from 'moment-timezone';
 
 // Renouvellement du message d'inscription GvG pour reset les réactions
 export async function msgreactgvg(BotReaction) {
+  var id_msg = await IDmsgGvG();
+  await client.channels.cache.get(TODOBotReaction).messages.fetch(id_msg[0].IDMessageGvG).then(message => message.delete());
+
   const futurdateformate = new Date();
   const jour = futurdateformate.getDay();
   const date = futurdateformate.getDate();
   const mois = futurdateformate.getMonth();
   const imageAttachment = new AttachmentBuilder('https://i43.servimg.com/u/f43/15/76/70/95/gvg10.jpg');
-  //new AttachmentBuilder('https://i.ibb.co/chF2Z4W/Upj0-MHck-1.gif');
-
+  // new AttachmentBuilder('https://i.ibb.co/chF2Z4W/Upj0-MHck-1.gif');
 
   // Génére le message et l'envoi sur discord
   const sendMessage = await BotReaction.send({
@@ -20,6 +25,21 @@ export async function msgreactgvg(BotReaction) {
     content: "<@&" + idRoleUser + ">",
     embeds: [await EmbedInscription(jour, date, mois)],
     components: [await ButtonEmbedInscription()],
+  });
+
+  // Inscription du nouvelle ID du message dans la db
+  updateIdMessage(sendMessage.id);
+}
+
+export async function tmpmsgreactgvg(BotReaction) {
+  var id_msg = await IDmsgGvG();
+  await client.channels.cache.get(TODOBotReaction).messages.fetch(id_msg[0].IDMessageGvG).then(message => message.delete());
+
+  const imageAttachment = new AttachmentBuilder('https://i43.servimg.com/u/f43/15/76/70/95/gvg10.jpg');
+  // Génére le message et l'envoi sur discord
+  const sendMessage = await BotReaction.send({
+    files: [imageAttachment],
+    embeds: [await tmpEmbedInscription()],
   });
 
   // Inscription du nouvelle ID du message dans la db
@@ -65,6 +85,16 @@ export async function ButtonEmbedInscription() {
     );
 
   return buttons
+}
+
+export async function tmpEmbedInscription() {
+  const embedData = new EmbedBuilder()
+    .setTitle(":regional_indicator_g::regional_indicator_v::regional_indicator_g:")
+    .setColor(13373715)
+    .setDescription("Pas d'inscription au GvG actuellement, la prochaine gvg sera une gvg d'entrainement (drill)")
+    .setThumbnail("https://i43.servimg.com/u/f43/15/76/70/95/embedi11.png");
+
+  return embedData
 }
 
 function dateGvG() {

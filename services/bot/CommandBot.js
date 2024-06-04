@@ -1,10 +1,9 @@
 // Fichier annexe
 import { client, Messagenb, Messagelist } from './Constant.js';
-import { msgreactgvg } from './Reaction.js';
+import { msgreactgvg } from './gvg.js';
 import { listclass } from './database.js';
 
 // Module nodejs et npm
-import moment from 'moment-timezone';
 import { } from 'dotenv/config';
 import sqlite3 from 'sqlite3';
 

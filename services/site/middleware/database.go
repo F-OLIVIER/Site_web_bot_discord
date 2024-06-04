@@ -213,6 +213,12 @@ func UpdateAdministration(r *http.Request, database *sql.DB) {
 		stmt, err := database.Prepare("UPDATE GestionBot SET Allumage = ? WHERE ID = 1")
 		CheckErr("Update Allumage UpdateAdministration ", err)
 		stmt.Exec(newAllumage)
+
+		if newAllumage == 0 {
+			SendMessage("activatebot")
+		} else {
+			SendMessage("desactivatebot")
+		}
 	} else if data.Resetnbgvg { // reset des stat GvG
 		stmt, err := database.Prepare(`UPDATE Users SET NbGvGParticiped = 0, NbTotalGvG = 0;`)
 		CheckErr("Update Resetnbgvg UpdateAdministration", err)
