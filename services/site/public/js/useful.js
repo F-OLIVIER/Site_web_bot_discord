@@ -98,3 +98,40 @@ export function fetchlogout() {
 export function removeHTMLTags(input) {
     return input.replace(/<\/?[^>]+(>|$)/g, "");
 }
+
+export async function confirmwindows(message) {
+    return new Promise((resolve) => {
+        const confirm = document.createElement('div');
+        confirm.className = 'confirm';
+        
+        const confirmContent = document.createElement('div');
+        confirmContent.className = 'confirmContent';
+        
+        const confirmMessage = document.createElement('p');
+        confirmMessage.textContent = message;
+        confirmContent.appendChild(confirmMessage);
+        
+        const confirmBtn = document.createElement('button');
+        confirmBtn.className = 'confirmBtn';
+        confirmBtn.textContent = 'Oui';
+        confirmContent.appendChild(confirmBtn);
+        
+        const cancelBtn = document.createElement('button');
+        cancelBtn.className = 'cancelBtn';
+        cancelBtn.textContent = 'Annuler';
+        confirmContent.appendChild(cancelBtn);
+        
+        confirm.appendChild(confirmContent);
+        document.body.appendChild(confirm);
+        
+        confirmBtn.onclick = () => {
+            confirm.remove();
+            resolve(true);
+        };
+        
+        cancelBtn.onclick = () => {
+            confirm.remove();
+            resolve(false);
+        };
+    });
+}

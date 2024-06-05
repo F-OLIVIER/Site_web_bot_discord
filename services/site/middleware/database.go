@@ -201,13 +201,13 @@ func BotActivation(database *sql.DB) bool {
 }
 
 func UpdateAdministration(r *http.Request, database *sql.DB) {
-	var data data.AdministrateBot
-	err := json.NewDecoder(r.Body).Decode(&data)
+	var datajson data.AdministrateBot
+	err := json.NewDecoder(r.Body).Decode(&datajson)
 	CheckErr("Erreur de décodage JSON SaveCreateGroup", err)
 
-	if data.Allumage != "" { // changement de l'etat du bot
+	if datajson.Allumage != "" { // changement de l'etat du bot
 		newAllumage := 0
-		if data.Allumage == "false" {
+		if datajson.Allumage == "false" {
 			newAllumage = 1
 		}
 		stmt, err := database.Prepare("UPDATE GestionBot SET Allumage = ? WHERE ID = 1")
@@ -215,19 +215,30 @@ func UpdateAdministration(r *http.Request, database *sql.DB) {
 		stmt.Exec(newAllumage)
 
 		if newAllumage == 0 {
-			SendMessage("activatebot")
+			message := data.SocketMessage{
+				Type: "activatebot",
+			}
+			SendMessage(message)
 		} else {
-			SendMessage("desactivatebot")
+			message := data.SocketMessage{
+				Type: "desactivatebot",
+			}
+			SendMessage(message)
 		}
-	} else if data.Resetnbgvg { // reset des stat GvG
+	} else if datajson.Resetnbgvg { // reset des stat GvG
 		stmt, err := database.Prepare(`UPDATE Users SET NbGvGParticiped = 0, NbTotalGvG = 0;`)
 		CheckErr("Update Resetnbgvg UpdateAdministration", err)
 		stmt.Exec()
-	} else if data.NewWeapon != "" { // ajout d'une nouvelle arme de héros
+	} else if datajson.NewWeapon != "" { // ajout d'une nouvelle arme de héros
 		// insertion de la nouvelle arme dans la db
 		stmt, err := database.Prepare(`INSERT INTO ListGameCharacter(ClasseFR) VALUES(?);`)
 		CheckErr("1- INSERT NewWeapon in UpdateAdministration ", err)
-		stmt.Exec(data.NewWeapon)
+		stmt.Exec(datajson.NewWeapon)
+		message := data.SocketMessage{
+			Type:    "newclass",
+			Content: datajson.NewWeapon,
+		}
+		SendMessage(message)
 	}
 }
 
@@ -249,6 +260,11 @@ func UploadInformationsBot(r *http.Request, database *sql.DB) {
 				UploadPicture(file, header, "./site/img/unit/"+header.Filename)
 				if formData.CreateUnit.Name != "" { // création d'une unité
 					createNewUnit(formData.CreateUnit, "./site/img/unit/"+header.Filename, database)
+					message := data.SocketMessage{
+						Type:    "newUnit",
+						Content: formData.CreateUnit.Name,
+					}
+					SendMessage(message)
 				} else if formData.ChangeUnit.Name != "" { // Update de l'image d'une unit
 					updateImgUnit(formData.ChangeUnit, "./site/img/unit/"+header.Filename, database)
 				}
