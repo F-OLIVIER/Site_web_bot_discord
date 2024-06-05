@@ -92,7 +92,7 @@ export async function tmpEmbedInscription() {
     .setTitle(":regional_indicator_g::regional_indicator_v::regional_indicator_g:")
     .setColor(13373715)
     .setDescription("La prochaine GvG sera une GvG d'entrainement (aussi appelée drill).\nPar conséquent, les inscriptions ne sont pas demandées.")
-    .setThumbnail("https://i43.servimg.com/u/f43/15/76/70/95/poleax10.png");
+    .setThumbnail("https://i43.servimg.com/u/f43/15/76/70/95/spear10.png");
 
   return embedData
 }
