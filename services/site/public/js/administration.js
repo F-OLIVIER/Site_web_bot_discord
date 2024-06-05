@@ -425,10 +425,6 @@ async function adminitrateBot(option) {
             let createUnit = {};
             const inputvalue_name = document.getElementById('nameNewUnit').value
             createUnit.Unit_name = removeHTMLTags(inputvalue_name);
-            if (dataToSend.Unit_name !== inputvalue_name) {
-                alert("Les balises HTML ne sont pas autorisées.");
-                return
-            }
             createUnit.Unit_influence = document.getElementById('influNewUnit').value;
             if (dataToSend.Unit_influence > 500) {
                 alert("Influence impossible.");
@@ -490,10 +486,6 @@ async function adminitrateBot(option) {
             // changeUnit.Unit_name = removeHTMLTags(document.getElementById('selectChangeUnit').value);
             const inputvalue_name = document.getElementById('selectChangeUnit').value
             changeUnit.Unit_name = removeHTMLTags(inputvalue_name);
-            if (changeUnit.Unit_name !== inputvalue_name) {
-                alert("Les balises HTML ne sont pas autorisées.");
-                return
-            }
             changeUnit.Unit_influence = document.getElementById('changeUnitInfluence').value;
             if (changeUnit.Unit_influence > 500 || changeUnit.Unit_influence < 0) {
                 alert("Influence impossible.");

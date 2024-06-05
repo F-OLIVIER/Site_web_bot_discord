@@ -257,11 +257,11 @@ func UploadInformationsBot(r *http.Request, database *sql.DB) {
 			file, header, err := r.FormFile("image")
 			if err == nil {
 				defer file.Close()
-				UploadPicture(file, header, "./site/img/unit/"+header.Filename)
+				UploadPicture(file, header, "./public/images/unit/"+header.Filename)
 				if formData.CreateUnit.Name != "" { // création d'une unité
 					createNewUnit(formData.CreateUnit, "./site/img/unit/"+header.Filename, database)
 					message := data.SocketMessage{
-						Type:    "newUnit",
+						Type:    "newunit",
 						Content: formData.CreateUnit.Name,
 					}
 					SendMessage(message)
@@ -296,14 +296,16 @@ func createNewUnit(dataCreateUnit data.Unit, filepath string, database *sql.DB) 
 
 	if nbColum > 0 {
 		// ajout de la colonne dans la table Caserne
-		stmtColumCaserne, err := database.Prepare(`ALTER TABLE Caserne ADD COLUMN ? INTEGER DEFAULT 0;`)
-		CheckErr("3- ALTER TABLE createNewUnit ", err)
-		stmtColumCaserne.Exec("Unit" + string(nbColum-1))
+		queryCaserne := fmt.Sprintf("ALTER TABLE Caserne ADD COLUMN %s INTEGER DEFAULT 0;", "Unit"+strconv.Itoa(nbColum-1))
+		stmtColumCaserne, err := database.Prepare(queryCaserne)
+		CheckErr("3- ALTER TABLE Caserne createNewUnit ", err)
+		stmtColumCaserne.Exec()
 
 		// ajout de la colonne dans la table CaserneMaitrise
-		stmtColumCaserneMaitrise, err := database.Prepare(`ALTER TABLE CaserneMaitrise ADD COLUMN ? INTEGER DEFAULT 0;`)
-		CheckErr("3- ALTER TABLE createNewUnit ", err)
-		stmtColumCaserneMaitrise.Exec("Unit" + string(nbColum-1))
+		queryCaserneMaitrise := fmt.Sprintf("ALTER TABLE CaserneMaitrise ADD COLUMN %s INTEGER DEFAULT 0;", "Unit"+strconv.Itoa(nbColum-1))
+		stmtColumCaserneMaitrise, err := database.Prepare(queryCaserneMaitrise)
+		CheckErr("3- ALTER TABLE CaserneMaitrise createNewUnit ", err)
+		stmtColumCaserneMaitrise.Exec()
 	}
 }
 

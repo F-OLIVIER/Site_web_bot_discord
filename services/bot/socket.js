@@ -1,7 +1,7 @@
 // fichier annexe
-import { Resetac } from './FuncRaid.js';
+import { idRoleUser, siteInternet } from './config.js';
+import { Resetsc } from './FuncRaid.js';
 import { BotChan } from './Main.js';
-import { idRoleUser } from './config.js';
 import { msgreactgvg, tmpmsgreactgvg } from './gvg.js';
 
 // module nodejs et npm
@@ -19,6 +19,7 @@ export function socket(BotReaction) {
 
         switch (jsonMessage.type) {
           case "activatebot":
+            Resetsc();
             msgreactgvg(BotReaction)
             break;
 

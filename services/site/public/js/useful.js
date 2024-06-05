@@ -96,7 +96,7 @@ export function fetchlogout() {
 
 // Fonction pour eviter les balises/injections
 export function removeHTMLTags(input) {
-    return input.replace(/<\/?[^>]+(>|$)/g, "");
+    return input.replace(/</g, "").replace(/>/g, "");
 }
 
 export async function confirmwindows(message) {
