@@ -160,8 +160,9 @@ func ApiHandler(w http.ResponseWriter, r *http.Request) {
 					DiscordPhoto:    DiscordPhoto,
 				}
 				gestion := &data.Gestion{
-					Logged:   true,
-					Officier: officier,
+					Logged:      true,
+					Officier:    officier,
+					BotActivate: utils.BotActivation(database),
 				}
 				sendHTML = &data.SendHTML{
 					UserInfo: *userInfo,

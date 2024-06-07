@@ -90,31 +90,37 @@ function containerCharacterCard(data) {
         infoGvG.appendChild(titleinfoGvG);
         let etatInscripted = document.createElement('div');
         let listButton = createHTMLElement('div', 'listButton');
-        if (data.UserInfo.EtatInscription === 0 || data.UserInfo.EtatInscription === -1) {
-            etatInscripted.textContent = "⁉️ Vous n'éte pas inscrit pour la prochaine GvG";
-            // button present
-            let buttonPresent = createHTMLElement('button', 'inscriptedPresent');
-            buttonPresent.textContent = "M'inscrire présent"
-            listButton.appendChild(buttonPresent);
-            // button absent
-            let buttonAbsent = createHTMLElement('button', 'inscriptedAbsent');
-            buttonAbsent.textContent = "M'inscrire absent"
-            listButton.appendChild(buttonAbsent);
-        } else if (data.UserInfo.EtatInscription == 1) {
-            etatInscripted.textContent = "✅ Inscrit présent pour la prochaine GvG";
-            // button absent
-            let buttonAbsent = createHTMLElement('button', 'inscriptedAbsent');
-            buttonAbsent.textContent = "M'inscrire absent"
-            listButton.appendChild(buttonAbsent);
-        } else if (data.UserInfo.EtatInscription == 3) {
-            etatInscripted.textContent = "❌ inscrit absent pour la prochaine GvG";
-            // button present
-            let buttonPresent = createHTMLElement('button', 'inscriptedPresent');
-            buttonPresent.textContent = "M'inscrire présent"
-            listButton.appendChild(buttonPresent);
+        if (data.Gestion.BotActivate) {
+            if (data.UserInfo.EtatInscription === 0 || data.UserInfo.EtatInscription === -1) {
+                etatInscripted.textContent = "⁉️ Vous n'éte pas inscrit pour la prochaine GvG";
+                // button present
+                let buttonPresent = createHTMLElement('button', 'inscriptedPresent');
+                buttonPresent.textContent = "M'inscrire présent"
+                listButton.appendChild(buttonPresent);
+                // button absent
+                let buttonAbsent = createHTMLElement('button', 'inscriptedAbsent');
+                buttonAbsent.textContent = "M'inscrire absent"
+                listButton.appendChild(buttonAbsent);
+            } else if (data.UserInfo.EtatInscription == 1) {
+                etatInscripted.textContent = "✅ Inscrit présent pour la prochaine GvG";
+                // button absent
+                let buttonAbsent = createHTMLElement('button', 'inscriptedAbsent');
+                buttonAbsent.textContent = "M'inscrire absent"
+                listButton.appendChild(buttonAbsent);
+            } else if (data.UserInfo.EtatInscription == 3) {
+                etatInscripted.textContent = "❌ inscrit absent pour la prochaine GvG";
+                // button present
+                let buttonPresent = createHTMLElement('button', 'inscriptedPresent');
+                buttonPresent.textContent = "M'inscrire présent"
+                listButton.appendChild(buttonPresent);
+            }
+        } else {
+            etatInscripted.textContent = "Pas d'inscription pour les GvG actuellement";
         }
         infoGvG.appendChild(etatInscripted);
-        infoGvG.appendChild(listButton);
+        if (data.Gestion.BotActivate) {
+            infoGvG.appendChild(listButton);
+        }
 
         let nbGvG = document.createElement('div');
         nbGvG.textContent = 'Nombre de gvg participé : ' + data.UserInfo.NbGvGParticiped;
@@ -129,16 +135,17 @@ function containerCharacterCard(data) {
         document.getElementById('buttonMAJpersonnage').addEventListener('click', () => {
             majPersonnage();
         });
-
-        if (document.getElementById('inscriptedPresent')) {
-            document.getElementById('inscriptedPresent').addEventListener('click', () => {
-                changeInscription(true);
-            });
-        }
-        if (document.getElementById('inscriptedAbsent')) {
-            document.getElementById('inscriptedAbsent').addEventListener('click', () => {
-                changeInscription(false);
-            });
+        if (data.Gestion.BotActivate) {
+            if (document.getElementById('inscriptedPresent')) {
+                document.getElementById('inscriptedPresent').addEventListener('click', () => {
+                    changeInscription(true);
+                });
+            }
+            if (document.getElementById('inscriptedAbsent')) {
+                document.getElementById('inscriptedAbsent').addEventListener('click', () => {
+                    changeInscription(false);
+                });
+            }
         }
 
     } else {
