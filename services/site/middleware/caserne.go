@@ -131,8 +131,8 @@ func MAJCaserne(r *http.Request, userID string, database *sql.DB) {
 				updateMaitrise = append(updateMaitrise, unit[2])      // Liste des valeur des colonne CaserneMaitrise
 			} else { // Suppression de l'unité
 				setConditions = append(setConditions, unit[0]+" = ?") // Liste des colonnes à set
-				updateValues = append(updateValues, "")               // Liste des valeurs des colonnes Caserne
-				updateMaitrise = append(updateMaitrise, "")           // Liste des valeur des colonne CaserneMaitrise
+				updateValues = append(updateValues, "0")              // Liste des valeurs des colonnes Caserne
+				updateMaitrise = append(updateMaitrise, "0")          // Liste des valeur des colonne CaserneMaitrise
 			}
 		}
 	}

@@ -156,7 +156,7 @@ function addUnit(data, listUnitInfanterie, listUnitDistant, listUnitCav, tier) {
             selecctlvl.style.borderRadius = '15px';
             selecctlvl.style.fontSize = '16px';
             selecctlvl.appendChild(defaultoption);
-            if (Currentunit.Unit_lvl !== "") {
+            if (Currentunit.Unit_lvl != "0") {
                 let optionAbsent = document.createElement("option");
                 optionAbsent.value = -1;
                 optionAbsent.text = 'Unité non débloqué';
