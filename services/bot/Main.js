@@ -212,20 +212,22 @@ client.on('interactionCreate', async (interaction) => {
 
       let presentList = [];
       if (listinscrit[0] !== undefined) {
-        presentList = listinscrit[0].map(id => {
-          const userId = BigInt(id);
-          const user = client.users.cache.get(userId.toString());
-          return user ? user.displayName : null;
-        }).filter(displayName => displayName !== null);
+        presentList = await Promise.all(
+          listinscrit[0].map(async id => {
+            const userId = BigInt(id);
+            return '<@' + userId.toString() + '>';
+          })
+        );
       }
 
       let absentList = [];
       if (listinscrit[2] !== undefined) {
-        absentList = listinscrit[2].map(id => {
-          const userId = BigInt(id);
-          const user = client.users.cache.get(userId.toString());
-          return user ? user.displayName : null;
-        }).filter(displayName => displayName !== null);
+        absentList = await Promise.all(
+          listinscrit[2].map(async id => {
+            const userId = BigInt(id);
+            return '<@' + userId.toString() + '>';
+          })
+        );
       }
 
       await interaction.update({
