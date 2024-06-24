@@ -7,3 +7,7 @@
 ***main
 # database
 services/database/databaseGvG.db
+
+# fichier de configuration
+***config.js
+***config.go
