@@ -8,6 +8,7 @@ export async function creategroup(option) {
 let groupNumber = 1;
 let listUserSelect = [];
 let timerThrottlebutton = 0;
+let eventListenersMap = new Map();
 export async function containercreategroup(data) {
     if (data.Gestion.Logged && data.Gestion.Officier) {
         communBlock(data);
@@ -451,15 +452,15 @@ async function createExistGroupe(data, userIngroup) {
         divuser.appendChild(influenceplayer);
         let unit1 = await createHTMLElement('div', 'unit1');
         divuser.appendChild(unit1);
-        let selectunit1;
         let unit2 = await createHTMLElement('div', 'unit2');
         divuser.appendChild(unit2);
-        let selectunit2;
         let unit3 = await createHTMLElement('div', 'unit3');
         divuser.appendChild(unit3);
-        let selectunit3;
         let unit4 = await createHTMLElement('div', 'unit4');
         divuser.appendChild(unit4);
+        let selectunit1;
+        let selectunit2;
+        let selectunit3;
         let selectunit4;
 
         if (currentUser.Username !== "") { // utilisateur present
@@ -913,6 +914,7 @@ function createNewline(divName, data, influenceplayer, intermediairy, influenceU
             intermediairy.textContent = "";
             influenceUnit.id = 'influPlayer';
             influenceplayer.textContent = "";
+
             if (divName.value !== "") {
                 listUserSelect.push(userSelected);
                 optionSelectUsername();
@@ -949,7 +951,6 @@ function createNewline(divName, data, influenceplayer, intermediairy, influenceU
                         if (userSelected !== "") {
                             // mise à jour des balises select avec les nouvelles unités
                             updateSelectUnit(data, selectunit1, selectunit2, selectunit3, selectunit4, userSelected);
-
                             selectunit1.value = "";
                             selectunit1.style.visibility = 'visible';
                             influenceUnit.id = 'influUnit' + usernameSansEspaces;
@@ -1003,9 +1004,15 @@ function createEventSelectUnit(divName, influenceplayer, intermediairy, influenc
         if (selectunit3.value === "" || selectunit3.value === "Consulter un officier") {
             selectunit4.style.visibility = 'hidden';
         }
+        selectunit1.id = 'unit1' + usernameSansEspaces;
+        selectunit2.id = 'unit2' + usernameSansEspaces;
+        selectunit3.id = 'unit3' + usernameSansEspaces;
+        selectunit4.id = 'unit4' + usernameSansEspaces;
+        influenceUnit.id = 'influUnit' + usernameSansEspaces;
+        influenceplayer.id = 'influPlayer' + usernameSansEspaces;
     }
 
-    selectunit1.addEventListener('change', function () {
+    let selectunit1EventListener = async function () {
         const now = new Date();
         if (now - timerThrottlebutton > 500) {
             timerThrottlebutton = now;
@@ -1021,9 +1028,9 @@ function createEventSelectUnit(divName, influenceplayer, intermediairy, influenc
             }
             changeInfluUnit(infoUser.UserCaserne, usernameSansEspaces);
         }
-    });
+    };
 
-    selectunit2.addEventListener('change', function () {
+    let selectunit2EventListener = async function () {
         const now = new Date();
         if (now - timerThrottlebutton > 500) {
             timerThrottlebutton = now;
@@ -1037,9 +1044,9 @@ function createEventSelectUnit(divName, influenceplayer, intermediairy, influenc
             }
             changeInfluUnit(infoUser.UserCaserne, usernameSansEspaces);
         }
-    });
+    };
 
-    selectunit3.addEventListener('change', function () {
+    let selectunit3EventListener = async function () {
         const now = new Date();
         if (now - timerThrottlebutton > 500) {
             timerThrottlebutton = now;
@@ -1051,15 +1058,47 @@ function createEventSelectUnit(divName, influenceplayer, intermediairy, influenc
             }
             changeInfluUnit(infoUser.UserCaserne, usernameSansEspaces);
         }
-    });
+    };
 
-    selectunit4.addEventListener('change', function () {
+    let selectunit4EventListener = async function () {
         const now = new Date();
         if (now - timerThrottlebutton > 500) {
             timerThrottlebutton = now;
             changeInfluUnit(infoUser.UserCaserne, usernameSansEspaces);
         }
-    });
+    };
+
+    // ajout dans la map
+    eventListenersMap.set(usernameSansEspaces, [
+        selectunit1EventListener,
+        selectunit2EventListener,
+        selectunit3EventListener,
+        selectunit4EventListener
+    ]);
+
+    // activation des eventlistener
+    selectunit1.addEventListener('change', selectunit1EventListener);
+    selectunit2.addEventListener('change', selectunit2EventListener);
+    selectunit3.addEventListener('change', selectunit3EventListener);
+    selectunit4.addEventListener('change', selectunit4EventListener);
+}
+
+function deleteEventListeners(usernameSansEspaces) {
+    if (eventListenersMap.has(usernameSansEspaces)) {
+        let eventListeners = eventListenersMap.get(usernameSansEspaces);
+        eventListeners.forEach((listener) => {
+            // Sélectionner toutes les div avec la classe "divuser"
+            document.querySelectorAll('.divuser').forEach(parentDiv => {
+                // Sélectionner tous les enfants de chaque div avec la classe "divuser"
+                parentDiv.querySelectorAll('*').forEach(element => {
+                    element.removeEventListener('change', listener);
+                });
+            });
+        });
+
+        // Supprimer l'entrée de la Map
+        eventListenersMap.delete(usernameSansEspaces);
+    }
 }
 
 // --------------------------------------------------------
@@ -1161,6 +1200,9 @@ function MAJlistUserSelect() {
         div.querySelectorAll('option').forEach(option => {
             if (option.selected && option.value !== "") {
                 listUserSelect.push(option.value);
+            } else { // si absent de la selection, supression de la map d'eventlistener
+                const usernameSansEspaces = option.value.replace(/\s/g, '');
+                deleteEventListeners(usernameSansEspaces);
             }
         });
     });
@@ -1197,11 +1239,12 @@ function updateSelectUnit(data, selectunit1, selectunit2, selectunit3, selectuni
     let infoUsersave = {};
     for (let j = 0; j < data.ListInscripted.length; j++) {
         let userInscripted = data.ListInscripted[j];
-        if (userInscripted.Username.replace(/\s/g, '') === userSelected) {
+        if (userInscripted.Username.replace(/\s/g, '') === userSelected.replace(/\s/g, '')) {
             infoUsersave = userInscripted;
             break;
         }
     }
+
     const usernameSansEspaces = infoUsersave.Username.replace(/\s/g, '');
     insertSelectUnit(selectunit1, infoUsersave.UserCaserne, "", 0);
     selectunit1.id = 'unit1' + usernameSansEspaces;
