@@ -99,47 +99,46 @@ export async function tmpEmbedInscription() {
 
 function dateGvG() {
   // gestion de la date futur pour le message
-  const now = moment();
-  const day = now.day(); // 2 mardi, 6 samedi
+  const now = moment().tz('Europe/Paris');
 
   // si mardi, annonce du samedi et si Samedi, annonce du mardi
-  var futurdate;
-  switch (day) {
+  let futurdate;
+  switch (now.day()) { // 2 mardi, 6 samedi
     case 0: // dimanche
-      futurdate = moment().add(2, 'days');
+      futurdate = now.add(2, 'days');
       break;
 
     case 1: // lundi
-      futurdate = moment().add(1, 'days');
+      futurdate = now.add(1, 'days');
       break;
 
     case 2: // mardi
-      // test si avant 22h
+      // test si avant 21h
       if (now.hour() < 21) {
-        futurdate = moment().add(0, 'days');
+        futurdate = now.add(0, 'days');
       } else {
-        futurdate = moment().add(4, 'days');
+        futurdate = now.add(4, 'days');
       }
       break;
 
     case 3: // mercredi
-      futurdate = moment().add(3, 'days');
+      futurdate = now.add(3, 'days');
       break;
 
     case 4: // jeudi
-      futurdate = moment().add(2, 'days');
+      futurdate = now.add(2, 'days');
       break;
 
     case 5: // vendredi
-      futurdate = moment().add(1, 'days');
+      futurdate = now.add(1, 'days');
       break;
 
     case 6: // samedi
       // test si avant 22h
       if (now.hour() < 21) {
-        futurdate = moment().add(0, 'days');
+        futurdate = now.add(0, 'days');
       } else {
-        futurdate = moment().add(3, 'days');
+        futurdate = now.add(3, 'days');
       }
       break;
   }
