@@ -612,18 +612,36 @@ function insertSelectUnit(selectunit, caserne, nameUnit, optionUser) {
     // groupe pour l'affichage des selects
     let optgroupOther = document.createElement('optgroup');
     optgroupOther.label = 'Option de gestion';
-    let optgroupT5 = document.createElement('optgroup');
-    optgroupT5.label = 'Unité T5';
-    let optgroupT4 = document.createElement('optgroup');
-    optgroupT4.label = 'Unité T4';
-    let optgroupT3 = document.createElement('optgroup');
-    optgroupT3.label = 'Unité T3';
+
+    let optgroupT5Infanterie = document.createElement('optgroup');
+    optgroupT5Infanterie.label = 'T5 - Infanterie';
+    let optgroupT5Distant = document.createElement('optgroup');
+    optgroupT5Distant.label = 'T5 - Distant';
+    let optgroupT5Cav = document.createElement('optgroup');
+    optgroupT5Cav.label = 'T5 - Cavalerie';
+
+    let optgroupT4Infanterie = document.createElement('optgroup');
+    optgroupT4Infanterie.label = 'T4 - Infanterie';
+    let optgroupT4Distant = document.createElement('optgroup');
+    optgroupT4Distant.label = 'T4 - Distant';
+    let optgroupT4Cav = document.createElement('optgroup');
+    optgroupT4Cav.label = 'T4 - Cavalerie';
+
+    let optgroupT3Infanterie = document.createElement('optgroup');
+    optgroupT3Infanterie.label = 'T3 - Infanterie';
+    let optgroupT3Distant = document.createElement('optgroup');
+    optgroupT3Distant.label = 'T3 - Distant';
+    let optgroupT3Cav = document.createElement('optgroup');
+    optgroupT3Cav.label = 'T3 - Cavalerie';
 
     // Légende : 🔴 Unité non maitrisé, 🟡 Unité en cour de maitrise, 🟢 Unité maitrisé
     if (caserne !== null && caserne.length !== undefined) {
 
-        for (let j = 0; j < caserne.length; j++) {
-            const unit = caserne[j];
+        // Trier le tableau jsonData en utilisant la fonction de comparaison
+        const currentCaserne = [...caserne].sort(compareUnitNames);
+
+        for (let j = 0; j < currentCaserne.length; j++) {
+            const unit = currentCaserne[j];
 
             let textoption = "";
             if (unit.Unit_maitrise === '1' && unit.UserMaitrise === '0') {
@@ -645,12 +663,30 @@ function insertSelectUnit(selectunit, caserne, nameUnit, optionUser) {
                 const option = document.createElement('option');
                 option.value = unit.Unit_name;
                 option.text = textoption;
-                if (unit.Unit_tier === 'T5') {
-                    optgroupT5.appendChild(option)
+                if (unit.Unit_tier === 'T5') { // "Infanterie" "Distant" "Cavalerie"
+                    if (unit.Unit_type === 'Infanterie') {
+                        optgroupT5Infanterie.appendChild(option);
+                    } else if (unit.Unit_type === 'Distant') {
+                        optgroupT5Distant.appendChild(option);
+                    } else if (unit.Unit_type === 'Cavalerie') {
+                        optgroupT5Cav.appendChild(option);
+                    }
                 } else if (unit.Unit_tier === 'T4') {
-                    optgroupT4.appendChild(option)
+                    if (unit.Unit_type === 'Infanterie') {
+                        optgroupT4Infanterie.appendChild(option);
+                    } else if (unit.Unit_type === 'Distant') {
+                        optgroupT4Distant.appendChild(option);
+                    } else if (unit.Unit_type === 'Cavalerie') {
+                        optgroupT4Cav.appendChild(option);
+                    }
                 } else if (unit.Unit_tier === 'T3') {
-                    optgroupT3.appendChild(option)
+                    if (unit.Unit_type === 'Infanterie') {
+                        optgroupT3Infanterie.appendChild(option);
+                    } else if (unit.Unit_type === 'Distant') {
+                        optgroupT3Distant.appendChild(option);
+                    } else if (unit.Unit_type === 'Cavalerie') {
+                        optgroupT3Cav.appendChild(option);
+                    }
                 }
             }
 
@@ -683,9 +719,29 @@ function insertSelectUnit(selectunit, caserne, nameUnit, optionUser) {
     }
 
     selectunit.appendChild(optgroupOther);
-    selectunit.appendChild(optgroupT5);
-    selectunit.appendChild(optgroupT4);
-    selectunit.appendChild(optgroupT3);
+    // unit Infanterie
+    selectunit.appendChild(optgroupT5Infanterie);
+    selectunit.appendChild(optgroupT5Distant);
+    selectunit.appendChild(optgroupT5Cav);
+    // unit Distant
+    selectunit.appendChild(optgroupT4Infanterie);
+    selectunit.appendChild(optgroupT4Distant);
+    selectunit.appendChild(optgroupT4Cav);
+    // unit Cav
+    selectunit.appendChild(optgroupT3Infanterie);
+    selectunit.appendChild(optgroupT3Distant);
+    selectunit.appendChild(optgroupT3Cav);
+
+}
+
+function compareUnitNames(a, b) {
+    if (a.Unit_name < b.Unit_name) {
+        return -1;
+    }
+    if (a.Unit_name > b.Unit_name) {
+        return 1;
+    }
+    return 0;
 }
 
 // *************** Option "not exist group" ***************
@@ -1291,3 +1347,4 @@ function groupType() {
 
     return groupType
 }
+

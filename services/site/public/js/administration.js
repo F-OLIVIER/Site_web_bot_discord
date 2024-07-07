@@ -496,7 +496,7 @@ async function adminitrateBot(option) {
                 return
             }
             changeUnit.Unit_lvlMax = document.getElementById('changeUnitLvlMax').value;
-            if (changeUnit.Unit_influence > 50 || changeUnit.Unit_influence < 0) {
+            if (changeUnit.Unit_lvlMax > 50 || changeUnit.Unit_lvlMax < 0) {
                 alert("Level max d'unité impossible.");
                 return
             }
@@ -560,4 +560,5 @@ function sendFormData(formData) {
             console.error('Erreur lors de l\'envoi de l\'image et des données:', error);
         });
 }
+
 

@@ -79,6 +79,7 @@ function containerCharacterCard(data) {
         personnage.appendChild(changeInflu);
 
         let buttonMAJpersonnage = createHTMLElement('button', 'buttonMAJpersonnage');
+        buttonMAJpersonnage.type = "submit";
         buttonMAJpersonnage.textContent = "Mettre à jour mon personnage"
         personnage.appendChild(buttonMAJpersonnage);
         divMAJ.appendChild(personnage);
@@ -132,7 +133,8 @@ function containerCharacterCard(data) {
         subcontainer.appendChild(divMAJ);
         container.appendChild(subcontainer);
 
-        document.getElementById('buttonMAJpersonnage').addEventListener('click', () => {
+        document.getElementById('buttonMAJpersonnage').addEventListener('click', (event) => {
+            event.preventDefault();
             majPersonnage();
         });
         if (data.Gestion.BotActivate) {
@@ -190,17 +192,17 @@ function changeInscription(incripted) {
     fetchData(dataToSend)
 }
 
-function fetchData(dataToSend) {
-    fetch(adressAPI + 'updateCharacterCard', {
+async function fetchData(dataToSend) {
+    await fetch(adressAPI + 'updateusercard', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(dataToSend),
-    })
-        .catch(error => {
-            console.error('Erreur lors de la récupération des données:', error);
-        });
+    }).catch(error => {
+        console.error('Erreur lors de la récupération des données:', error);
+    });
 
     window.location.href = '/characterCard';
 }
+
