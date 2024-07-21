@@ -502,35 +502,32 @@ async function createExistGroupe(data, userIngroup) {
 
                 MAJlistUserSelect();
 
-                if (selectunit1 != undefined) {
-                    selectunit1.style.visibility = 'hidden';
-                    selectunit1.value = "";
-                    selectunit1.innerHTML = "";
-                    selectunit1.id = 'unit1';
-                    if (selectunit2 != undefined) {
-                        selectunit2.style.visibility = 'hidden';
-                        selectunit2.value = "";
-                        selectunit2.innerHTML = "";
-                        selectunit2.id = 'unit2';
-                        if (selectunit3 != undefined) {
-                            selectunit3.style.visibility = 'hidden';
-                            selectunit3.value = "";
-                            selectunit3.innerHTML = "";
-                            selectunit3.id = 'unit3';
-                            if (selectunit4 != undefined) {
-                                selectunit4.style.visibility = 'hidden';
-                                selectunit4.value = "";
-                                selectunit4.innerHTML = "";
-                                selectunit4.id = 'unit4';
-                            }
-                        }
-                    }
-                }
                 influenceUnit.id = 'influUnit';
                 influenceUnit.textContent = "";
                 intermediairy.textContent = "";
                 influenceplayer.id = 'influPlayer';
                 influenceplayer.textContent = "";
+
+                if (selectunit1 != undefined) {
+                    selectunit1.value = "";
+                    selectunit1.innerHTML = "";
+                    selectunit1.id = 'unit1';
+                }
+                if (selectunit2 != undefined) {
+                    selectunit2.value = "";
+                    selectunit2.innerHTML = "";
+                    selectunit2.id = 'unit2';
+                }
+                if (selectunit3 != undefined) {
+                    selectunit3.value = "";
+                    selectunit3.innerHTML = "";
+                    selectunit3.id = 'unit3';
+                }
+                if (selectunit4 != undefined) {
+                    selectunit4.value = "";
+                    selectunit4.innerHTML = "";
+                    selectunit4.id = 'unit4';
+                }
 
                 if (userSelected !== "") {
                     // mise à jour des options des selects
@@ -542,6 +539,15 @@ async function createExistGroupe(data, userIngroup) {
 
                     if (selectunit1 != undefined) {
                         selectunit1.style.visibility = 'visible';
+                    }
+                    if (selectunit2 != undefined) {
+                        selectunit2.style.visibility = 'visible';
+                    }
+                    if (selectunit3 != undefined) {
+                        selectunit3.style.visibility = 'visible';
+                    }
+                    if (selectunit4 != undefined) {
+                        selectunit4.style.visibility = 'visible';
                     }
 
                     for (let j = 0; j < data.ListInscripted.length; j++) {
@@ -933,35 +939,32 @@ function createNewline(divName, data, influenceplayer, intermediairy, influenceU
         const userSelected = divName.value;
         MAJlistUserSelect();
 
-        if (selectunit1 != undefined) {
-            selectunit1.style.visibility = 'hidden';
-            selectunit1.value = "";
-            selectunit1.innerHTML = "";
-            selectunit1.id = 'unit1';
-            if (selectunit2 != undefined) {
-                selectunit2.style.visibility = 'hidden';
-                selectunit2.value = "";
-                selectunit2.innerHTML = "";
-                selectunit2.id = 'unit2';
-                if (selectunit3 != undefined) {
-                    selectunit3.style.visibility = 'hidden';
-                    selectunit3.value = "";
-                    selectunit3.innerHTML = "";
-                    selectunit3.id = 'unit3';
-                    if (selectunit4 != undefined) {
-                        selectunit4.style.visibility = 'hidden';
-                        selectunit4.value = "";
-                        selectunit4.innerHTML = "";
-                        selectunit4.id = 'unit4';
-                    }
-                }
-            }
-        }
         influenceUnit.id = 'influUnit';
         influenceUnit.textContent = "";
         intermediairy.textContent = "";
         influenceUnit.id = 'influPlayer';
         influenceplayer.textContent = "";
+
+        if (selectunit1 != undefined) {
+            selectunit1.value = "";
+            selectunit1.innerHTML = "";
+            selectunit1.id = 'unit1';
+        }
+        if (selectunit2 != undefined) {
+            selectunit2.value = "";
+            selectunit2.innerHTML = "";
+            selectunit2.id = 'unit2';
+        }
+        if (selectunit3 != undefined) {
+            selectunit3.value = "";
+            selectunit3.innerHTML = "";
+            selectunit3.id = 'unit3';
+        }
+        if (selectunit4 != undefined) {
+            selectunit4.value = "";
+            selectunit4.innerHTML = "";
+            selectunit4.id = 'unit4';
+        }
 
         if (divName.value !== "") {
             listUserSelect.push(userSelected);
@@ -1001,6 +1004,9 @@ function createNewline(divName, data, influenceplayer, intermediairy, influenceU
                         updateSelectUnit(data, selectunit1, selectunit2, selectunit3, selectunit4, userSelected);
                         selectunit1.value = "";
                         selectunit1.style.visibility = 'visible';
+                        selectunit2.style.visibility = 'visible';
+                        selectunit3.style.visibility = 'visible';
+                        selectunit4.style.visibility = 'visible';
                         influenceUnit.id = 'influUnit' + usernameSansEspaces;
                         influenceUnit.textContent = 0;
                         intermediairy.textContent = '/';
@@ -1013,22 +1019,36 @@ function createNewline(divName, data, influenceplayer, intermediairy, influenceU
                         influenceUnit.textContent = "";
                         selectunit1.value = "";
                         selectunit1.style.visibility = 'hidden';
+                        selectunit2.style.visibility = 'hidden';
+                        selectunit3.style.visibility = 'hidden';
+                        selectunit4.style.visibility = 'hidden';
                     }
                     selectunit2.value = "";
-                    selectunit2.style.visibility = 'hidden';
                     selectunit3.value = "";
-                    selectunit3.style.visibility = 'hidden';
                     selectunit4.value = "";
-                    selectunit4.style.visibility = 'hidden';
                     break;
                 }
             }
+        } else {
+            influenceUnit.id = 'influUnit';
+            influenceUnit.textContent = "";
+            intermediairy.textContent = "";
+            influenceplayer.id = 'influPlayer';
+            influenceplayer.textContent = "";
+            selectunit1.style.visibility = 'hidden';
+            selectunit2.style.visibility = 'hidden';
+            selectunit3.style.visibility = 'hidden';
+            selectunit4.style.visibility = 'hidden';
         }
     });
 }
 
 async function createEventSelectUnit(divName, influenceplayer, intermediairy, influenceUnit, selectunit1, selectunit2, selectunit3, selectunit4, infoUser, usernameSansEspaces) {
     if (divName.value === "") {
+        influenceUnit.textContent = 0;
+        intermediairy.textContent = '/';
+        influenceplayer.textContent = 0;
+
         selectunit1.style.visibility = 'hidden';
         selectunit1.value = "";
         selectunit2.style.visibility = 'hidden';
@@ -1037,61 +1057,29 @@ async function createEventSelectUnit(divName, influenceplayer, intermediairy, in
         selectunit3.value = "";
         selectunit4.style.visibility = 'hidden';
         selectunit4.value = "";
-        influenceUnit.textContent = 0;
-        intermediairy.textContent = '/';
-        influenceplayer.textContent = 0;
     } else {
-        selectunit1.style.visibility = 'visible';
-        if (selectunit1.value === "" || selectunit1.value === "Consulter un officier") {
-            selectunit2.style.visibility = 'hidden';
-        }
-        if (selectunit2.value === "" || selectunit2.value === "Consulter un officier") {
-            selectunit3.style.visibility = 'hidden';
-        }
-        if (selectunit3.value === "" || selectunit3.value === "Consulter un officier") {
-            selectunit4.style.visibility = 'hidden';
-        }
-        selectunit1.id = 'unit1' + usernameSansEspaces;
-        selectunit2.id = 'unit2' + usernameSansEspaces;
-        selectunit3.id = 'unit3' + usernameSansEspaces;
-        selectunit4.id = 'unit4' + usernameSansEspaces;
         influenceUnit.id = 'influUnit' + usernameSansEspaces;
         influenceplayer.id = 'influPlayer' + usernameSansEspaces;
+
+        selectunit1.style.visibility = 'visible';
+        selectunit1.id = 'unit1' + usernameSansEspaces;
+        selectunit2.style.visibility = 'visible';
+        selectunit2.id = 'unit2' + usernameSansEspaces;
+        selectunit4.style.visibility = 'visible';
+        selectunit3.id = 'unit3' + usernameSansEspaces;
+        selectunit2.style.visibility = 'visible';
+        selectunit4.id = 'unit4' + usernameSansEspaces;
     }
 
     const selectunit1EventListener = function () {
-        if (selectunit1.value === "" || selectunit1.value === "Consulter un officier") {
-            selectunit2.style.visibility = 'hidden';
-            selectunit2.value = "";
-            selectunit3.style.visibility = 'hidden';
-            selectunit3.value = "";
-            selectunit4.style.visibility = 'hidden';
-            selectunit4.value = "";
-        } else {
-            selectunit2.style.visibility = 'visible';
-        }
         changeInfluUnit(infoUser.UserCaserne, usernameSansEspaces);
     };
 
     const selectunit2EventListener = function () {
-        if (selectunit2.value === "" || selectunit2.value === "Consulter un officier") {
-            selectunit3.style.visibility = 'hidden';
-            selectunit3.value = "";
-            selectunit4.style.visibility = 'hidden';
-            selectunit4.value = "";
-        } else {
-            selectunit3.style.visibility = 'visible';
-        }
         changeInfluUnit(infoUser.UserCaserne, usernameSansEspaces);
     };
 
     const selectunit3EventListener = function () {
-        if (selectunit3.value === "" || selectunit3.value === "Consulter un officier") {
-            selectunit4.style.visibility = 'hidden';
-            selectunit4.value = "";
-        } else {
-            selectunit4.style.visibility = 'visible';
-        }
         changeInfluUnit(infoUser.UserCaserne, usernameSansEspaces);
     };
 
@@ -1165,7 +1153,6 @@ function changeInfluUnit(UserCaserne, username) {
         }
     }
 
-    // setTimeout(() => {
     let divInfluenceUnit = document.getElementById('influUnit' + username);
     divInfluenceUnit.textContent = newValue;
     const divInfluenceplayer = document.getElementById('influPlayer' + username);
@@ -1177,7 +1164,6 @@ function changeInfluUnit(UserCaserne, username) {
     }
 
     optionSelectUnit(username, UserCaserne, influenceplayer, newValue);
-    // }, 200);
 }
 
 function optionSelectUnit(username, UserCaserne, influenceplayer, influenceAllUnitSelected) {
