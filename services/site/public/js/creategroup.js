@@ -553,13 +553,13 @@ async function createExistGroupe(data, userIngroup) {
                     for (let j = 0; j < data.ListInscripted.length; j++) {
                         const userInscripted = data.ListInscripted[j];
                         if (userInscripted.Username === userSelected) {
-                            const usernameSansEspaces = userInscripted.Username.replace(/\s/g, '');
-                            influenceUnit.id = 'influUnit' + usernameSansEspaces;
+                            const usernameSansEspaces2 = userInscripted.Username.replace(/\s/g, '');
+                            influenceUnit.id = 'influUnit' + usernameSansEspaces2;
                             influenceUnit.textContent = 0;
                             intermediairy.textContent = '/';
-                            influenceplayer.id = 'influPlayer' + usernameSansEspaces;
+                            influenceplayer.id = 'influPlayer' + usernameSansEspaces2;
                             influenceplayer.textContent = userInscripted.Influence;
-                            createEventSelectUnit(name, influenceplayer, intermediairy, influenceUnit, selectunit1, selectunit2, selectunit3, selectunit4, userInscripted, usernameSansEspaces)
+                            createEventSelectUnit(name, influenceplayer, intermediairy, influenceUnit, selectunit1, selectunit2, selectunit3, selectunit4, userInscripted, usernameSansEspaces2)
                             break;
                         }
                     }
@@ -572,6 +572,8 @@ async function createExistGroupe(data, userIngroup) {
     }
 
     creategroup.appendChild(divGroup);
+
+    // Mise à jour des influences initial
     for (let i = 0; i < userIngroup.length; i++) {
         let currentUser = userIngroup[i];
         if (currentUser != undefined && currentUser != null) {

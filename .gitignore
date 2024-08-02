@@ -9,5 +9,6 @@
 services/database/databaseGvG.db
 
 # fichier de configuration
+file_config
 ***config.js
 ***config.go
