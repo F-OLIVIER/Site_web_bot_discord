@@ -121,7 +121,7 @@ func ApiWithoutReturnHandler(w http.ResponseWriter, r *http.Request) {
 						utils.SaveCreateGroup(r, database)
 
 					default:
-						fmt.Println("\nError r.URL.Path in ApiReturnHandler : ", r.URL.Path)
+						fmt.Println("Error r.URL.Path in ApiReturnHandler (handlers line 124) : ", r.URL.Path)
 					}
 				}
 			}
@@ -190,15 +190,25 @@ func ApiHandler(w http.ResponseWriter, r *http.Request) {
 						return
 					}
 
+				case "/api/majspecificcaserne":
+					if r.Method == "POST" {
+						utils.MAJCaserne(r, "0", database)
+						gestion.Redirect = "/consulcaserne"
+					} else {
+						return
+					}
+
 				case "/api/creategroup":
 					sendHTML.ListInscripted = utils.ListInscriptedUsers(database)
 					sendHTML.ListUnit = utils.CaserneUser(userID, database)
 					sendHTML.GroupGvG = utils.GroupGvG(database, "GroupGvG")
 					sendHTML.NameGroupGvG = utils.NameGroupGvG(database)
+
 				case "/api/chargergrouptypeatt":
 					sendHTML.ListInscripted = utils.ListInscriptedUsers(database)
 					sendHTML.GroupGvG = utils.GroupGvG(database, "GroupTypeAtt")
 					sendHTML.NameGroupGvG = utils.NameGroupGvG(database)
+
 				case "/api/chargergrouptypedef":
 					sendHTML.ListInscripted = utils.ListInscriptedUsers(database)
 					sendHTML.GroupGvG = utils.GroupGvG(database, "GroupTypeDef")
@@ -207,11 +217,17 @@ func ApiHandler(w http.ResponseWriter, r *http.Request) {
 				case "/api/caserne":
 					sendHTML.ListUnit = utils.CaserneUser(userID, database)
 
+				case "/api/consulcaserne":
+					if officier {
+						sendHTML.ListUnit = utils.CaserneUser(userID, database)
+						sendHTML.ListInscripted = utils.AllCaserne(database)
+					}
+
 				case "/api/home":
 					// Nothing to add
 
 				default:
-					fmt.Println("\nError r.URL.Path in ApiHandler : ", r.URL.Path)
+					fmt.Println("Error r.URL.Path in ApiHandler (handlers line 228) : ", r.URL.Path)
 				}
 
 				sendHTML.Gestion = *gestion

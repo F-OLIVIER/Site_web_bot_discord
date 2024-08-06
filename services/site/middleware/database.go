@@ -137,6 +137,32 @@ func ListInscriptedUsers(database *sql.DB) (UsersIncripted []data.UserInfo) {
 	return UsersIncripted
 }
 
+func AllCaserne(database *sql.DB) (ListInscripted []data.UserInfo) {
+	listUnit, err := database.Prepare(`SELECT ID, DiscordName, Lvl, Influence FROM Users;`)
+	CheckErr("1- Requete DB fonction AllCaserne", err)
+	rows, err := listUnit.Query()
+	CheckErr("2- Requete DB fonction AllCaserne", err)
+	for rows.Next() {
+		var user data.UserInfo
+		err = rows.Scan(&user.ID, &user.DiscordUsername, &user.Lvl, &user.Influence)
+		CheckErr("3- Requete DB fonction AllCaserne", err)
+
+		listUnitUser := CaserneUser(strconv.Itoa(user.ID), database)
+		var newListunitUser []data.Unit
+		for i := 0; i < len(listUnitUser); i++ {
+			if listUnitUser[i].Lvl == "" {
+				listUnitUser[i].Lvl = "0"
+			}
+			newListunitUser = append(newListunitUser, listUnitUser[i])
+		}
+		user.UserCaserne = newListunitUser
+		ListInscripted = append(ListInscripted, user)
+	}
+
+	// fmt.Println("ListInscripted : \n", ListInscripted)
+	return ListInscripted
+}
+
 func GroupGvG(database *sql.DB, nameTable string) (listUserAlreadyRegistered []data.UserGvG) {
 	listUnit, err := database.Prepare("SELECT User_ID, GroupNumber, Unit1, Unit2, Unit3, Unit4 FROM " + nameTable)
 	CheckErr("1- Requete DB fonction GroupGvG", err)

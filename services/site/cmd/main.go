@@ -30,6 +30,8 @@ func main() {
 	http.HandleFunc("/api/chargergrouptypedef", handlers.ApiHandler)
 	http.HandleFunc("/api/CheckAppAdmin", handlers.ApiHandler)
 	http.HandleFunc("/api/statGvG", handlers.ApiHandler)
+	http.HandleFunc("/api/consulcaserne", handlers.ApiHandler)
+	http.HandleFunc("/api/majspecificcaserne", handlers.ApiHandler)
 
 	http.HandleFunc("/api/logout", handlers.ApiWithoutReturnHandler)
 	http.HandleFunc("/api/updateCharacterCard", handlers.ApiWithoutReturnHandler)

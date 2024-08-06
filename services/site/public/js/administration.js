@@ -488,7 +488,7 @@ async function adminitrateBot(option) {
         if (option === 'buttonChangeUnit') {
             let changeUnit = {};
             // changeUnit.Unit_name = removeHTMLTags(document.getElementById('selectChangeUnit').value);
-            const inputvalue_name = document.getElementById('selectChangeUnit').value
+            const inputvalue_name = document.getElementById('selectChangeUnit').value;
             changeUnit.Unit_name = removeHTMLTags(inputvalue_name);
             changeUnit.Unit_influence = document.getElementById('changeUnitInfluence').value;
             if (changeUnit.Unit_influence > 500 || changeUnit.Unit_influence < 0) {
