@@ -193,7 +193,7 @@ function changeInscription(incripted) {
 }
 
 async function fetchData(dataToSend) {
-    await fetch(adressAPI + 'updateusercard', {
+    await fetch(adressAPI + 'updateCharacterCard', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
