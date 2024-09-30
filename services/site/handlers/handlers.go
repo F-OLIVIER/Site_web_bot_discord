@@ -120,6 +120,9 @@ func ApiWithoutReturnHandler(w http.ResponseWriter, r *http.Request) {
 					case "/api/saveGroupInDB":
 						utils.SaveCreateGroup(r, database)
 
+					case "/api/newscreenhouse":
+						utils.NewScreen(r, database)
+
 					default:
 						fmt.Println("Error r.URL.Path in ApiReturnHandler (handlers line 124) : ", r.URL.Path)
 					}
@@ -222,6 +225,9 @@ func ApiHandler(w http.ResponseWriter, r *http.Request) {
 						sendHTML.ListUnit = utils.CaserneUser(userID, database)
 						sendHTML.ListInscripted = utils.AllCaserne(database)
 					}
+
+				case "/api/screenhouse":
+					sendHTML.Screen = utils.Screen(database)
 
 				case "/api/home":
 					// Nothing to add

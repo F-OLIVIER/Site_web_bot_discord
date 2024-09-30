@@ -296,7 +296,8 @@ func UploadInformationsBot(r *http.Request, database *sql.DB) {
 				}
 			}
 
-			if formData.ChangeUnit.LvlMax != "" || formData.ChangeUnit.Influence != "" || formData.ChangeUnit.Maitrise != "" { // Update des data d'une unit
+			fmt.Println("formData.ChangeUnit.Tier : ", formData.ChangeUnit.Tier)
+			if formData.ChangeUnit.LvlMax != "" || formData.ChangeUnit.Influence != "" || formData.ChangeUnit.Maitrise != "" || formData.ChangeUnit.Newunitname != "" || formData.ChangeUnit.Tier != "" { // Update des data d'une unit
 				updateDataUnit(formData.ChangeUnit, database)
 			}
 		} else {
@@ -371,6 +372,21 @@ func updateDataUnit(dataCreateUnit data.Unit, database *sql.DB) {
 		stmt, err := database.Prepare(`UPDATE ListUnit SET Maitrise = ? WHERE Unit = ?;`)
 		CheckErr("5- Update Maitrise updateDataUnit ", err)
 		stmt.Exec(newMaitrise, dataCreateUnit.Name)
+	}
+
+	fmt.Println("dataCreateUnit.Tier : ", dataCreateUnit.Tier)
+	if dataCreateUnit.Tier != "" {
+		fmt.Println("UPDATE ListUnit SET ForceUnit = ? WHERE Unit = ?;", dataCreateUnit.Tier, dataCreateUnit.Name)
+		stmt, err := database.Prepare(`UPDATE ListUnit SET ForceUnit = ? WHERE Unit = ?;`)
+		CheckErr("3- Update updateDataUnit ", err)
+		stmt.Exec(dataCreateUnit.Tier, dataCreateUnit.Name)
+	}
+
+	// changement du nom de l'unit
+	if dataCreateUnit.Newunitname != "" {
+		stmt, err := database.Prepare(`UPDATE ListUnit SET Unit = ? WHERE Unit = ?;`)
+		CheckErr("6- Update updateDataUnit ", err)
+		stmt.Exec(dataCreateUnit.Newunitname, dataCreateUnit.Name)
 	}
 }
 

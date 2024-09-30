@@ -28,6 +28,14 @@ function containerhome(data) {
     linkCaserne.appendChild(buttonCaserne);
     subContainer.appendChild(linkCaserne);
 
+    // page screen maison
+    let linkscreen = createHTMLElement('a', 'no-style-link');
+    linkscreen.href = '/screenhouse';
+    let buttonscreen = createHTMLElement('div', 'buttonCaserne');
+    buttonscreen.textContent = 'Image de la maison';
+    linkscreen.appendChild(buttonscreen);
+    subContainer.appendChild(linkscreen);
+
     if (data.Gestion.Officier) { // si officier, affichage bouton création des groupes et bouton administration
       let subcontainerOfficier = createHTMLElement('div', 'subcontainerOfficier');
       let titlesubcontainerOfficier = createHTMLElement('div', 'titlesubcontainerOfficier');

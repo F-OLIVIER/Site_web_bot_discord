@@ -290,17 +290,36 @@ function addEventOnAllButton(listUnit, allumage) {
             }
 
             // suppression des anciens éléments si existant
+            if (document.getElementById('changeUnitName')) {
+                document.getElementById('changeUnitName').remove();
+            }
             if (document.getElementById('changeUnitInfluence')) {
                 document.getElementById('changeUnitInfluence').remove();
+            }
+            if (document.getElementById('changeUnitLvlMax')) {
                 document.getElementById('changeUnitLvlMax').remove();
-                // document.getElementById('changeUnitTier').remove();
+            }
+            if (document.getElementById('changeUnitTier')) {
+                document.getElementById('changeUnitTier').remove();
+            }
+            if (document.getElementById('changeUnitimg')) {
                 document.getElementById('changeUnitimg').remove();
+            }
+            if (document.getElementById('buttonChangeUnit')) {
                 document.getElementById('buttonChangeUnit').remove();
+            }
+            if (document.getElementById('changemaitriseUnit')) {
+                document.getElementById('changemaitriseUnit').remove();
             }
 
             if (selectChangeUnit.value != "") {
                 // Ajout des nouveaux éléments
                 let formChangeUnit = document.getElementById('formchangeUnit');
+                // name_unit
+                let input_Unit_name = createHTMLElement('input', 'changeUnitName');
+                input_Unit_name.type = 'text';
+                input_Unit_name.placeholder = 'Nom actuel : ' + unitSelected.Unit_name;
+                formChangeUnit.appendChild(input_Unit_name);
                 // Unit_influence
                 let input_Unit_influence = createHTMLElement('input', 'changeUnitInfluence');
                 input_Unit_influence.type = 'number';
@@ -342,6 +361,23 @@ function addEventOnAllButton(listUnit, allumage) {
                     input_Unit_maitrise.appendChild(divfieldset);
                     formChangeUnit.appendChild(input_Unit_maitrise);
                 }
+
+                // Unit_Tier
+                let input_Unit_tier = createHTMLElement('select', 'changeUnitTier');
+                let defaultoption = document.createElement("option");
+                defaultoption.text = "Tier : " + unitSelected.Unit_tier;
+                defaultoption.value = "";
+                input_Unit_tier.appendChild(defaultoption);
+                let option_Unit_tier = ["T3", "T4", "T5"];
+                for (let i = 0; i < option_Unit_tier.length; i++) {
+                    if (unitSelected.Unit_tier != option_Unit_tier[i]) {
+                        let option = document.createElement('option');
+                        option.value = option_Unit_tier[i];
+                        option.text = option_Unit_tier[i];
+                        input_Unit_tier.appendChild(option);
+                    }
+                }
+                formChangeUnit.appendChild(input_Unit_tier);
 
                 // Unit_img
                 let input_Unit_img = createHTMLElement('input', 'changeUnitimg');
@@ -414,7 +450,7 @@ async function adminitrateBot(option) {
     // activate or desactivate bot
     if (option === 'buttonBotEtat') {
         dataToSend.Allumage = document.getElementById('buttonBotEtat').value; // false = desactivation, true = activation
-        sendData(dataToSend);
+        sendData(dataToSend); d
     } else if (option === 'buttonNewclass') {
         dataToSend.newWeapon = document.getElementById('nameNewclass').value;
         sendData(dataToSend);
@@ -490,6 +526,9 @@ async function adminitrateBot(option) {
             // changeUnit.Unit_name = removeHTMLTags(document.getElementById('selectChangeUnit').value);
             const inputvalue_name = document.getElementById('selectChangeUnit').value;
             changeUnit.Unit_name = removeHTMLTags(inputvalue_name);
+            // nouveau nom d'unité
+            changeUnit.New_unit_name = removeHTMLTags(document.getElementById('changeUnitName').value);
+            // influence unit
             changeUnit.Unit_influence = document.getElementById('changeUnitInfluence').value;
             if (changeUnit.Unit_influence > 500 || changeUnit.Unit_influence < 0) {
                 alert("Influence impossible.");
@@ -500,9 +539,10 @@ async function adminitrateBot(option) {
                 alert("Level max d'unité impossible.");
                 return
             }
-            // changeUnit.Unit_tier = document.getElementById('changeUnitTier').value;
+            changeUnit.Unit_tier = document.getElementById('changeUnitTier').value;
+
             const checkboxChangeUnitMaitrise = document.getElementById('changeUnitMaitrise');
-            if (checkboxChangeUnitMaitrise.checked) {
+            if (checkboxChangeUnitMaitrise != null && checkboxChangeUnitMaitrise.checked) {
                 changeUnit.Unit_maitrise = checkboxChangeUnitMaitrise.value;
             } else {
                 changeUnit.Unit_maitrise = '';
@@ -522,7 +562,7 @@ async function adminitrateBot(option) {
                     window.location.href = '/AppAdmin';
                 };
                 reader.readAsDataURL(input_change_img.files[0]);
-            } else if (changeUnit.Unit_influence == "" && changeUnit.Unit_lvlMax == "" && !checkboxChangeUnitMaitrise.checked) {
+            } else if (changeUnit.New_unit_name == "" && changeUnit.Unit_influence == "" && changeUnit.Unit_lvlMax == "" && changeUnit.Unit_tier == "" && !checkboxChangeUnitMaitrise.checked) {
                 let divErrorChangeUnit = document.getElementById('divErrorChangeUnit');
                 divErrorChangeUnit.textContent = "Merci de compléter au moins un champs ou mettre une image pour mettre à jour l'unité " + changeUnit.Unit_name;
                 divErrorChangeUnit.style.display = 'block';
@@ -560,5 +600,4 @@ function sendFormData(formData) {
             console.error('Erreur lors de l\'envoi de l\'image et des données:', error);
         });
 }
-
 

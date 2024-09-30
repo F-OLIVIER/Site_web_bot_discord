@@ -1,13 +1,14 @@
 import { LINK_DISCORD, cookieName } from "./config.js";
 import { administration } from "./administration.js";
 import { characterCard } from "./characterCard.js";
+import { consulcaserne } from "./consulcaserne.js";
 import { createHTMLElement } from "./useful.js";
 import { creategroup } from "./creategroup.js";
+import { screenhouse } from "./screenhouse.js";
 import { viewgroup } from "./viewGroup.js";
 import { caserne } from "./caserne.js";
 import { home } from "./home.js";
 import { stat } from "./stat.js";
-import { consulcaserne } from "./consulcaserne.js";
 
 let path = window.location.pathname;
 switch (path) {
@@ -59,6 +60,10 @@ switch (path) {
 
     case '/consulcaserne':
         consulcaserne();
+        break;
+
+    case '/screenhouse':
+        screenhouse()
         break;
 
     default:

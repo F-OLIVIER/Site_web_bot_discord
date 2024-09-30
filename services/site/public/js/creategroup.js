@@ -917,6 +917,7 @@ function saveGroup(optiontype) {
     if (dataToSend.length !== 0) {
         fetch(adressAPI + 'saveGroupInDB', {
             method: 'POST',
+            mode: 'no-cors',
             headers: {
                 'Content-Type': 'application/json',
             },

@@ -5,15 +5,31 @@ import (
 	"image/gif"
 	"image/jpeg"
 	"image/png"
+	"log"
 	"mime/multipart"
 	"os"
 	"strings"
+
+	"golang.org/x/exp/rand"
 )
 
 // Vérificateur d'erreurs
 func CheckErr(str string, err error) {
 	if err != nil {
 		fmt.Printf("\n__________________________________________\nERROR : %v\n%v\n", str, err)
+
+		// Ouvrir ou créer le fichier de log
+		logFile, fileErr := os.OpenFile("app.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+		if fileErr != nil {
+			log.Fatalf("Erreur lors de l'ouverture du fichier de log : %v", fileErr)
+		}
+		defer logFile.Close()
+
+		// Configurer le logger pour écrire dans le fichier
+		log.SetOutput(logFile)
+
+		// Log le message d'erreur avec contexte
+		log.Printf("\n__________________________________________\nERROR: %s - %v\n", str, err)
 	}
 }
 
@@ -56,4 +72,15 @@ func UploadPicture(fileUpload multipart.File, header *multipart.FileHeader, file
 		return true
 	}
 	return false
+}
+
+// Génére une chaine de caractére aéatoire de 5 caractéres alphanumérique
+func RandomFileName() string {
+	base := "azertyuiopmlkjhgfdsqwxcvbn-0123456789-AZERTYUIOPMLKJHGFDSQWXCVBN"
+	var randomName string
+	for i := 0; i < 5; i++ {
+		num := rand.Intn(len(base))
+		randomName += string(base[num])
+	}
+	return randomName + "_"
 }

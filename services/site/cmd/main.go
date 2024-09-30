@@ -32,12 +32,14 @@ func main() {
 	http.HandleFunc("/api/statGvG", handlers.ApiHandler)
 	http.HandleFunc("/api/consulcaserne", handlers.ApiHandler)
 	http.HandleFunc("/api/majspecificcaserne", handlers.ApiHandler)
+	http.HandleFunc("/api/screenhouse", handlers.ApiHandler)
 
 	http.HandleFunc("/api/logout", handlers.ApiWithoutReturnHandler)
 	http.HandleFunc("/api/updateCharacterCard", handlers.ApiWithoutReturnHandler)
 	http.HandleFunc("/api/saveGroupInDB", handlers.ApiWithoutReturnHandler)
 	http.HandleFunc("/api/UpdateAdmin", handlers.ApiWithoutReturnHandler)
 	http.HandleFunc("/api/adminitrateBot", handlers.ApiWithoutReturnHandler)
+	http.HandleFunc("/api/newscreenhouse", handlers.ApiWithoutReturnHandler)
 
 	// Appel des fichiers annexes et les mettres en cache navigateur client autmatiquement
 	cssHandler := http.StripPrefix("/css/", http.FileServer(http.Dir("./public/css/")))

@@ -44,6 +44,8 @@ type Unit struct {
 	Tier         string `json:"Unit_tier"`
 	Maitrise     string `json:"Unit_maitrise"`
 	UserMaitrise string `json:"UserMaitrise"`
+
+	Newunitname string `json:"New_unit_name"`
 }
 
 type ChangeUnitCaserne struct {
@@ -68,6 +70,7 @@ type SendHTML struct {
 	ListInscripted []UserInfo
 	GroupGvG       []UserGvG
 	NameGroupGvG   map[int]string
+	Screen         []Screen
 }
 
 type SaveGroup struct {
@@ -92,6 +95,11 @@ type AdministrateBot struct {
 	CreateUnit Unit   `json:"createUnit"`
 	ChangeUnit Unit   `json:"changeUnit"`
 	Resetnbgvg bool   `json:"resetnbgvg"`
+}
+
+type Screen struct {
+	Description string `json:"Description"`
+	Img         string `json:"Img"`
 }
 
 type SocketMessage struct {

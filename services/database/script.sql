@@ -317,3 +317,9 @@ CREATE TABLE IF NOT EXISTS EventInscripted (
     FOREIGN KEY (IDevent) REFERENCES ListEvent (ID),
     FOREIGN KEY (User_ID) REFERENCES Users (ID)
 );
+
+CREATE TABLE IF NOT EXISTS HouseScreen (
+    ID INTEGER PRIMARY KEY,
+    Screen TEXT DEFAULT "",
+    DescriptionScreen VARCHAR(500) DEFAULT ""
+);

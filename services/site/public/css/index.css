@@ -1356,6 +1356,78 @@ button:hover {
 }
 
 /* --------------------------------------------- */
+/* ----------------- image House --------------- */
+/* --------------------------------------------- */
+.subContainerscreenhouse {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+}
+
+.divimg,
+.formnewscreen {
+    display: flex;
+    flex-direction: column;
+    border-radius: 15px;
+    padding: 20px;
+}
+
+.divimg {
+    background-color: rgb(63, 85, 116, 0.9);
+    margin-top: 25px;
+    align-items: center;
+}
+
+.img-container {
+    position: relative;
+    display: inline-block;
+}
+
+.img-normal {
+    position: relative; /* Assurez-vous que l'image se positionne par rapport à son conteneur parent */
+    width: 30%;  /* L'image est à 30% de sa taille normale */
+    height: auto;  /* Conserver le ratio d'aspect */
+    cursor: zoom-in;
+    z-index: 1;
+    transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
+}
+
+.img-zoomed {
+    position: fixed; /* L'image se positionne par rapport à la fenêtre du navigateur */
+    top: 50%;
+    left: 50%;
+    width: 90%;  /* Ajuster la largeur pour le zoom */
+    height: auto;  /* Conserver le ratio d'aspect */
+    transform: translate(-50%, -50%);  /* Centrer l'image */
+    z-index: 1000;  /* Mettre l'image au-dessus des autres éléments */
+    cursor: zoom-out;
+    transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
+}
+
+.formnewscreen h2 {
+    margin: 0;
+    padding: 0px 0px 20px 0px;
+}
+
+.formnewscreen {
+    background-color: rgb(98, 35, 32, 0.9);
+}
+
+.charcountnewscreen {
+    text-align: right;
+}
+
+.formnewscreen textarea {
+    border-radius: 15px;
+    padding: 8px;
+}
+
+.formnewscreen input {
+    margin-bottom: 10px;
+    padding-left: 10px;
+}
+
+/* --------------------------------------------- */
 /* -------------------- @media ----------------- */
 /* --------------------------------------------- */
 @media (max-width: 600px) {
