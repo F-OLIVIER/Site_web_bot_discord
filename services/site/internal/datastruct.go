@@ -22,6 +22,8 @@ type UserInfo struct {
 	UserCaserne           []Unit
 	ConnectedSite         string `json:"ConnectedSite"`
 	ListDateGvG           [][]string
+
+	CodeApp string `json:"CodeApp"`
 }
 
 type Gestion struct {
@@ -31,6 +33,9 @@ type Gestion struct {
 	Officier    bool     `json:"Officier"`
 	BotActivate bool     `json:"BotActivate"`
 	ListClass   []string `json:"ListClass"`
+
+	CodeApp string `json:"CodeApp"`
+	Valid   bool   `json:"Valid"`
 }
 
 type Unit struct {
@@ -51,6 +56,7 @@ type Unit struct {
 type ChangeUnitCaserne struct {
 	Userid            string     `json:"iduser"`
 	NewLvlUnitCaserne [][]string `json:"listNewLvlUnitCaserne"`
+	NewAppUnitCaserne []Unit     `json:"listNewAppUnitCaserne"`
 }
 
 type UserGvG struct {

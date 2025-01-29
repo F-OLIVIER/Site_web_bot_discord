@@ -153,7 +153,7 @@ func MAJCaserne(r *http.Request, userID string, database *sql.DB) {
 
 	// mise à jour du level
 	if len(setConditionslevel) > 0 {
-		checkbeforeupdatecaserne(userID, database)
+		Checkbeforeupdatecaserne(userID, database)
 		// Mise à jours de la Caserne
 		query := "UPDATE Caserne SET " + strings.Join(setConditionslevel, ", ") + " WHERE User_ID = ?"
 		stmt, err := database.Prepare(query)
@@ -164,7 +164,7 @@ func MAJCaserne(r *http.Request, userID string, database *sql.DB) {
 
 	// mise à jour de la maitrise
 	if len(setConditionsmaitrise) > 0 {
-		checkbeforeupdateMaitrise(userID, database)
+		CheckbeforeupdateMaitrise(userID, database)
 		// Mise à jours de la CaserneMaitrise
 		queryMaitrise := "UPDATE CaserneMaitrise SET " + strings.Join(setConditionsmaitrise, ", ") + " WHERE User_ID = ?"
 		stmtMaitrise, err := database.Prepare(queryMaitrise)
@@ -174,7 +174,7 @@ func MAJCaserne(r *http.Request, userID string, database *sql.DB) {
 	}
 }
 
-func checkbeforeupdatecaserne(userID string, database *sql.DB) {
+func Checkbeforeupdatecaserne(userID string, database *sql.DB) {
 	stmt, err := database.Prepare("SELECT ID FROM Caserne WHERE User_ID = ?")
 	CheckErr("DB prépare checkbeforeupdatecaserne", err)
 	id := 0
@@ -187,7 +187,7 @@ func checkbeforeupdatecaserne(userID string, database *sql.DB) {
 	}
 }
 
-func checkbeforeupdateMaitrise(userID string, database *sql.DB) {
+func CheckbeforeupdateMaitrise(userID string, database *sql.DB) {
 	stmt, err := database.Prepare("SELECT ID FROM CaserneMaitrise WHERE User_ID = ?")
 	CheckErr("DB prépare checkbeforeupdateMaitrise", err)
 	id := 0

@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"botgvg/appmobile"
 	data "botgvg/internal"
 	utils "botgvg/middleware"
 	"database/sql"
@@ -40,42 +41,71 @@ func DiscordHandler(w http.ResponseWriter, r *http.Request) {
 // Discord transition, user connects
 func DiscordApiHandler(w http.ResponseWriter, r *http.Request) {
 	if tb.Request(1) {
-		var sendHTML *data.SendHTML
-		if r.Method == "POST" && r.URL.Path == "/api/discord" {
-			// Open database
-			database, err := sql.Open("sqlite3", data.ADRESS_DB)
-			utils.CheckErr("open db in homehandler", err)
-			defer database.Close()
+		if r.Method == "POST" {
+			var sendHTML *data.SendHTML
 
-			if utils.CheckUser(w, r, database) { // user connects
-				gestion := &data.Gestion{
-					Logged:   true,
-					Redirect: "/home",
+			switch r.URL.Path {
+			case "/api/discord":
+				database, err := sql.Open("sqlite3", data.ADRESS_DB)
+				utils.CheckErr("open db in DiscordApiHandler discord", err)
+				defer database.Close()
+
+				if utils.CheckUser(w, r, database) { // user connects
+					gestion := &data.Gestion{
+						Logged:   true,
+						Redirect: "/home",
+					}
+					sendHTML = &data.SendHTML{
+						Gestion: *gestion,
+					}
+				} else { // Connection failed
+					gestion := &data.Gestion{
+						Logged:   false,
+						Redirect: "/",
+					}
+					sendHTML = &data.SendHTML{
+						Gestion: *gestion,
+					}
 				}
-				sendHTML = &data.SendHTML{
-					Gestion: *gestion,
-				}
-			} else { // Connection failed
+
+			// case "/api/discordapp":
+			// 	database, err := sql.Open("sqlite3", data.ADRESS_DB)
+			// 	utils.CheckErr("open db in DiscordApiHandler discord", err)
+			// 	defer database.Close()
+
+			// 	validuser, uuidApp := appmobile.CheckUserApp(w, r, database)
+
+			// 	if validuser { // user connects
+			// 		gestion := &data.Gestion{
+			// 			Logged:  true,
+			// 			CodeApp: uuidApp,
+			// 		}
+			// 		sendHTML = &data.SendHTML{
+			// 			Gestion: *gestion,
+			// 		}
+			// 	} else { // Connection failed
+			// 		gestion := &data.Gestion{
+			// 			Logged:  false,
+			// 			CodeApp: "",
+			// 		}
+			// 		sendHTML = &data.SendHTML{
+			// 			Gestion: *gestion,
+			// 		}
+			// 	}
+
+			default:
 				gestion := &data.Gestion{
 					Logged:   false,
 					Redirect: "/",
 				}
+
 				sendHTML = &data.SendHTML{
 					Gestion: *gestion,
 				}
 			}
-		} else {
-			gestion := &data.Gestion{
-				Logged:   false,
-				Redirect: "/",
-			}
-
-			sendHTML = &data.SendHTML{
-				Gestion: *gestion,
-			}
+			w.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(w).Encode(sendHTML)
 		}
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(sendHTML)
 	}
 }
 
@@ -177,7 +207,6 @@ func ApiHandler(w http.ResponseWriter, r *http.Request) {
 					sendHTML.ListInscripted = utils.SendStatGvG(database)
 
 				case "/api/CheckAppAdmin":
-					gestion.BotActivate = utils.BotActivation(database)
 					sendHTML.ListUnit = utils.CaserneUser(userID, database)
 					sendHTML.ListInscripted = utils.SendStatGvG(database)
 
@@ -256,5 +285,143 @@ func ApiHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(jsonData)
+	}
+}
+
+// ---------------------------------------------------------------------------
+// .█████  ██████  ██████      ███    ███  ██████  ██████  ██ ██      ███████
+// ██   ██ ██   ██ ██   ██     ████  ████ ██    ██ ██   ██ ██ ██      ██
+// ███████ ██████  ██████      ██ ████ ██ ██    ██ ██████  ██ ██      █████
+// ██   ██ ██      ██          ██  ██  ██ ██    ██ ██   ██ ██ ██      ██
+// ██   ██ ██      ██          ██      ██  ██████  ██████  ██ ███████ ███████
+// ---------------------------------------------------------------------------
+
+func AppMobileHandler(w http.ResponseWriter, r *http.Request) {
+	// en-têtes CORS
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+	if r.Method == "OPTIONS" {
+		// Répondre aux requêtes OPTIONS (pré-vol)
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+
+	if tb.Request(1) {
+		// Open database
+		database, errdb := sql.Open("sqlite3", data.ADRESS_DB)
+		utils.CheckErr("open db in homehandler", errdb)
+		defer database.Close()
+
+		// Récupération des informations du post
+		var userInfo data.UserInfo
+		errjson := json.NewDecoder(r.Body).Decode(&userInfo)
+		utils.CheckErr("Erreur de décodage JSON CheckUserApp", errjson)
+
+		// fmt.Println("\nr.URL.Path :", r.URL.Path)
+		// fmt.Println("userInfo reçu :\n", userInfo)
+
+		var sendHTML *data.SendHTML
+
+		userID, exit, officier := appmobile.UserInfoApp(userInfo.CodeApp, database)
+		if exit {
+			gestion := &data.Gestion{
+				Logged:      true,
+				Officier:    officier,
+				BotActivate: utils.BotActivation(database),
+			}
+
+			switch r.URL.Path {
+			case "/app/login":
+				gestion.ListClass = utils.ListClass(database)
+				sendHTML = &data.SendHTML{
+					Gestion:  *gestion,
+					UserInfo: appmobile.CharactercardApp(userInfo.CodeApp, true, database),
+				}
+
+			case "/app/user":
+				gestion.ListClass = utils.ListClass(database)
+				sendHTML = &data.SendHTML{
+					Gestion:  *gestion,
+					UserInfo: appmobile.CharactercardApp(userInfo.CodeApp, false, database),
+				}
+
+			case "/app/caserne":
+				sendHTML = &data.SendHTML{
+					Gestion:  *gestion,
+					ListUnit: utils.CaserneUser(userID, database),
+				}
+
+			case "/app/updatecharactercard":
+				// Mise a jour personnage
+				gestion.Valid = appmobile.UpdateCharacterApp(userInfo, database)
+
+				// retour nouvelle information
+				sendHTML = &data.SendHTML{
+					Gestion:  *gestion,
+					UserInfo: appmobile.CharactercardApp(userInfo.CodeApp, false, database),
+				}
+
+			case "/app/updateinscription":
+				gestion.Valid = appmobile.UpdateInscription(userInfo, database)
+
+				sendHTML = &data.SendHTML{
+					Gestion: *gestion,
+				}
+
+			default:
+				fmt.Println("Error r.URL.Path in AppMobileHandler (handlers line 299) : ", r.URL.Path)
+			}
+
+		} else {
+			gestion := &data.Gestion{
+				Logged: false,
+			}
+			sendHTML = &data.SendHTML{
+				Gestion: *gestion,
+			}
+		}
+
+		// Sending reply
+		jsonData, err := json.Marshal(sendHTML)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(jsonData)
+	}
+}
+
+// Maj de la caserne
+func AppMajCaserneHandler(w http.ResponseWriter, r *http.Request) {
+	// en-têtes CORS
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+	if r.Method == "OPTIONS" {
+		// Répondre aux requêtes OPTIONS (pré-vol)
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+
+	if tb.Request(1) {
+		// Open database
+		database, errdb := sql.Open("sqlite3", data.ADRESS_DB)
+		utils.CheckErr("open db in homehandler", errdb)
+		defer database.Close()
+
+		if r.Method == "POST" && r.URL.Path == "/app/updatecaserne" {
+
+			var newCaserne data.ChangeUnitCaserne
+			err := json.NewDecoder(r.Body).Decode(&newCaserne)
+			utils.CheckErr("Erreur de décodage JSON MAJCaserne", err)
+			// fmt.Println("newCaserne reçu : ", newCaserne)
+
+			// Mise à jour caserne
+			appmobile.UpdateAppCaserne(newCaserne, database)
+		}
 	}
 }

@@ -20,6 +20,19 @@ func main() {
 	http.HandleFunc("/discord", handlers.DiscordHandler)
 	http.HandleFunc("/api/discord", handlers.DiscordApiHandler)
 
+	// Page de connexion app mobile
+	// http.HandleFunc("/authdiscordappmobile", handlers.DiscordAppApiHandler)
+	http.HandleFunc("/api/discordapp", handlers.DiscordApiHandler)
+
+	// page Application mobile
+	http.HandleFunc("/app/login", handlers.AppMobileHandler)
+	http.HandleFunc("/app/user", handlers.AppMobileHandler)
+	http.HandleFunc("/app/caserne", handlers.AppMobileHandler)
+	http.HandleFunc("/app/updatecaserne", handlers.AppMajCaserneHandler)
+	http.HandleFunc("/app/charactercard", handlers.AppMobileHandler)
+	http.HandleFunc("/app/updatecharactercard", handlers.AppMobileHandler)
+	http.HandleFunc("/app/updateinscription", handlers.AppMobileHandler)
+
 	// page user connected/autorised
 	http.HandleFunc("/api/home", handlers.ApiHandler)
 	http.HandleFunc("/api/charactercard", handlers.ApiHandler)
