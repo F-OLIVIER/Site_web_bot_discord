@@ -296,6 +296,16 @@ func ApiHandler(w http.ResponseWriter, r *http.Request) {
 // ██   ██ ██      ██          ██      ██  ██████  ██████  ██ ███████ ███████
 // ---------------------------------------------------------------------------
 
+func Reglesdeconfidentialite(w http.ResponseWriter, r *http.Request) {
+	if tb.Request(1) {
+		ts, err := template.ParseFiles("./reglesconf.html")
+		if err != nil {
+			log.Fatal(err)
+		}
+		ts.Execute(w, nil)
+	}
+}
+
 func AppMobileHandler(w http.ResponseWriter, r *http.Request) {
 	// en-têtes CORS
 	w.Header().Set("Access-Control-Allow-Origin", "*")

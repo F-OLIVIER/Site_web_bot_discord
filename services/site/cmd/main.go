@@ -24,6 +24,9 @@ func main() {
 	// http.HandleFunc("/authdiscordappmobile", handlers.DiscordAppApiHandler)
 	http.HandleFunc("/api/discordapp", handlers.DiscordApiHandler)
 
+	// Pour le Google Play Store
+	http.HandleFunc("/app/reglesdeconfidentialite", handlers.Reglesdeconfidentialite)
+
 	// page Application mobile
 	http.HandleFunc("/app/login", handlers.AppMobileHandler)
 	http.HandleFunc("/app/user", handlers.AppMobileHandler)

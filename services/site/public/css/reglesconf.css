@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Agbalumo&display=swap');
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("/img/background.webp");
+    background-size: 100%;
+    opacity: 0.6;
+    z-index: -1;
+}
+
+body {
+    margin: 0px;
+    color: rgb(255, 255, 255);
+    font-family: Agbalumo, sans-serif;
+}
+
+/* --------------------------------------- */
+/* --------------- en-tête --------------- */
+/* --------------------------------------- */
+
+.bandeau {
+    width: 100%;
+    height: 150px;
+    background-color: rgb(152, 138, 85, 0.5);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 50px;
+    justify-content: center;
+    position: fixed;
+    z-index: 1;
+}
+
+.bandeauHaut {
+    width: 100%;
+    height: 75px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    font-size: 50px;
+    text-align: center;
+    vertical-align: middle;
+    position: fixed;
+    z-index: 1;
+}
+
+.Title {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 150px;
+    width: 80%;
+    z-index: 2;
+    text-align: center;
+    color: rgb(255, 255, 255);
+    font-family: Agbalumo, sans-serif;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0), 0 0 1em rgb(0, 0, 0), 0 0 0.2em rgb(0, 0, 0);
+    transition: all ease-in-out 0.4s;
+}
+
+.Title:hover {
+    color: black;
+    text-shadow: 1px 1px 5px wheat, 0 0 1em wheat, 0 0 0.2em wheat;
+}
+
+.banner {
+    width: 12%;
+    background-image: url('/img/banner_LNB.webp');
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 100vh;
+    z-index: 1;
+}
+
+.sousBandeau {
+    padding-top: 200px;
+}
+
+.body {
+    background-color: rgba(0, 0, 0, 0.8);
+    border: 2px solid black;
+    border-radius: 25px;
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding-left: 35px;
+    padding-right: 35px;
+    width: 70%;
+    
+}
+
+h1, h2 {
+    color: #fff;
+    text-align: center;
+}
+
+p {
+    color: #ddd;
+    line-height: 1.6;
+}
+
+ul {
+    color: #ddd;
+}
