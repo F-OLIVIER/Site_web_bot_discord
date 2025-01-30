@@ -22,7 +22,7 @@ export async function CreateOrUpdateUser(data) {
             } else {
                 NewUser(data.DiscordID);
                 // Utilisateur inexistant, effectuer l'insertion
-                const insertQuery = `INSERT INTO Users (DiscordID, DiscordName, DiscordBaseName, DiscordRole, DiscordPhoto, GameCharacter_ID, Lvl, EtatInscription, NbEmojiInscription, TrustIndicator, Influence, MNDR, NbGvGParticiped, NbTotalGvG, DateLastGvGParticiped) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
+                const insertQuery = `INSERT INTO Users (DiscordID, DiscordName, DiscordBaseName, DiscordRole, DiscordPhoto, GameCharacter_ID, Lvl, EtatInscription, TrustIndicator, Influence, MNDR, NbGvGParticiped, NbTotalGvG, DateLastGvGParticiped) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
                 db.run(insertQuery, [data.DiscordID, data.DiscordName, data.DiscordBaseName, data.DiscordRole, data.DiscordPhoto, 0, 0, -1, 0, 0, 700, 0, 0, 0, "jamais / never"], function (err) {
                     if (err) {
                         console.error(err.message);
