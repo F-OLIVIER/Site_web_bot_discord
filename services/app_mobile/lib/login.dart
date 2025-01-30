@@ -9,8 +9,6 @@ import 'package:la_nuit_blanche/config.dart';
 import 'package:la_nuit_blanche/notification.dart';
 import 'package:la_nuit_blanche/storage.dart';
 
-// code Test :
-
 Future<Map<String, bool>?> sendCodeToServer(
     BuildContext context, String code, bool notif,
     {String tofetch = ''}) async {
@@ -22,10 +20,11 @@ Future<Map<String, bool>?> sendCodeToServer(
   try {
     // Vérifiez si l'utilisateur a une connexion Internet
     final connectivityResult = await Connectivity().checkConnectivity();
-    if (connectivityResult.single == ConnectivityResult.none) {
+    if (connectivityResult.first == ConnectivityResult.none) {
       return {'Logged': false, 'Internet': false};
     }
 
+    // Requété
     final response = await http.post(
       Uri.parse('${Config.serverUrl}user'),
       headers: {
@@ -58,15 +57,15 @@ Future<Map<String, bool>?> sendCodeToServer(
       // print('Server error: ${response.statusCode}');
       // print('Message: ${response.body}');
       if (context.mounted) {
-        showErrorNotification(context, 'Erreur interne');
+        showErrorNotification(context, 'Erreur interne (code Lo_01)');
       }
       return {'Logged': false, 'Internet': true};
     }
   } catch (e) {
     // Gestion des erreurs réseau ou autres
-    // print('Error sending code: $e');
+    // print('\n\nError sending code: $e');
     if (context.mounted) {
-      showErrorNotification(context, 'Erreur interne');
+      showErrorNotification(context, 'Erreur interne (code Lo_02)');
     }
     return {'Logged': false, 'Internet': true};
   }

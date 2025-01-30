@@ -15,7 +15,7 @@ Future<Map<String, dynamic>> fetchData({String tofetch = ''}) async {
 
   // Vérifiez si l'utilisateur a une connexion Internet
   final connectivityResult = await Connectivity().checkConnectivity();
-  if (connectivityResult.single == ConnectivityResult.none) {
+  if (connectivityResult.first == ConnectivityResult.none) {
     return {'error': 'Pas de connexion Internet'};
   }
 
@@ -35,10 +35,10 @@ Future<Map<String, dynamic>> fetchData({String tofetch = ''}) async {
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {
-      throw Exception('Erreur lors de la récupération des données');
+      throw Exception('❌ Erreur lors de la récupération des données');
     }
   } catch (e) {
-    throw Exception('Erreur lors de l\'appel au serveur: $e');
+    throw Exception('❌ Erreur lors de l\'appel au serveur: $e');
   }
 }
 
@@ -46,7 +46,7 @@ Future<bool> sendDataToServer(
     {required String adresstosend,
     Map<String, dynamic> data = const {}}) async {
   if (adresstosend.isEmpty || data.isEmpty) {
-    throw Exception('L\'URL d\'envoi des données ne peut pas être vide.');
+    throw Exception('❌ L\'URL d\'envoi des données ne peut pas être vide.');
   }
 
   // print('\n------------------------------------------\ndataToSend $adresstosend :\n $data\n------------------------------------------\n');

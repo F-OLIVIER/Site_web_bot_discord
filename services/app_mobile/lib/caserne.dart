@@ -132,6 +132,8 @@ class Casernepage extends State<Caserne> {
     try {
       var data = await fetchData(tofetch: 'caserne');
 
+      // print('\n------------------------------------------\nData receive :\n$data\n------------------------------------------\n');
+
       if (data['error'] == 'Pas de connexion Internet' && mounted) {
         Navigator.pushReplacementNamed(context, '/no_internet');
         return;
@@ -276,7 +278,7 @@ class Casernepage extends State<Caserne> {
                                   int.tryParse(unit['UserMaitrise'] ?? '0') ??
                                       0;
                               int unitLvl =
-                                  int.tryParse(unit['Unit_lvl'] ?? '1') ?? 1;
+                                  int.tryParse(unit['Unit_lvl'] ?? '0') ?? 0;
                               int unitLvlMax =
                                   int.tryParse(unit['Unit_lvlMax'] ?? '1') ?? 1;
                               String imagePath = unit['Unit_img'] ?? '';
