@@ -3,7 +3,7 @@
 ## 📝 Descriptif
 
 Le projet permet de gérer de façon automatisée les inscriptions aux Guildes versus Guilde (GvG) des joueurs pour le jeu [Conqueror's Blade](https://conqblade.com/fr) et la préparation des batailles en créant les groupes à l'avance avec les informations nécessaires pour optimiser les groupes.<br>
-Le projet se décompose en 2 partie, un bot [Discord](https://discord.com) et un site internet, les 2 applications ont en commum une base de données SQL.
+Le projet se décompose en 3 partie, un bot [Discord](https://discord.com), un site internet et une application mobile, les 3 applications ont en commum une base de données SQL.
 
 **Partie 1 : le bot Discord** <br>
 Le bot Discord permet aux utilisateurs de s'inscrire via Discord. Les informations d'inscription des joueurs sont enregistré dans la base de donnée SQL, les joueurs peuvent ainsi donner la plupart des informations nécessaires à la préparation des GvG.<br>
@@ -41,6 +41,21 @@ Les officiers de la guilde ont accès à plusieurs onglets dont ne dispose pas u
     </tbody>
 </table>
 
+**Partie 3 : l'application mobile** <br>
+Seul les utilisateurs presents sur le Discord associé peuvent récupérer un code d'application mobile avec la commande discord `/app_mobile` pour ce connecté a l'application mobile.
+Les utilisateurs peuvent indiqué la liste des unités qu'ils ont débloquée en jeu ainsi que le niveau des unités en question. Ils peuvent également mettre à jour les informations de leur héros pour ceux qui n'apprécient pas de le faire via Discord.
+
+<table align= "center" width="95%">
+    <tbody>
+        <tr>
+            <td><img src="./services//app_mobile/images/flutter_04.png"></td>
+            <td><img src="./services//app_mobile/images/flutter_02.png"></td>
+            <td><img src="./services//app_mobile/images/flutter_01.png"></td>
+            <td><img src="./services//app_mobile/images/flutter_03.png"></td>
+        </tr> 
+    </tbody>
+</table>
+
 ___
 ## ⚙️ Installation & usage
 
@@ -73,6 +88,8 @@ sh ./launch_bot.sh
 # Pour detacher la console, faite `[CTRL]+[a]` suivi de `[d]`
 ```
 
+L'application mobile est deployé sur le Google play store sous le nom `la nuit blanche`
+
 ___
 ## 🔗 Dépendences
 
@@ -93,6 +110,14 @@ Le back utilise un serveur en `go version 1.21` et les librairies suivante :
 - [uuid](https://github.com/gofrs/uuid)
 - [go-sqlite3](https://github.com/mattn/go-sqlite3)
 
+
+**Partie 3 : l'application mobile** <br>
+Réaliser en [Flutter](https://flutter.dev) qui utilise le language [dart](https://dart.dev) et les dépendances suivante :
+- [cupertino_icons](https://pub.dev/packages/cupertino_icons)
+- [http](https://pub.dev/packages/http)
+- [path_provider](https://pub.dev/packages/path_provider)
+- [flutter_local_notifications](https://pub.dev/packages/flutter_local_notifications)
+- [connectivity_plus](https://pub.dev/packages/connectivity_plus)
 
 ___
 ## 🧑‍💻 Authors
