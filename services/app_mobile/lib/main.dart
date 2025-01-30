@@ -60,7 +60,6 @@ class _SplashScreenState extends State<SplashScreen> {
       File file = await getLocalFile();
       bool fileExists = await file.exists();
       Map<String, bool>? result;
-      // print('fileExists : $fileExists');
 
       if (fileExists) {
         final data = await readJson();

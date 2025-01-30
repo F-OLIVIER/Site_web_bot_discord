@@ -134,8 +134,10 @@ class Casernepage extends State<Caserne> {
 
       // print('\n------------------------------------------\nData receive :\n$data\n------------------------------------------\n');
 
-      if (data['error'] == 'Pas de connexion Internet' && mounted) {
-        Navigator.pushReplacementNamed(context, '/no_internet');
+      if (data['Internet'] != null && data['Internet'] == false) {
+        if (mounted) {
+          Navigator.pushReplacementNamed(context, '/no_internet');
+        }
         return;
       }
 

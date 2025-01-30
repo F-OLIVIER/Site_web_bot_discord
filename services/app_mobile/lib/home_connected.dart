@@ -31,8 +31,10 @@ class HomePageState extends State<HomePage> {
       // print('userData : $userData');
       // print('---------------------------------');
 
-      if (userData['error'] == 'Pas de connexion Internet' && mounted) {
-        Navigator.pushReplacementNamed(context, '/no_internet');
+      if (userData['Internet'] != null && userData['Internet'] == false) {
+        if (mounted) {
+          Navigator.pushReplacementNamed(context, '/no_internet');
+        }
         return;
       }
 
