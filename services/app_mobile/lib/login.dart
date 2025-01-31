@@ -9,9 +9,13 @@ import 'package:la_nuit_blanche/config.dart';
 import 'package:la_nuit_blanche/notification.dart';
 import 'package:la_nuit_blanche/storage.dart';
 
-Future<Map<String, bool>?> sendCodeToServer(
-    BuildContext context, String code, bool notif,
+Future<Map<String, bool>?> sendCodeToServer(BuildContext context, String code,
     {String tofetch = ''}) async {
+  if (tofetch.isEmpty) {
+    throw Exception(
+        'L\'URL de récupération des données ne peut pas être vide (sendCodeToServer).');
+  }
+
   // Corps de la requête
   final Map<String, String> requestBody = {
     'CodeApp': code,
@@ -24,9 +28,9 @@ Future<Map<String, bool>?> sendCodeToServer(
       return {'Logged': false, 'Internet': false};
     }
 
-    // Requété
+    // Requéte
     final response = await http.post(
-      Uri.parse('${Config.serverUrl}user'),
+      Uri.parse('${Config.serverUrl}$tofetch'),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -34,17 +38,20 @@ Future<Map<String, bool>?> sendCodeToServer(
     );
 
     if (response.statusCode == 200) {
-      final responseData = await jsonDecode(response.body);
+      final responseData = jsonDecode(response.body);
       // print('Response data: $responseData');
 
       if (responseData['Gestion']['Logged'] == true) {
-        await writeJson(responseData);
+        if (tofetch == 'login') {
+          await writeJson(responseData);
 
-        if (context.mounted && notif) {
-          Navigator.pushReplacementNamed(context, '/home');
+          if (context.mounted) {
+            Navigator.pushReplacementNamed(context, '/home');
+          }
         }
+
         return {'Logged': true, 'Internet': true};
-      } else if (context.mounted && notif) {
+      } else if (context.mounted && tofetch == 'login') {
         showErrorNotification(context, 'Code invalide');
 
         await clearStorage();

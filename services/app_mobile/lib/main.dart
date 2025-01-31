@@ -64,11 +64,10 @@ class _SplashScreenState extends State<SplashScreen> {
       if (fileExists) {
         final data = await readJson();
         if (mounted) {
-          // Actualisation du stockage + vérification du code d'autorisation
+          // Vérification du code d'autorisation
           result = await sendCodeToServer(
             context,
             data['UserInfo']['CodeApp'],
-            false,
             tofetch: 'user',
           );
         }

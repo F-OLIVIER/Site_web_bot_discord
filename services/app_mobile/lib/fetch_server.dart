@@ -10,7 +10,7 @@ import 'package:la_nuit_blanche/storage.dart';
 Future<Map<String, dynamic>> fetchData({String tofetch = ''}) async {
   if (tofetch.isEmpty) {
     throw Exception(
-        'L\'URL de récupération des données ne peut pas être vide.');
+        'L\'URL de récupération des données ne peut pas être vide (fetchData).');
   }
 
   // Vérifiez si l'utilisateur a une connexion Internet
@@ -33,7 +33,7 @@ Future<Map<String, dynamic>> fetchData({String tofetch = ''}) async {
     );
 
     if (response.statusCode == 200) {
-      return await jsonDecode(response.body);
+      return jsonDecode(response.body);
     } else {
       throw Exception('❌ Erreur lors de la récupération des données');
     }

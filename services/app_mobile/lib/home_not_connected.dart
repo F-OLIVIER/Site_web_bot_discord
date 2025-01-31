@@ -137,7 +137,6 @@ class _LoginPageState extends State<LoginPage> {
                           await sendCodeToServer(
                             context,
                             code,
-                            true,
                             tofetch: 'login',
                           );
                         },
