@@ -12,7 +12,6 @@ CREATE TABLE IF NOT EXISTS GestionBot (
 CREATE TABLE IF NOT EXISTS Users (
     ID INTEGER PRIMARY KEY,
     uuid INTEGER,
-    uuidApp INTEGER DEFAULT 0,
     ConnectedSite INTEGER DEFAULT 0,
     DiscordID VARCHAR(50) NOT NULL,
     DiscordName VARCHAR(50) NOT NULL,
@@ -28,6 +27,8 @@ CREATE TABLE IF NOT EXISTS Users (
     NbGvGParticiped INTEGER DEFAULT 0,
     NbTotalGvG INTEGER DEFAULT 0,
     DateLastGvGParticiped TEXT default "",
+    uuidApp VARCHAR(50) DEFAULT "",
+    uuidAppUse INTEGER DEFAULT 0,
     FOREIGN KEY (GameCharacter_ID) REFERENCES ListGameCharacter (ID)
 );
 

@@ -30,21 +30,24 @@ func UserInfoApp(uuidApp string, database *sql.DB) (user_id string, exist, offic
 
 func CharactercardApp(uuidApp string, login bool, database *sql.DB) (userInfo data.UserInfo) {
 	userInfo.CodeApp = uuidApp
-	var uuidAppUse = 0
 
-	stmt1, errdb := database.Prepare("SELECT ID, DiscordRole, GameCharacter_ID, Lvl, Influence, EtatInscription, NbGvGParticiped, NbTotalGvG, DateLastGvGParticiped, uuidAppUse FROM Users WHERE uuidApp = ?")
+	stmt1, errdb := database.Prepare("SELECT ID, GameCharacter_ID, Lvl, Influence, EtatInscription, NbGvGParticiped, NbTotalGvG, DateLastGvGParticiped, uuidAppUse FROM Users WHERE uuidApp = ?")
 	if errdb != nil {
 		utils.CheckErr("1- Requete SELECT DB CharactercardApp", errdb)
 		return userInfo
 	}
 
-	var DiscordRole string
-	stmt1.QueryRow(uuidApp).Scan(&userInfo.ID, &DiscordRole, &userInfo.GameCharacter_ID, &userInfo.Lvl, &userInfo.Influence, &userInfo.EtatInscription, &userInfo.NbGvGParticiped, &userInfo.NbTotalGvG, &userInfo.DateLastGvGParticiped, &uuidAppUse)
+	var uuidAppUse int
+	err := stmt1.QueryRow(uuidApp).Scan(&userInfo.ID, &userInfo.GameCharacter_ID, &userInfo.Lvl, &userInfo.Influence, &userInfo.EtatInscription, &userInfo.NbGvGParticiped, &userInfo.NbTotalGvG, &userInfo.DateLastGvGParticiped, &uuidAppUse)
+	if err != nil {
+		utils.CheckErr("Erreur lors de la récupération des données de l'utilisateur CharactercardApp", err)
+		return userInfo
+	}
 
 	if login {
 		if uuidAppUse == 0 {
-			stmt2, errdb := database.Prepare("UPDATE Users SET uuidAppUse = 1 WHERE uuidApp = ?")
-			utils.CheckErr("2- Requete UPDATE DB CharactercardApp", errdb)
+			stmt2, erruuidAppUse := database.Prepare("UPDATE Users SET uuidAppUse = 1 WHERE uuidApp = ?")
+			utils.CheckErr("2- Requete UPDATE DB CharactercardApp", erruuidAppUse)
 			stmt2.Exec(uuidApp)
 		} else if uuidAppUse == 786 {
 			// Utilisateur de test, ne rien faire

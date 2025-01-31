@@ -1,47 +1,9 @@
 // Fichier annexe
-import {
-  unregisteredList,
-  isOfficier,
-  deleteUser,
-  listInscription,
-  ListEvent,
-  ListInscriptedEvent,
-  CancelEventInscription,
-  InscriptionEvent,
-  existEvent,
-  DeleteEvent,
-} from "./database.js";
-import {
-  TODOBotChan,
-  TODOBotChanOfficier,
-  TODOBotReaction,
-  siteInternet,
-  idRoleUser,
-  idRoleOfficier,
-  siteAndroidApp,
-  siteIosApp,
-} from "./config.js";
-import {
-  slashvisite,
-  visit1,
-  modalvisitelvlAndInflu,
-  visit2,
-  visit3,
-  slashvisitenotpossible,
-} from "./guide.js";
-import {
-  createCommands,
-  slashClass,
-  slashInflu,
-  slashLevel,
-  slashRaidReset,
-  slashResetmsggvg,
-} from "./slashcommand.js";
-import {
-  cronCheckpresence,
-  cronDeleteEvent,
-  cronResetMsgReaction,
-} from "./Cronjob.js";
+import { unregisteredList, isOfficier, deleteUser, listInscription, ListEvent, ListInscriptedEvent, CancelEventInscription, InscriptionEvent, existEvent, DeleteEvent } from "./database.js";
+import { TODOBotChan, TODOBotChanOfficier, TODOBotReaction, siteInternet, idRoleUser, idRoleOfficier, siteAndroidApp, siteIosApp } from "./config.js";
+import { slashvisite, visit1, modalvisitelvlAndInflu, visit2, visit3, slashvisitenotpossible } from "./guide.js";
+import { createCommands, slashClass, slashInflu, slashLevel, slashRaidReset, slashResetmsggvg } from "./slashcommand.js";
+import { cronCheckpresence, cronDeleteEvent, cronResetMsgReaction } from "./Cronjob.js";
 import { client, Messagegvg, EmbedData, EmbedGuide } from "./Constant.js";
 import { EmbedEvent, createevent, modalcreateevent } from "./Event.js";
 import { PlayerCreateOrUpdate, createuser, isMember } from "./FuncData.js";
@@ -213,20 +175,12 @@ client.on("messageCreate", async (message) => {
   // --------------------------------------------
   if (message.content === "!check_perms") {
     const botMember = await message.guild.members.fetch(client.user.id);
-    const requiredPerms = [
-      PermissionsBitField.Flags.Administrator,
-      PermissionsBitField.Flags.ManageGuild,
-      PermissionsBitField.Flags.UseApplicationCommands,
-    ];
+    const requiredPerms = [PermissionsBitField.Flags.Administrator, PermissionsBitField.Flags.ManageGuild, PermissionsBitField.Flags.UseApplicationCommands];
 
-    const missingPerms = requiredPerms.filter(
-      (perm) => !botMember.permissions.has(perm)
-    );
+    const missingPerms = requiredPerms.filter((perm) => !botMember.permissions.has(perm));
 
     if (missingPerms.length > 0) {
-      await message.author.send(
-        `Missing permissions: ${missingPerms.join(", ")}`
-      );
+      await message.author.send(`Missing permissions: ${missingPerms.join(", ")}`);
     } else {
       await message.author.send("All required permissions are granted.");
     }
@@ -248,10 +202,7 @@ client.on("interactionCreate", async (interaction) => {
     const userId = interaction.user.id;
 
     // Gestion des boutons d'inscription au GvG
-    if (
-      interaction.customId === "present" ||
-      interaction.customId === "absent"
-    ) {
+    if (interaction.customId === "present" || interaction.customId === "absent") {
       if (interaction.customId === "present") {
         await MAJinscription(userId, 1);
       } else if (interaction.customId === "absent") {
@@ -263,22 +214,34 @@ client.on("interactionCreate", async (interaction) => {
       const listinscrit = await listInscription();
 
       let presentList = [];
+      // if (listinscrit[0] !== undefined) {
+      //   presentList = await Promise.all(
+      //     listinscrit[0].map(async (id) => {
+      //       const userId = BigInt(id);
+      //       return "<@" + userId.toString() + ">";
+      //     })
+      //   );
+      // }
       if (listinscrit[0] !== undefined) {
         presentList = await Promise.all(
-          listinscrit[0].map(async (id) => {
-            const userId = BigInt(id);
-            return "<@" + userId.toString() + ">";
-          })
+          listinscrit[0]
+            .filter((id) => BigInt(id) !== BigInt(0)) // Filtrer les id égaux à 0
+            .map(async (id) => {
+              const userId = BigInt(id);
+              return "<@" + userId.toString() + ">";
+            })
         );
       }
 
       let absentList = [];
       if (listinscrit[2] !== undefined) {
         absentList = await Promise.all(
-          listinscrit[2].map(async (id) => {
-            const userId = BigInt(id);
-            return "<@" + userId.toString() + ">";
-          })
+          listinscrit[2]
+            .filter((id) => BigInt(id) !== BigInt(0))
+            .map(async (id) => {
+              const userId = BigInt(id);
+              return "<@" + userId.toString() + ">";
+            })
         );
       }
 
@@ -294,13 +257,8 @@ client.on("interactionCreate", async (interaction) => {
     }
 
     // Gestion des boutons d'inscription au événements divers
-    if (
-      interaction.customId.includes("eventinscripted") ||
-      interaction.customId.includes("eventdisinscripted")
-    ) {
-      const customId = interaction.customId.match(
-        /(?:eventinscripted|eventdisinscripted)(\d+)/
-      );
+    if (interaction.customId.includes("eventinscripted") || interaction.customId.includes("eventdisinscripted")) {
+      const customId = interaction.customId.match(/(?:eventinscripted|eventdisinscripted)(\d+)/);
       const eventId = parseInt(customId[1], 10);
 
       // si l'event n'existe plus dans la db
@@ -311,10 +269,7 @@ client.on("interactionCreate", async (interaction) => {
             components: [],
           })
           .catch((err) => {
-            console.error(
-              "Error update existEvent EmbedEvent event passé :",
-              err
-            );
+            console.error("Error update existEvent EmbedEvent event passé :", err);
           });
 
         await interaction.followUp({
@@ -333,11 +288,7 @@ client.on("interactionCreate", async (interaction) => {
           const event = listEvent[index];
           if (eventId === event.ID) {
             // modification uniquement si la date et à venir
-            const eventDate = moment.tz(
-              event.Dates,
-              ["DD/MM/YYYY HH:mm", "DD-MM-YYYY HH:mm"],
-              "Europe/Paris"
-            );
+            const eventDate = moment.tz(event.Dates, ["DD/MM/YYYY HH:mm", "DD-MM-YYYY HH:mm"], "Europe/Paris");
             if (eventDate.isAfter(currentDate)) {
               // inscription à un event
               if (interaction.customId === "eventinscripted" + event.ID) {
@@ -345,20 +296,10 @@ client.on("interactionCreate", async (interaction) => {
                 const listinscripted = await ListInscriptedEvent(event.ID);
                 await interaction
                   .update({
-                    embeds: [
-                      await EmbedEvent(
-                        event.Title,
-                        event.Dates,
-                        event.Descriptions,
-                        listinscripted
-                      ),
-                    ],
+                    embeds: [await EmbedEvent(event.Title, event.Dates, event.Descriptions, listinscripted)],
                   })
                   .catch((err) => {
-                    console.error(
-                      "Error update EmbedEvent eventinscripted :",
-                      err
-                    );
+                    console.error("Error update EmbedEvent eventinscripted :", err);
                   });
                 return true;
               }
@@ -370,20 +311,10 @@ client.on("interactionCreate", async (interaction) => {
 
                 await interaction
                   .update({
-                    embeds: [
-                      await EmbedEvent(
-                        event.Title,
-                        event.Dates,
-                        event.Descriptions,
-                        listinscripted
-                      ),
-                    ],
+                    embeds: [await EmbedEvent(event.Title, event.Dates, event.Descriptions, listinscripted)],
                   })
                   .catch((err) => {
-                    console.error(
-                      "Error update EmbedEvent eventdisinscripted :",
-                      err
-                    );
+                    console.error("Error update EmbedEvent eventdisinscripted :", err);
                   });
                 return true;
               }
@@ -397,10 +328,7 @@ client.on("interactionCreate", async (interaction) => {
                   components: [],
                 })
                 .catch((err) => {
-                  console.error(
-                    "Error update existEvent EmbedEvent event passé :",
-                    err
-                  );
+                  console.error("Error update existEvent EmbedEvent event passé :", err);
                 });
 
               await interaction.followUp({
@@ -503,10 +431,7 @@ client.on("interactionCreate", async (interaction) => {
   // interaction qui donne l'adresse du site internet associé au bot, Command /site
   if (interaction.commandName === "site") {
     interaction.reply({
-      content:
-        "Voici le lien du site internet associé au bot :\n<" +
-        siteInternet +
-        ">",
+      content: "Voici le lien du site internet associé au bot :\n<" + siteInternet + ">",
       ephemeral: true,
     });
     return true;
@@ -516,25 +441,25 @@ client.on("interactionCreate", async (interaction) => {
   if (interaction.commandName === "app_mobile") {
     const tokenapp = await genereTokenApp(interaction.user.id);
     if (tokenapp == "") {
-      interaction.reply({
-        content:
-          "<@" +
-          interaction.user.id +
-          ">\nVous ne faites pas partie de la maison La Nuit Blanche sur Conqueror's Blade !!!",
+      await interaction.reply({
+        content: "<@" + interaction.user.id + ">\nVous ne faites pas partie de la maison La Nuit Blanche sur Conqueror's Blade !!!",
         ephemeral: true,
       });
     } else {
-      interaction.reply({
+      await interaction.reply({
         content:
           "<@" +
           interaction.user.id +
-          ">\nVoici le Token (à usage unique) permettant de vous connecter à l'application mobile :\n```" +
-          tokenapp +
-          "```\nLien de l'application Android (Google Play Store) :\n<" +
+          ">\n:information_source: Votre Token (à usage unique) vous permet de vous connecter à l'application mobile, afin de pouvoir le copier facilement, il vous est envoyé dans un autre message (ci-dessous).\n:warning: Ce Token est associé à votre compte, ne le donner à personne sous aucun prétexte.\n" +
+          "\nLien de l'application Android (Google Play Store) :\n<" +
           siteAndroidApp +
           ">\n\nLien de l'application iOS (Apple Store) :\n<" +
           siteIosApp +
           ">",
+        ephemeral: true,
+      });
+      await interaction.followUp({
+        content: tokenapp,
         ephemeral: true,
       });
     }
@@ -550,16 +475,12 @@ client.on("interactionCreate", async (interaction) => {
     if (isOfficier(interaction.user.id)) {
       cmdnb(interaction.user.id);
       interaction.reply({
-        content:
-          "Le nombre de joueur inscrit ou non à la prochaine GvG a été posté dans le canal <#" +
-          TODOBotChanOfficier +
-          ">",
+        content: "Le nombre de joueur inscrit ou non à la prochaine GvG a été posté dans le canal <#" + TODOBotChanOfficier + ">",
         ephemeral: true,
       });
     } else {
       interaction.reply({
-        content:
-          "Vous n'avez pas les autorisations nécéssaire pour réaliser cet action",
+        content: "Vous n'avez pas les autorisations nécéssaire pour réaliser cet action",
         ephemeral: true,
       });
     }
@@ -571,16 +492,12 @@ client.on("interactionCreate", async (interaction) => {
     if (isOfficier(interaction.user.id)) {
       cmdlist(interaction.user.id);
       interaction.reply({
-        content:
-          "La liste des joueurs inscrit à la prochaine GvG a été posté dans le canal <#" +
-          TODOBotChanOfficier +
-          ">",
+        content: "La liste des joueurs inscrit à la prochaine GvG a été posté dans le canal <#" + TODOBotChanOfficier + ">",
         ephemeral: true,
       });
     } else {
       interaction.reply({
-        content:
-          "Vous n'avez pas les autorisations nécéssaire pour réaliser cet action",
+        content: "Vous n'avez pas les autorisations nécéssaire pour réaliser cet action",
         ephemeral: true,
       });
     }
@@ -593,16 +510,12 @@ client.on("interactionCreate", async (interaction) => {
       const unregisteredlist = await unregisteredList();
       Messagegvg(interaction.user.id, unregisteredlist);
       interaction.reply({
-        content:
-          "La liste des joueurs non inscrit à la prochaine GvG a été posté dans le canal <#" +
-          TODOBotChanOfficier +
-          ">",
+        content: "La liste des joueurs non inscrit à la prochaine GvG a été posté dans le canal <#" + TODOBotChanOfficier + ">",
         ephemeral: true,
       });
     } else {
       interaction.reply({
-        content:
-          "Vous n'avez pas les autorisations nécéssaire pour réaliser cet action",
+        content: "Vous n'avez pas les autorisations nécéssaire pour réaliser cet action",
         ephemeral: true,
       });
     }
@@ -615,8 +528,7 @@ client.on("interactionCreate", async (interaction) => {
       return await modalcreateevent(interaction);
     } else {
       interaction.reply({
-        content:
-          "Vous n'avez pas les autorisations nécéssaire pour réaliser cet action",
+        content: "Vous n'avez pas les autorisations nécéssaire pour réaliser cet action",
         ephemeral: true,
       });
     }
