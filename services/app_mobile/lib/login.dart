@@ -34,7 +34,7 @@ Future<Map<String, bool>?> sendCodeToServer(
     );
 
     if (response.statusCode == 200) {
-      final responseData = jsonDecode(response.body);
+      final responseData = await jsonDecode(response.body);
       // print('Response data: $responseData');
 
       if (responseData['Gestion']['Logged'] == true) {

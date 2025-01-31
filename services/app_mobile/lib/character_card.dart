@@ -45,7 +45,8 @@ class FichePersonnagePageState extends State<FichePersonnagePage> {
       }
 
       if (userData['Gestion']['Logged'] == false && mounted) {
-        logout(context);
+        await logout(context);
+        return;
       }
 
       setState(() {
@@ -254,6 +255,11 @@ class FichePersonnagePageState extends State<FichePersonnagePage> {
                               labelText: 'Changer de level',
                               hintText: 'Entrez votre nouveau level',
                               border: OutlineInputBorder(),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5),
+                                borderSide: const BorderSide(
+                                    color: Colors.black, width: 2),
+                              ),
                               contentPadding: EdgeInsets.symmetric(
                                   vertical: 10, horizontal: 15),
                             ),

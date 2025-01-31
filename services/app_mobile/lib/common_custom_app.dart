@@ -7,12 +7,14 @@ import 'package:la_nuit_blanche/storage.dart';
 
 Future<void> logout(BuildContext context) async {
   // Nettoyage du stockage
-  clearStorage();
+  await clearStorage();
   // Redirection
-  Navigator.pushReplacement(
-    context,
-    MaterialPageRoute(builder: (context) => const LoginPage()),
-  );
+  if (context.mounted) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginPage()),
+    );
+  }
 }
 
 AppBar customAppBar(BuildContext context, {String title = "La Nuit Blanche"}) {
@@ -37,7 +39,7 @@ AppBar customAppBar(BuildContext context, {String title = "La Nuit Blanche"}) {
     backgroundColor: Colors.transparent,
     elevation: 4,
     iconTheme: IconThemeData(
-      color: Colors.white, // Couleur de l'icône du Drawer
+      color: Colors.white,
     ),
     flexibleSpace: Container(
       decoration: BoxDecoration(
@@ -62,7 +64,7 @@ AppBar customAppBar(BuildContext context, {String title = "La Nuit Blanche"}) {
             Icons.logout,
             color: Colors.white,
           ),
-          onPressed: () => logout(context),
+          onPressed: () async => await logout(context),
         ),
     ],
   );

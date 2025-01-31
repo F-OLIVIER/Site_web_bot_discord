@@ -86,16 +86,19 @@ class _SplashScreenState extends State<SplashScreen> {
           if (mounted) {
             Navigator.pushReplacementNamed(context, '/home');
           }
+          return;
         } else {
           // Code NON valide, utilisateur NON connecté => Redirection vers la page de connexion
           if (mounted) {
             Navigator.pushReplacementNamed(context, '/login');
           }
+          return;
         }
       } else {
         if (mounted) {
           Navigator.pushReplacementNamed(context, '/login');
         }
+        return;
       }
     } catch (e) {
       // print('Error during login check: $e');

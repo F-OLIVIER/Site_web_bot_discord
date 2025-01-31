@@ -130,11 +130,11 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       const SizedBox(height: 20),
                       ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           final code = _codeController.text;
                           // print('Code de connexion: $code');
                           // envoie du code au serveur
-                          sendCodeToServer(
+                          await sendCodeToServer(
                             context,
                             code,
                             true,

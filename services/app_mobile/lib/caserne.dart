@@ -123,9 +123,9 @@ class Casernepage extends State<Caserne> {
   }
 
   @override
-  void initState() {
+  void initState() async {
     super.initState();
-    _loadData();
+    await _loadData();
   }
 
   Future<void> _loadData() async {
@@ -142,7 +142,8 @@ class Casernepage extends State<Caserne> {
       }
 
       if (data['Gestion']['Logged'] == false && mounted) {
-        logout(context);
+        await logout(context);
+        return;
       }
 
       if (data['ListUnit'] != null) {
@@ -191,7 +192,7 @@ class Casernepage extends State<Caserne> {
       backgroundColor: Color.fromARGB(255, 63, 85, 116),
       body: Center(
         child: (tabs.isEmpty)
-            ? CircularProgressIndicator() // Affichage en attente si les données sont encore en cours de chargement
+            ? CircularProgressIndicator()
             : DefaultTabController(
                 length: tabs.length,
                 child: Column(
@@ -216,7 +217,8 @@ class Casernepage extends State<Caserne> {
                                     backgroundColor: Colors.transparent,
                                     shadowColor: Colors.transparent,
                                   ),
-                                  onPressed: () => sendinfoserver(context),
+                                  onPressed: () async =>
+                                      await sendinfoserver(context),
                                   child: Ink(
                                     decoration: BoxDecoration(
                                       gradient: LinearGradient(

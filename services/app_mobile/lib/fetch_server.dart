@@ -33,7 +33,7 @@ Future<Map<String, dynamic>> fetchData({String tofetch = ''}) async {
     );
 
     if (response.statusCode == 200) {
-      return jsonDecode(response.body);
+      return await jsonDecode(response.body);
     } else {
       throw Exception('❌ Erreur lors de la récupération des données');
     }

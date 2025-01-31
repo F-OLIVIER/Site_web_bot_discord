@@ -51,32 +51,71 @@ class HomePageState extends State<HomePage> {
     }
   }
 
+  Future<String?> showCustomDialog(BuildContext context) async {
+    return await showDialog<String>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          contentPadding: EdgeInsets.symmetric(horizontal: 4, vertical: 30),
+          title: Center(
+            child: Text(
+              "Choisir votre statut",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+          content: const Text(
+            "Voulez-vous vous inscrire comme présent ou absent ?",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 16),
+          ),
+          actionsAlignment: MainAxisAlignment.center,
+          actions: [
+            ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+              ),
+              onPressed: () => Navigator.pop(context, "present"),
+              icon: const Icon(
+                Icons.check_circle,
+                size: 14,
+                color: Colors.white,
+              ),
+              label: const Text("Présent"),
+            ),
+            ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.redAccent,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+              ),
+              onPressed: () => Navigator.pop(context, "absent"),
+              icon: const Icon(
+                Icons.cancel,
+                size: 14,
+                color: Colors.white,
+              ),
+              label: const Text("Absent"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   // Fonction pour gérer le clic sur le gros bouton
   void _handleBigButtonClick(BuildContext context) async {
     int newetat = 0;
 
     if (etatInscripted == 0 || etatInscripted == -1) {
-      // Afficher un popup pour choisir entre présent ou absent
-      String? choix = await showDialog<String>(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text("Choisir votre statut"),
-            content: const Text(
-                "Voulez-vous vous inscrire comme présent ou absent ?"),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.pop(context, "present"),
-                child: const Text("Présent"),
-              ),
-              TextButton(
-                onPressed: () => Navigator.pop(context, "absent"),
-                child: const Text("Absent"),
-              ),
-            ],
-          );
-        },
-      );
+      // popup pour choisir entre présent ou absent
+      String? choix = await showCustomDialog(context);
 
       if (choix == "present") {
         newetat = 1;
@@ -98,7 +137,7 @@ class HomePageState extends State<HomePage> {
         'EtatInscription': newetat,
         'CodeApp': codeApp,
       };
-      sendDataToServer(
+      await sendDataToServer(
         adresstosend: 'updateinscription',
         data: dataToSend,
       );
