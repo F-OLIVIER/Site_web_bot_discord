@@ -204,7 +204,7 @@ class FichePersonnagePageState extends State<FichePersonnagePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Classe actuel : ${actualClass ?? 'Non défini'}',
+                            'Classe actuel :\n${actualClass ?? 'Non défini'}',
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold),
                           ),

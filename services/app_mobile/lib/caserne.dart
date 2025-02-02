@@ -123,9 +123,9 @@ class Casernepage extends State<Caserne> {
   }
 
   @override
-  void initState() async {
+  void initState() {
     super.initState();
-    await _loadData();
+    _loadData();
   }
 
   Future<void> _loadData() async {
@@ -457,11 +457,11 @@ class Casernepage extends State<Caserne> {
                                                       )
                                                           // Valeur changer
                                                           ? Colors.blue.shade100
-                                                          : (unitLvl == 0)
+                                                          : (userMaitrise == 0)
                                                               // Non débloquer
                                                               ? Colors.red
-                                                              : (unitLvl ==
-                                                                      unitLvlMax)
+                                                              : (userMaitrise ==
+                                                                      2)
                                                                   // lvl max
                                                                   ? Colors.green
                                                                   // en cour
